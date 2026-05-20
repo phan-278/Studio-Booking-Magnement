@@ -600,6 +600,75 @@
   padding: 6px 0;
 }
 
+.cal-current-month {
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 2px;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-current-month:hover {
+  background: var(--cream-dark);
+}
+
+.cal-chevron {
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+
+/* Bộ chọn nhanh */
+.month-year-picker {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background: var(--cream);
+  z-index: 10;
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.month-year-picker.show {
+  display: grid;
+}
+
+.picker-years, .picker-months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.picker-months {
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.picker-item {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.picker-item:hover {
+  background: #fff;
+  border-color: var(--red);
+}
+
+.picker-item.active {
+  background: var(--red);
+  color: #fff;
+}
+
 .qr-bank-row strong { color: var(--ink); }
 
 @media (max-width: 900px) {

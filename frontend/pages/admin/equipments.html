@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quản lý Thiết bị — Kép Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red:#a31c1c; --red-light:#c0392b; --ink:#1a1a1a; --ink-light:#444;
+      --warm-grey:#888; --border:#e8e0d8; --bg:#faf9f7;
+      --font-brand:'Playfair Display',serif; --font-body:'Be Vietnam Pro',sans-serif;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:flex; }
+
+    .dash-sidebar { width:220px; min-height:100vh; background:var(--ink); color:#fff; display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; }
+    .dash-brand { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .dash-brand-name { font-family:var(--font-brand); font-size:1.3rem; color:#fff; text-decoration:none; display:block; font-style:italic; }
+    .dash-brand-role { font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:2px; display:block; }
+    .dash-nav { flex:1; padding:16px 0; }
+    .dash-nav-section { font-size:.45rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.3); padding:12px 24px 4px; }
+    .dash-nav-link { display:flex; align-items:center; gap:10px; padding:10px 24px; font-size:.62rem; letter-spacing:.04em; color:rgba(255,255,255,.6); text-decoration:none; transition:all .2s; }
+    .dash-nav-link:hover { color:#fff; background:rgba(255,255,255,.05); }
+    .dash-nav-link.active { color:#fff; background:rgba(163,28,28,.35); border-left:2px solid var(--red); }
+    .nav-icon { font-size:.8rem; width:16px; text-align:center; }
+    .dash-sidebar-footer { padding:20px 24px; border-top:1px solid rgba(255,255,255,.08); }
+    .dash-user-info { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .dash-user-avatar { width:32px; height:32px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:600; color:#fff; flex-shrink:0; }
+    .dash-user-name { font-size:.6rem; font-weight:600; color:#fff; }
+    .dash-user-email { font-size:.52rem; color:rgba(255,255,255,.4); }
+    .dash-logout-btn { width:100%; padding:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.7); font-family:var(--font-body); font-size:.55rem; letter-spacing:.06em; cursor:pointer; transition:all .2s; }
+    .dash-logout-btn:hover { background:rgba(163,28,28,.4); color:#fff; border-color:var(--red); }
+
+    .dash-main { flex:1; display:flex; flex-direction:column; min-height:100vh; overflow:auto; }
+    .dash-topbar { padding:20px 32px; border-bottom:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:space-between; }
+    .dash-page-title { font-family:var(--font-brand); font-size:1.3rem; font-weight:700; }
+    .dash-action-btn { padding:9px 18px; font-family:var(--font-body); font-size:.6rem; letter-spacing:.08em; border:none; cursor:pointer; transition:all .2s; }
+    .dash-action-btn.primary { background:var(--red); color:#fff; }
+    .dash-action-btn.primary:hover { background:var(--red-light); }
+    .dash-content { padding:28px 32px; flex:1; }
+    .section-title { font-family:var(--font-brand); font-size:.85rem; font-weight:700; margin-bottom:14px; }
+
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+    .stat-card { background:#fff; border:1px solid var(--border); padding:16px 20px; }
+    .stat-label { font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:6px; }
+    .stat-val { font-family:var(--font-brand); font-size:1.6rem; font-weight:700; line-height:1; }
+    .stat-val.red { color:var(--red); }
+    .stat-val.green { color:#2E7D32; }
+    .stat-val.orange { color:#d4a017; }
+    .stat-sub { font-size:.52rem; color:var(--warm-grey); margin-top:4px; }
+
+    /* SEARCH */
+    .filters-bar { display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+    .filter-chip { padding:6px 14px; border:1px solid var(--border); background:#fff; font-family:var(--font-body); font-size:.58rem; color:var(--ink-light); cursor:pointer; transition:all .2s; }
+    .filter-chip:hover { border-color:var(--ink); }
+    .filter-chip.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+    .search-input { padding:7px 14px; border:1px solid var(--border); background:#fff; font-family:var(--font-body); font-size:.6rem; outline:none; width:220px; }
+    .search-input:focus { border-color:var(--ink); }
+
+    /* TABLE */
+    .dash-table-wrap { background:#fff; border:1px solid var(--border); overflow-x:auto; margin-bottom:28px; }
+    .dash-table { width:100%; border-collapse:collapse; }
+    .dash-table thead th { padding:12px 14px; font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warm-grey); border-bottom:1px solid var(--border); text-align:left; white-space:nowrap; }
+    .dash-table tbody tr { border-bottom:1px solid rgba(163,28,28,.05); transition:background .15s; }
+    .dash-table tbody tr:hover { background:#fdf7f0; }
+    .dash-table td { padding:12px 14px; font-size:.62rem; vertical-align:middle; }
+    .equip-name { font-weight:600; font-size:.66rem; }
+    .equip-id { font-size:.5rem; color:var(--warm-grey); font-family:monospace; }
+    .stock-bar-wrap { display:flex; align-items:center; gap:8px; }
+    .stock-bar { height:6px; background:#eee; flex:1; min-width:60px; overflow:hidden; border-radius:3px; }
+    .stock-bar-fill { height:100%; border-radius:3px; transition:width .3s; }
+    .stock-num { font-size:.6rem; white-space:nowrap; }
+    .stock-num .avail { color:#2E7D32; font-weight:600; }
+    .stock-num .total-s { color:var(--warm-grey); }
+    .badge-ok { display:inline-block; padding:3px 10px; font-size:.5rem; letter-spacing:.08em; background:#e8f5e9; color:#2E7D32; border:1px solid #a5d6a7; }
+    .badge-low { display:inline-block; padding:3px 10px; font-size:.5rem; letter-spacing:.08em; background:#fff8e1; color:#b8860b; border:1px solid #f0d060; }
+    .badge-out { display:inline-block; padding:3px 10px; font-size:.5rem; letter-spacing:.08em; background:#fff5f5; color:var(--red); border:1px solid #f5b0b0; }
+    .badge-inactive { display:inline-block; padding:3px 10px; font-size:.5rem; letter-spacing:.08em; background:#f5f5f5; color:#888; border:1px solid #ddd; }
+    .tbl-actions { display:flex; gap:6px; }
+    .tbl-btn { padding:5px 11px; font-family:var(--font-body); font-size:.52rem; border:none; cursor:pointer; transition:all .2s; }
+    .tbl-btn.edit { background:#f5f5f5; color:var(--ink); border:1px solid var(--border); }
+    .tbl-btn.edit:hover { background:var(--ink); color:#fff; }
+    .tbl-btn.del { background:#fff5f5; color:var(--red); border:1px solid #f5b0b0; }
+    .tbl-btn.del:hover { background:var(--red); color:#fff; }
+    .usage-count { font-weight:600; color:var(--ink); }
+
+    /* CHART */
+    .chart-container { background:#fff; border:1px solid var(--border); padding:24px; margin-bottom:28px; }
+    .chart-bars { display:flex; align-items:flex-end; gap:8px; height:140px; }
+    .chart-bar-col { display:flex; flex-direction:column; align-items:center; flex:1; gap:4px; }
+    .chart-bar { width:100%; background:var(--red); opacity:.75; transition:height .6s cubic-bezier(0.16,1,0.3,1), opacity .3s; min-height:4px; cursor:pointer; }
+    .chart-bar:hover { opacity:1; }
+    .chart-lbl { font-size:.46rem; color:var(--warm-grey); text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+    .chart-val { font-size:.5rem; color:var(--ink); font-weight:600; }
+
+    /* MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; }
+    .modal-box { background:#fff; width:100%; max-width:520px; padding:36px; position:relative; max-height:90vh; overflow-y:auto; }
+    .modal-close { position:absolute; top:16px; right:16px; background:none; border:none; font-size:1.1rem; cursor:pointer; color:var(--warm-grey); }
+    .modal-title { font-family:var(--font-brand); font-size:1.3rem; font-weight:700; margin-bottom:24px; }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:.54rem; letter-spacing:.1em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:6px; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 12px; border:1px solid var(--border); font-family:var(--font-body); font-size:.64rem; color:var(--ink); background:#fff; outline:none; transition:border-color .2s; }
+    .form-group input:focus, .form-group select:focus { border-color:var(--ink); }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .modal-actions { display:flex; gap:12px; margin-top:24px; justify-content:flex-end; }
+    .btn-modal { padding:9px 20px; font-family:var(--font-body); font-size:.6rem; border:none; cursor:pointer; transition:all .2s; }
+    .btn-modal.save { background:var(--ink); color:#fff; }
+    .btn-modal.save:hover { background:var(--red); }
+    .btn-modal.cancel { background:#f5f5f5; color:var(--ink); border:1px solid var(--border); }
+
+    .toast { position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:12px 20px; font-family:var(--font-body); font-size:.64rem; transform:translateY(80px); opacity:0; transition:all .3s; z-index:9999; pointer-events:none; }
+    .toast.show { transform:translateY(0); opacity:1; }
+    .info-box { background:#f9f6f2; border-left:3px solid var(--red); padding:12px 16px; font-size:.62rem; color:var(--ink-light); margin-bottom:20px; line-height:1.6; }
+  </style>
+</head>
+<body>
+
+<div class="dash-sidebar">
+  <div class="dash-brand">
+    <a class="dash-brand-name" href="../../index.html">"Kép"</a>
+    <span class="dash-brand-role">Admin Panel</span>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tổng quan</div>
+    <a class="dash-nav-link" href="index.html"><span class="nav-icon">◈</span> Dashboard</a>
+    <div class="dash-nav-section">Quản lý</div>
+    <a class="dash-nav-link" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
+    <a class="dash-nav-link" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
+    <a class="dash-nav-link active" href="equipments.html"><span class="nav-icon">◉</span> Thiết bị</a>
+    <a class="dash-nav-link" href="users.html"><span class="nav-icon">◎</span> Người dùng</a>
+    <a class="dash-nav-link" href="reports.html"><span class="nav-icon">◻</span> Báo cáo</a>
+    <div class="dash-nav-section">Hệ thống</div>
+    <a class="dash-nav-link" href="../../index.html"><span class="nav-icon">↗</span> Xem trang chủ</a>
+  </nav>
+  <div class="dash-sidebar-footer">
+    <div class="dash-user-info">
+      <div class="dash-user-avatar" style="background:var(--red);">A</div>
+      <div><div class="dash-user-name">Admin</div><div class="dash-user-email">Kép Studio</div></div>
+    </div>
+    <button class="dash-logout-btn" onclick="doAdminLogout()">Đăng xuất</button>
+  </div>
+</div>
+
+<div class="dash-main">
+  <div class="dash-topbar">
+    <h1 class="dash-page-title">Quản lý Thiết bị</h1>
+    <button class="dash-action-btn primary" onclick="openAddModal()">+ Thêm thiết bị</button>
+  </div>
+
+  <div class="dash-content">
+
+    <div class="info-box">
+      💡 Số lượng <strong>Còn lại</strong> = Tổng kho − số lượng đang được đặt trong các booking <em>chờ duyệt</em> hoặc <em>đã xác nhận</em> vào cùng ngày hôm nay.
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row" id="equipStats"></div>
+
+    <!-- Usage Chart -->
+    <div class="section-title">Biểu đồ số lần sử dụng thiết bị</div>
+    <div class="chart-container">
+      <div style="font-size:.58rem;color:var(--warm-grey);margin-bottom:12px;">Số lần được chọn trong tất cả booking (kể cả đang chờ)</div>
+      <div class="chart-bars" id="usageChart"></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <button class="filter-chip active" onclick="setFilter('all',this)">Tất cả</button>
+      <button class="filter-chip" onclick="setFilter('low',this)">Sắp hết</button>
+      <button class="filter-chip" onclick="setFilter('out',this)">Hết hàng</button>
+      <button class="filter-chip" onclick="setFilter('inactive',this)">Ngừng cho thuê</button>
+      <input class="search-input" type="text" placeholder="Tìm tên thiết bị..." id="searchInput" oninput="renderTable()">
+    </div>
+
+    <!-- Table -->
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Mã</th>
+            <th>Tên thiết bị</th>
+            <th>Danh mục</th>
+            <th>Tồn kho</th>
+            <th>Còn lại hôm nay</th>
+            <th>Giá thuê</th>
+            <th>Lần dùng</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="equipTbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="equipModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">Thêm thiết bị</div>
+    <input type="hidden" id="editId">
+    <div class="form-group"><label>Tên thiết bị *</label><input type="text" id="fName" placeholder="vd: Đèn Softbox 300W"/></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Danh mục</label>
+        <select id="fCategory">
+          <option value="lighting">Ánh sáng</option>
+          <option value="backdrop">Phông nền</option>
+          <option value="display">Màn hình</option>
+          <option value="prop">Phụ kiện</option>
+          <option value="audio">Âm thanh</option>
+          <option value="other">Khác</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Giá thuê/lần (K)</label><input type="number" id="fPrice" placeholder="vd: 200"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Tổng số lượng</label><input type="number" id="fTotal" placeholder="vd: 4" min="0"/></div>
+      <div class="form-group"><label>Số lượng có thể cho thuê</label><input type="number" id="fAvail" placeholder="vd: 4" min="0"/></div>
+    </div>
+    <div class="form-group"><label>Ghi chú / Mô tả</label><textarea id="fNote" rows="2" placeholder="vd: Dùng kèm softbox 80×80, đủ cho chụp sản phẩm và chân dung"></textarea></div>
+    <div class="form-group">
+      <label>Trạng thái</label>
+      <select id="fStatus">
+        <option value="active">Cho thuê</option>
+        <option value="maintenance">Đang bảo trì</option>
+        <option value="inactive">Ngừng cho thuê</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal cancel" onclick="closeModal()">Hủy</button>
+      <button class="btn-modal save" onclick="saveEquip()">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm -->
+<div class="modal-overlay" id="delModal">
+  <div class="modal-box" style="max-width:400px;">
+    <button class="modal-close" onclick="closeDelModal()">✕</button>
+    <div class="modal-title">Xóa thiết bị?</div>
+    <p style="font-size:.64rem;color:var(--warm-grey);margin-bottom:24px;line-height:1.7;">Hành động này không thể hoàn tác.</p>
+    <div class="modal-actions">
+      <button class="btn-modal cancel" onclick="closeDelModal()">Hủy</button>
+      <button class="btn-modal save" style="background:var(--red);" onclick="confirmDelete()">Xóa</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+if (!localStorage.getItem('kep_admin_auth')) window.location.href = '../../index.html';
+
+const EQUIP_KEY    = 'kep_equipment';
+const BOOKINGS_KEY = 'kep_bookings';
+
+const CAT_LABELS = { lighting:'Ánh sáng', backdrop:'Phông nền', display:'Màn hình', prop:'Phụ kiện', audio:'Âm thanh', other:'Khác' };
+const STATUS_MAP = { active:'Cho thuê', maintenance:'Bảo trì', inactive:'Ngừng' };
+
+function ensureDefaultEquip() {
+  const e = JSON.parse(localStorage.getItem(EQUIP_KEY) || '[]');
+  if (e.length) return;
+  const defaults = [
+    { id:'E-001', name:'2× Đèn Softbox 300W', category:'lighting', price:200, total:4, available:4, note:'Kèm softbox 80×80, tripod', status:'active', usageCount:0 },
+    { id:'E-002', name:'Đèn Spotlight 500W', category:'lighting', price:150, total:3, available:3, note:'Focusable beam, barndoor', status:'active', usageCount:0 },
+    { id:'E-003', name:'Backdrop trơn (trắng/đen/xám)', category:'backdrop', price:100, total:6, available:6, note:'Khổ 2.7×3m', status:'active', usageCount:0 },
+    { id:'E-004', name:'Reflector 5-in-1', category:'prop', price:50, total:5, available:5, note:'Đường kính 110cm', status:'active', usageCount:0 },
+    { id:'E-005', name:'Màn hình LED 55" + Tripod', category:'display', price:120, total:2, available:2, note:'4K HDMI input', status:'active', usageCount:0 },
+    { id:'E-006', name:'Quạt Tạo Hiệu Ứng', category:'prop', price:80, total:2, available:1, note:'Tốc độ 3 cấp', status:'maintenance', usageCount:0 },
+  ];
+  localStorage.setItem(EQUIP_KEY, JSON.stringify(defaults));
+}
+
+ensureDefaultEquip();
+
+// Sync usageCount from bookings
+function syncUsage() {
+  const equips = JSON.parse(localStorage.getItem(EQUIP_KEY) || '[]');
+  const bk = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+  equips.forEach(e => {
+    e.usageCount = bk.filter(b => b.equipments && b.equipments.some(eq => eq.toLowerCase().includes(e.name.toLowerCase().split('(')[0].trim().toLowerCase().substring(0,10)))).length;
+  });
+  localStorage.setItem(EQUIP_KEY, JSON.stringify(equips));
+}
+
+// Calculate available today
+function getAvailableToday(equip) {
+  const bk = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+  const today = new Date().toISOString().split('T')[0];
+  const usedToday = bk.filter(b => b.date === today && ['pending','confirmed'].includes(b.status) && b.equipments && b.equipments.some(eq => eq.includes(equip.name.split(' ').slice(-1)[0]))).length;
+  return Math.max(0, equip.available - usedToday);
+}
+
+function getEquips() { return JSON.parse(localStorage.getItem(EQUIP_KEY) || '[]'); }
+function saveEquips(e) { localStorage.setItem(EQUIP_KEY, JSON.stringify(e)); }
+
+let filterMode = 'all';
+let delTarget = null;
+
+function renderStats() {
+  const equips = getEquips();
+  const total = equips.length;
+  const lowStock = equips.filter(e => e.status === 'active' && e.available <= 1).length;
+  const outStock = equips.filter(e => e.available === 0).length;
+  const maintenance = equips.filter(e => e.status === 'maintenance').length;
+  document.getElementById('equipStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Tổng thiết bị</div><div class="stat-val">${total}</div><div class="stat-sub">Loại</div></div>
+    <div class="stat-card"><div class="stat-label">Đang cho thuê</div><div class="stat-val green">${equips.filter(e=>e.status==='active').length}</div><div class="stat-sub">Sẵn sàng</div></div>
+    <div class="stat-card"><div class="stat-label">Sắp hết</div><div class="stat-val orange">${lowStock}</div><div class="stat-sub">≤ 1 cái còn lại</div></div>
+    <div class="stat-card"><div class="stat-label">Bảo trì / Ngừng</div><div class="stat-val red">${maintenance}</div><div class="stat-sub">Không cho thuê</div></div>
+  `;
+}
+
+function renderUsageChart() {
+  const equips = getEquips().sort((a,b) => (b.usageCount||0) - (a.usageCount||0)).slice(0,8);
+  const max = Math.max(...equips.map(e => e.usageCount||0), 1);
+  const container = document.getElementById('usageChart');
+  container.innerHTML = equips.map(e => {
+    const h = Math.round(((e.usageCount||0) / max) * 120);
+    const shortName = e.name.length > 20 ? e.name.substring(0,18)+'…' : e.name;
+    return `<div class="chart-bar-col">
+      <span class="chart-val">${e.usageCount||0}</span>
+      <div class="chart-bar" style="height:${Math.max(h,4)}px" title="${e.name}: ${e.usageCount||0} lần"></div>
+      <span class="chart-lbl" title="${e.name}">${shortName}</span>
+    </div>`;
+  }).join('');
+}
+
+function setFilter(f, btn) {
+  filterMode = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function renderTable() {
+  const q = (document.getElementById('searchInput').value||'').toLowerCase();
+  let equips = getEquips();
+  if (q) equips = equips.filter(e => (e.name||'').toLowerCase().includes(q));
+  if (filterMode === 'low')      equips = equips.filter(e => e.status === 'active' && e.available <= 1 && e.available > 0);
+  if (filterMode === 'out')      equips = equips.filter(e => e.available === 0);
+  if (filterMode === 'inactive') equips = equips.filter(e => e.status !== 'active');
+
+  const tbody = document.getElementById('equipTbody');
+  if (!equips.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--warm-grey);font-size:.62rem;">Không tìm thấy thiết bị nào.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = equips.map(e => {
+    const availToday = getAvailableToday(e);
+    const stockPct = e.total ? e.available / e.total * 100 : 0;
+    let stockColor = '#2E7D32';
+    if (stockPct <= 25) stockColor = 'var(--red)';
+    else if (stockPct <= 50) stockColor = '#d4a017';
+
+    let statusBadge = '';
+    if (e.status === 'active' && e.available === 0) statusBadge = '<span class="badge-out">Hết hàng</span>';
+    else if (e.status === 'active' && e.available <= 1) statusBadge = '<span class="badge-low">Sắp hết</span>';
+    else if (e.status === 'active') statusBadge = '<span class="badge-ok">Sẵn sàng</span>';
+    else if (e.status === 'maintenance') statusBadge = '<span class="badge-low">Bảo trì</span>';
+    else statusBadge = '<span class="badge-inactive">Ngừng</span>';
+
+    return `<tr>
+      <td><span style="font-size:.5rem;color:var(--warm-grey);font-family:monospace;">${e.id}</span></td>
+      <td>
+        <div class="equip-name">${e.name}</div>
+        ${e.note ? `<div style="font-size:.54rem;color:var(--warm-grey);margin-top:2px;">${e.note}</div>` : ''}
+      </td>
+      <td><span style="font-size:.56rem;color:var(--ink-light);">${CAT_LABELS[e.category]||e.category||'—'}</span></td>
+      <td>
+        <div class="stock-bar-wrap">
+          <div class="stock-bar"><div class="stock-bar-fill" style="width:${stockPct}%;background:${stockColor};"></div></div>
+          <span class="stock-num"><span class="avail">${e.available}</span> <span class="total-s">/ ${e.total||0}</span></span>
+        </div>
+      </td>
+      <td>
+        <span style="font-weight:600;color:${availToday === 0 ? 'var(--red)' : availToday <= 1 ? '#d4a017' : '#2E7D32'};">${availToday}</span>
+        <span style="font-size:.52rem;color:var(--warm-grey);"> còn lại</span>
+      </td>
+      <td><strong>${e.price ? e.price.toLocaleString()+'K' : '—'}</strong></td>
+      <td><span class="usage-count">${e.usageCount||0}</span> <span style="font-size:.52rem;color:var(--warm-grey);">lần</span></td>
+      <td>${statusBadge}</td>
+      <td><div class="tbl-actions">
+        <button class="tbl-btn edit" onclick='openEditModal(${JSON.stringify(e)})'>✏ Sửa</button>
+        <button class="tbl-btn del" onclick="openDelModal('${e.id}')">✕</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openAddModal() {
+  document.getElementById('modalTitle').textContent = 'Thêm thiết bị';
+  document.getElementById('editId').value = '';
+  ['fName','fNote'].forEach(id => document.getElementById(id).value = '');
+  ['fPrice','fTotal','fAvail'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fCategory').value = 'lighting';
+  document.getElementById('fStatus').value = 'active';
+  document.getElementById('equipModal').classList.add('open');
+}
+
+function openEditModal(e) {
+  document.getElementById('modalTitle').textContent = 'Chỉnh sửa thiết bị';
+  document.getElementById('editId').value = e.id;
+  document.getElementById('fName').value = e.name || '';
+  document.getElementById('fCategory').value = e.category || 'other';
+  document.getElementById('fPrice').value = e.price || '';
+  document.getElementById('fTotal').value = e.total || '';
+  document.getElementById('fAvail').value = e.available || '';
+  document.getElementById('fNote').value = e.note || '';
+  document.getElementById('fStatus').value = e.status || 'active';
+  document.getElementById('equipModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('equipModal').classList.remove('open'); }
+function openDelModal(id) { delTarget = id; document.getElementById('delModal').classList.add('open'); }
+function closeDelModal() { delTarget = null; document.getElementById('delModal').classList.remove('open'); }
+
+function saveEquip() {
+  const id = document.getElementById('editId').value;
+  const equips = getEquips();
+  const data = {
+    name: document.getElementById('fName').value.trim(),
+    category: document.getElementById('fCategory').value,
+    price: parseInt(document.getElementById('fPrice').value) || 0,
+    total: parseInt(document.getElementById('fTotal').value) || 0,
+    available: parseInt(document.getElementById('fAvail').value) || 0,
+    note: document.getElementById('fNote').value.trim(),
+    status: document.getElementById('fStatus').value,
+  };
+  if (!data.name) { showToast('Vui lòng nhập tên thiết bị.'); return; }
+  if (id) {
+    const idx = equips.findIndex(e => e.id === id);
+    if (idx > -1) equips[idx] = { ...equips[idx], ...data };
+  } else {
+    data.id = 'E-' + String(equips.length + 1).padStart(3, '0');
+    data.usageCount = 0;
+    equips.push(data);
+  }
+  saveEquips(equips);
+  closeModal();
+  showToast('✓ Đã lưu thiết bị.');
+  renderAll();
+}
+
+function confirmDelete() {
+  const equips = getEquips().filter(e => e.id !== delTarget);
+  saveEquips(equips);
+  closeDelModal();
+  showToast('Đã xóa thiết bị.');
+  renderAll();
+}
+
+function renderAll() { syncUsage(); renderStats(); renderUsageChart(); renderTable(); }
+function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html'; }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+
+document.addEventListener('DOMContentLoaded', renderAll);
+</script>
+</body>
+</html>

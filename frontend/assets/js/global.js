@@ -236,8 +236,9 @@ window.openZoneLightbox = openZoneLightbox;
 window.bookFromLightbox = bookFromLightbox;
 
 
+
 /* ================================================================
-   7. CALENDAR
+   7. CALENDAR & TIMELINE
 ================================================================ */
 const WEEKDAY_LABELS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
 const MONTH_LABELS   = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6',
@@ -249,51 +250,134 @@ let calDate        = new Date();
 let calSelectedDay = null;
 let timelineZone   = 'O';
 
+// --- BIẾN CHO TÍNH NĂNG CHỌN NHANH THÁNG/NĂM ---
+let _isPickingMonthYear = false;
+
 function renderCalendar() {
   const y = calDate.getFullYear();
   const m = calDate.getMonth();
-  document.getElementById('calTitle').textContent = MONTH_LABELS[m] + ' ' + y;
+  
+  // 1. Cập nhật tiêu đề & Gắn sự kiện mở Picker
+  const calTitle = document.getElementById('calTitle');
+  if (calTitle) {
+    calTitle.innerHTML = `${MONTH_LABELS[m]} năm ${y} <span class="cal-chevron" style="font-size:0.7em; margin-left:4px; opacity:0.6;">${_isPickingMonthYear ? '▴' : '▾'}</span>`;
+    calTitle.style.cursor = 'pointer';
+    calTitle.onclick = toggleMonthYearPicker;
+  }
 
+  // 2. Render Weekdays
   const wdEl = document.getElementById('calWeekdays');
-  wdEl.innerHTML = WEEKDAY_LABELS.map(d => `<div class="wd">${d}</div>`).join('');
+  if (wdEl) wdEl.innerHTML = WEEKDAY_LABELS.map(d => `<div class="wd">${d}</div>`).join('');
 
+  // 3. Tính toán ngày tháng
   const firstDay      = new Date(y, m, 1).getDay();
   const daysInMonth   = new Date(y, m + 1, 0).getDate();
   const prevMonthDays = new Date(y, m, 0).getDate();
   const today         = new Date(); today.setHours(0, 0, 0, 0);
-  const bookings      = getBookings();
+  const bookings      = typeof getBookings === 'function' ? getBookings() : [];
 
+  // 4. Render Days Grid
   const grid = document.getElementById('calDays');
-  grid.innerHTML = '';
+  if (grid) {
+    grid.innerHTML = '';
+    
+    // Ngày tháng trước
+    for (let i = firstDay - 1; i >= 0; i--) {
+      grid.appendChild(makeDayCell(prevMonthDays - i, true, false, [], null));
+    }
 
-  for (let i = firstDay - 1; i >= 0; i--) {
-    grid.appendChild(makeDayCell(prevMonthDays - i, true, false, [], null));
+    // Ngày tháng hiện tại
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dt      = new Date(y, m, day);
+      const dateStr = typeof toDateStr === 'function' ? toDateStr(dt) : dt.toISOString().split('T')[0];
+      const isToday = dt.getTime() === today.getTime();
+      const isSel   = dateStr === calSelectedDay;
+
+      const dayBks = bookings.filter(b =>
+        b.date === dateStr &&
+        b.status !== 'rejected' &&
+        (b.zone === timelineZone || b.zone === 'Full' || timelineZone === 'Full')
+      );
+
+      const cell = makeDayCell(day, false, isToday, dayBks, dateStr);
+      if (isSel) cell.classList.add('selected');
+      grid.appendChild(cell);
+    }
+
+    // Ngày tháng sau
+    const filled = firstDay + daysInMonth;
+    const remain = (7 - filled % 7) % 7;
+    for (let i = 1; i <= remain; i++) {
+      grid.appendChild(makeDayCell(i, true, false, [], null));
+    }
   }
 
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dt      = new Date(y, m, day);
-    const dateStr = toDateStr(dt);
-    const isToday = dt.getTime() === today.getTime();
-    const isSel   = dateStr === calSelectedDay;
-
-    const dayBks = bookings.filter(b =>
-      b.date === dateStr &&
-      b.status !== 'rejected' &&
-      (b.zone === timelineZone || b.zone === 'Full' || timelineZone === 'Full')
-    );
-
-    const cell = makeDayCell(day, false, isToday, dayBks, dateStr);
-    if (isSel) cell.classList.add('selected');
-    grid.appendChild(cell);
-  }
-
-  const filled = firstDay + daysInMonth;
-  const remain = (7 - filled % 7) % 7;
-  for (let i = 1; i <= remain; i++) {
-    grid.appendChild(makeDayCell(i, true, false, [], null));
-  }
+  // 5. Render Picker (Menu chọn năm tháng ẩn/hiện)
+  renderMonthYearPicker();
 }
 
+// ==========================================
+// CÁC HÀM XỬ LÝ CHỌN NHANH THÁNG/NĂM
+// ==========================================
+function toggleMonthYearPicker() {
+  _isPickingMonthYear = !_isPickingMonthYear;
+  renderCalendar();
+}
+
+function renderMonthYearPicker() {
+  let picker = document.getElementById('month-year-picker');
+  
+  // Nếu chưa có thẻ div picker này trong HTML, tự động tạo nó
+  if (!picker) {
+    picker = document.createElement('div');
+    picker.id = 'month-year-picker';
+    const wdEl = document.getElementById('calWeekdays');
+    if (wdEl) {
+      // Chèn ngay trên phần hiển thị thứ trong tuần
+      wdEl.parentNode.insertBefore(picker, wdEl);
+    }
+  }
+
+  // Set class để ẩn/hiện dựa trên css
+  picker.className = `month-year-picker ${_isPickingMonthYear ? 'show' : ''}`;
+  
+  if (!_isPickingMonthYear) return;
+
+  const currentYear = calDate.getFullYear();
+  const currentMonth = calDate.getMonth();
+  
+  // Render html cho Năm
+  let yearsHtml = '<div class="picker-years">';
+  const startYear = new Date().getFullYear();
+  for (let y = startYear - 1; y <= startYear + 3; y++) {
+    yearsHtml += `<div class="picker-item ${y === currentYear ? 'active' : ''}" onclick="selectQuickYear(${y})">${y}</div>`;
+  }
+  yearsHtml += '</div>';
+
+  // Render html cho Tháng
+  let monthsHtml = '<div class="picker-months">';
+  MONTH_LABELS.forEach((name, idx) => {
+    monthsHtml += `<div class="picker-item ${idx === currentMonth ? 'active' : ''}" onclick="selectQuickMonth(${idx})">${name}</div>`;
+  });
+  monthsHtml += '</div>';
+
+  picker.innerHTML = yearsHtml + monthsHtml;
+}
+
+window.selectQuickMonth = function(m) {
+  calDate.setMonth(m);
+  _isPickingMonthYear = false; // Chọn xong tháng thì đóng
+  renderCalendar();
+};
+
+window.selectQuickYear = function(y) {
+  calDate.setFullYear(y);
+  renderCalendar(); // Giữ menu mở để chọn tiếp tháng
+};
+
+// ==========================================
+// CÁC HÀM CŨ GIỮ NGUYÊN (makeDayCell, Timeline...)
+// ==========================================
 function makeDayCell(dayNum, otherMonth, isToday, bookings, dateStr) {
   const cell = document.createElement('div');
   cell.className = 'cal-day' +
@@ -324,12 +408,23 @@ function selectDay(dateStr) {
   calSelectedDay = dateStr;
   document.querySelectorAll('.cal-day.selected').forEach(c => c.classList.remove('selected'));
   renderCalendar();
-  document.getElementById('fDate').value = dateStr;
+  
+  const fDateEl = document.getElementById('fDate');
+  if (fDateEl) fDateEl.value = dateStr;
+  
   renderTimeline(dateStr);
 }
 
-window.calPrev = function() { calDate.setMonth(calDate.getMonth() - 1); renderCalendar(); };
-window.calNext = function() { calDate.setMonth(calDate.getMonth() + 1); renderCalendar(); };
+window.calPrev = function() { 
+  calDate.setMonth(calDate.getMonth() - 1); 
+  _isPickingMonthYear = false; // Đổi tháng thì tắt picker
+  renderCalendar(); 
+};
+window.calNext = function() { 
+  calDate.setMonth(calDate.getMonth() + 1); 
+  _isPickingMonthYear = false;
+  renderCalendar(); 
+};
 window.switchTimelineZone = function(zone, btn) {
   timelineZone = zone;
   document.querySelectorAll('.tz-tab').forEach(t => t.classList.remove('active'));
@@ -340,7 +435,8 @@ window.switchTimelineZone = function(zone, btn) {
 
 function renderTimeline(dateStr) {
   const wrap     = document.getElementById('timelineWrap');
-  const bookings = getBookings().filter(b =>
+  if (!wrap) return;
+  const bookings = (typeof getBookings === 'function' ? getBookings() : []).filter(b =>
     b.date === dateStr &&
     b.status !== 'rejected' &&
     (b.zone === timelineZone || b.zone === 'Full' || timelineZone === 'Full')
@@ -389,7 +485,7 @@ function renderTimeline(dateStr) {
 
   const dLabel = document.createElement('div');
   dLabel.style.cssText = 'font-family:var(--font-body);font-size:.56rem;letter-spacing:.14em;color:var(--warm-grey);margin-bottom:8px;text-transform:uppercase;';
-  dLabel.textContent = formatDate(dateStr);
+  dLabel.textContent = typeof formatDate === 'function' ? formatDate(dateStr) : dateStr;
 
   wrap.innerHTML = '';
   wrap.appendChild(dLabel);
