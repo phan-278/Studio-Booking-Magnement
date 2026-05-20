@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đăng ký — Kép Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/auth.css"/>
+</head>
+<body>
+
+<div class="auth-page-wrap">
+  <div class="auth-brand">
+    <a href="../../index.html" class="auth-brand-name">"Kép"</a>
+    <span class="auth-brand-sub">Da Space · HCMC</span>
+  </div>
+
+  <div class="auth-card">
+    <h1 class="auth-card-title">Tạo tài khoản</h1>
+    <p class="auth-card-sub">Đăng ký để đặt lịch nhanh hơn và theo dõi lịch sử booking.</p>
+
+    <div class="auth-tabs">
+      <a class="auth-tab-btn" href="login.html">Đăng nhập</a>
+      <a class="auth-tab-btn active" href="register.html">Đăng ký</a>
+    </div>
+
+    <p class="auth-msg" id="registerMessage"></p>
+
+    <form id="registerForm" autocomplete="off">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regName">Họ tên *</label>
+          <input type="text" id="regName" placeholder="Nguyễn Văn A" required/>
+        </div>
+        <div class="form-group">
+          <label for="regPhone">SĐT / Zalo *</label>
+          <input type="tel" id="regPhone" placeholder="0xxx xxx xxx" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="regEmail">Email *</label>
+        <input type="email" id="regEmail" placeholder="you@email.com" required autocomplete="email"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="regPassword">Mật khẩu *</label>
+          <input type="password" id="regPassword" placeholder="Tối thiểu 6 ký tự" required/>
+        </div>
+        <div class="form-group">
+          <label for="regConfirmPassword">Xác nhận mật khẩu *</label>
+          <input type="password" id="regConfirmPassword" placeholder="Nhập lại mật khẩu" required/>
+        </div>
+      </div>
+      <button type="submit" class="auth-submit-btn">Tạo tài khoản →</button>
+    </form>
+
+    <div class="auth-divider"><span>hoặc</span></div>
+
+    <p class="auth-footer-note">
+      Đã có tài khoản? <a href="login.html">Đăng nhập</a>
+    </p>
+  </div>
+
+  <a class="auth-back-link" href="../../index.html">← Quay về trang chủ</a>
+</div>
+
+<script>
+const USERS_KEY        = 'kep_users';
+const CURRENT_USER_KEY = 'kep_current_user';
+
+function showMessage(text, type = 'error') {
+  const el = document.getElementById('registerMessage');
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'auth-msg ' + (type === 'success' ? 'success' : 'error');
+  el.style.display = 'block';
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const name            = document.getElementById('regName').value.trim();
+  const phone           = document.getElementById('regPhone').value.trim();
+  const email           = document.getElementById('regEmail').value.trim();
+  const password        = document.getElementById('regPassword').value;
+  const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+  if (!name || !phone || !email || !password) {
+    showMessage('Vui lòng nhập đầy đủ thông tin.'); return;
+  }
+  if (!isValidEmail(email)) {
+    showMessage('Email không hợp lệ.'); return;
+  }
+  if (password.length < 6) {
+    showMessage('Mật khẩu phải có ít nhất 6 ký tự.'); return;
+  }
+  if (password !== confirmPassword) {
+    showMessage('Mật khẩu xác nhận không khớp.'); return;
+  }
+
+  const users = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+  if (users.find(u => u.email === email)) {
+    showMessage('Email này đã được đăng ký.'); return;
+  }
+
+  const newUser = {
+    id: 'U-' + Date.now(),
+    name, phone, email,
+    password: btoa(password),
+    role: 'user',
+    createdAt: new Date().toISOString()
+  };
+
+  users.push(newUser);
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newUser));
+
+  showMessage('Đăng ký thành công. Chào mừng ' + name + '!', 'success');
+
+  setTimeout(() => {
+    if (window.parent !== window) {
+      window.parent.location.reload();
+    } else {
+      window.location.href = '../../pages/app/dashboard.html';
+    }
+  }, 900);
+}
+
+document.getElementById('registerForm')?.addEventListener('submit', handleRegister);
+</script>
+</body>
+</html>

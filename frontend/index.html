@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kép — Studio for Rent</title>
+
+  <!-- 
+    INTRO10.jpg logo uses a high-contrast editorial serif — Playfair Display matches it closely.
+    Cormorant SC → backup brand serif
+    Be Vietnam Pro → full Vietnamese diacritics
+    DM Serif Display → section headings
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+SC:wght@300;500;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./assets/css/global.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     SIDEBAR (collapsible)
+══════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="#about">
+    <span class="brand-kep kep-font">"Kép"</span>
+    <span class="brand-sub">Da Space · HCMC</span>
+  </a>
+
+  <nav class="sidebar-nav">
+    <a href="#about"   class="nav-link active"><span class="nav-num">01</span><span class="nav-label"> About Us</span></a>
+    <a href="#zone"    class="nav-link"><span class="nav-num">02</span><span class="nav-label"> Zone</span></a>
+    <a href="#booking" class="nav-link"><span class="nav-num">03</span><span class="nav-label"> Đặt Lịch</span></a>
+  </nav>
+
+  <div class="sidebar-foot">
+    <button class="admin-btn" onclick="openLogin()">
+      <span class="admin-icon">⊞</span>
+      <span class="admin-label"> Admin</span>
+    </button>
+
+    <button class="user-btn" onclick="openAuthFrame('login')">
+      <span class="admin-icon">◎</span>
+      <span class="admin-label"> Đăng nhập</span>
+    </button>
+
+    <span class="copy">© 2025 Kép Studio</span>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════ -->
+<main class="main">
+
+  <!-- ── HERO / ABOUT US ── -->
+  <section id="about" class="hero">
+    <div class="hero-slides">
+      <div class="slide active" style="background-image:url('KepDaSpace/intro7.jpg')"></div>
+      <div class="slide"        style="background-image:url('KepDaSpace/intro4.jpg')"></div>
+      <div class="slide"        style="background-image:url('KepDaSpace/intro5.jpg')"></div>
+      <div class="slide"        style="background-image:url('KepDaSpace/intro6.jpg')"></div>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p  class="hero-label reveal-up"><b>Creative Studio · For Rent</b></p>
+      <h1 class="hero-title reveal-up"><span class="kep-font">"Kép"</span></h1>
+      <p  class="hero-sub   reveal-up"><b>Không gian sáng tạo · Chụp ảnh · Quay phim · Sự kiện</b></p>
+      <a  href="#booking"   class="hero-cta reveal-up">Đặt Lịch Ngay →</a>
+    </div>
+
+    <div class="slide-controls">
+      <button class="slide-btn" onclick="prevSlide()">←</button>
+      <div id="slideDots" class="slide-dots"></div>
+      <button class="slide-btn" onclick="nextSlide()">→</button>
+    </div>
+    <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+  </section>
+
+  <!-- ── MARQUEE ── -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp; Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
+      <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp; Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ── STUDIO GALLERY ── -->
+  <section class="section-wrap" id="studio">
+    <div class="section-header reveal-up">
+      <p class="eyebrow">Không Gian</p>
+      <h2 class="sec-title">Góc Nhìn Studio</h2>
+      <p class="sec-desc">Không gian brutalist, ánh sáng tự nhiên — nền hoàn hảo cho mọi concept sáng tạo.</p>
+    </div>
+    <div class="studio-grid">
+      <div class="studio-card large reveal-up">
+        <div class="card-img" style="background-image:url('KepDaSpace/intro5.jpg')"></div>
+        <div class="card-info"><span class="card-tag">Main Hall · 2F</span><span class="card-area">~80 m²</span></div>
+      </div>
+      <div class="studio-card reveal-up">
+        <div class="card-img" style="background-image:url('KepDaSpace/intro4.jpg')"></div>
+        <div class="card-info"><span class="card-tag">Interior Space</span><span class="card-area">Natural Light</span></div>
+      </div>
+      <div class="studio-card reveal-up">
+        <div class="card-img" style="background-image:url('KepDaSpace/intro6.jpg')"></div>
+        <div class="card-info"><span class="card-tag">Exterior View</span><span class="card-area">Garden</span></div>
+      </div>
+      <div class="studio-card reveal-up">
+        <div class="card-img" style="background-image:url('KepDaSpace/intro7.jpg')"></div>
+        <div class="card-info"><span class="card-tag">Entrance · Iconic</span><span class="card-area">Brand Sign</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ZONE SECTION ══ -->
+  <section class="section-wrap alt" id="zone">
+    <div class="section-header reveal-up">
+      <p class="eyebrow">Các Khu Vực</p>
+      <h2 class="sec-title">Chọn Không Gian</h2>
+      <p class="sec-desc">Nhấn vào từng khu vực để xem hình ảnh và thông tin chi tiết.</p>
+    </div>
+
+    <div class="zones-grid">
+      <!-- O Zone -->
+      <div class="zone-card reveal-up" onclick="openZoneLightbox('O')">
+        <div class="zone-preview zone-preview-empty">
+          <div class="zone-preview-label kep-font">"O" Zone</div>
+        </div>
+        <div class="zone-body">
+          <div class="zone-num">1F</div>
+          <h3 class="zone-name kep-font">"O" Zone</h3>
+          <p class="zone-desc">Sảnh chính rộng với cột bê tông, ánh sáng tự nhiên từ cửa sổ vòm.</p>
+          <ul class="zone-list">
+            <li>~80 m² · Điện 3 pha</li>
+            <li>Máy lạnh · Wifi tốc độ cao</li>
+            <li>600K/2h · 250K/h thêm</li>
+          </ul>
+          <div class="zone-cta">Xem hình ảnh →</div>
+        </div>
+      </div>
+
+      <!-- C Zone -->
+      <div class="zone-card reveal-up" onclick="openZoneLightbox('C')">
+        <div class="zone-preview zone-preview-empty">
+          <div class="zone-preview-label kep-font">"C" Zone</div>
+        </div>
+        <div class="zone-body">
+          <div class="zone-num">2F</div>
+          <h3 class="zone-name kep-font">"C" Zone</h3>
+          <p class="zone-desc">Tầng thượng private, makeup 3 gương, phòng thay đồ, rèm lụa mờ.</p>
+          <ul class="zone-list">
+            <li>Makeup zone 3 gương</li>
+            <li>Khu thay đồ riêng</li>
+            <li>500K/2h · 200K/h thêm</li>
+          </ul>
+          <div class="zone-cta">Xem hình ảnh →</div>
+        </div>
+      </div>
+
+      <!-- Full House -->
+      <div class="zone-card reveal-up" onclick="openZoneLightbox('Full')">
+        <div class="zone-preview zone-preview-empty">
+          <div class="zone-preview-label kep-font">Full House</div>
+        </div>
+        <div class="zone-body">
+          <div class="zone-num">✦</div>
+          <h3 class="zone-name kep-font">Full House</h3>
+          <p class="zone-desc">Thuê trọn 2 tầng cho production lớn, workshop hoặc pop-up event.</p>
+          <ul class="zone-list">
+            <li>Cả 2 tầng · Setup support</li>
+            <li>Ưu tiên giờ cao điểm</li>
+            <li>Giá thương lượng</li>
+          </ul>
+          <div class="zone-cta">Xem hình ảnh →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BOOKING SECTION ══ -->
+  <section class="booking-section" id="booking">
+    <div class="section-header reveal-up">
+      <p class="eyebrow">Đặt Lịch</p>
+      <h2 class="sec-title">Book Studio</h2>
+    </div>
+
+    <div class="booking-layout">
+
+      <!-- ── LEFT: Calendar Panel ── -->
+      <div class="cal-panel reveal-up">
+        <div class="mini-cal">
+          <div class="cal-header">
+            <button class="cal-nav-btn" onclick="calPrev()">←</button>
+            <span class="cal-month-title" id="calTitle"></span>
+            <button class="cal-nav-btn" onclick="calNext()">→</button>
+          </div>
+          <div class="cal-weekdays" id="calWeekdays"></div>
+          <div class="cal-days"     id="calDays"></div>
+        </div>
+
+        <div class="timeline-zone-tabs">
+          <button class="tz-tab active" data-zone="O" onclick="switchTimelineZone('O',this)">O Zone · 1F</button>
+          <button class="tz-tab" data-zone="C" onclick="switchTimelineZone('C',this)">C Zone · 2F</button>
+          <button class="tz-tab" data-zone="Full" onclick="switchTimelineZone('Full',this)">Full House</button>
+        </div>
+
+        <div class="timeline-wrap" id="timelineWrap">
+          <div class="timeline-label">Chọn một ngày để xem lịch theo giờ</div>
+        </div>
+
+        <div class="cal-legend">
+          <div class="legend-item"><span class="dot dot-avail"></span> Còn trống</div>
+          <div class="legend-item"><span class="dot dot-pending"></span> Đang chờ</div>
+          <div class="legend-item"><span class="dot dot-confirmed"></span> Đã xác nhận</div>
+        </div>
+
+        <div class="cal-notes">
+          <p>✦ OT tính trọn giờ — không tính 30/45 phút</p>
+          <p>✦ Đặt cọc 50% trong 24h để giữ lịch</p>
+          <p>✦ Xác nhận trong vòng 2 giờ làm việc</p>
+        </div>
+      </div>
+
+      <!-- ── RIGHT: Booking Form ── -->
+      <div class="form-panel reveal-up">
+        <div class="steps-bar">
+          <div class="step-item active" id="sp1"><span class="step-num">1</span><span class="step-lbl">Zone</span></div>
+          <div class="step-divider"></div>
+          <div class="step-item" id="sp2"><span class="step-num">2</span><span class="step-lbl">Thời Gian</span></div>
+          <div class="step-divider"></div>
+          <div class="step-item" id="sp3"><span class="step-num">3</span><span class="step-lbl">Thiết Bị</span></div>
+          <div class="step-divider"></div>
+          <div class="step-item" id="sp4"><span class="step-num">4</span><span class="step-lbl">Thông Tin</span></div>
+          <div class="step-divider"></div>
+          <div class="step-item" id="sp5"><span class="step-num">5</span><span class="step-lbl">Xác Nhận</span></div>
+        </div>
+
+        <!-- STEP 1 -->
+        <div class="form-step active" id="fs1">
+          <h3 class="step-title">Chọn khu vực</h3>
+          <div class="zone-radio-group">
+            <label class="zone-radio">
+              <input type="radio" name="zone" value="O" onchange="onZoneChange()">
+              <div class="zone-radio-card">
+                <div class="zr-floor">1F</div>
+                <div class="zr-name kep-font">"O" Zone</div>
+                <div class="zr-price">600K / 2h</div>
+              </div>
+            </label>
+            <label class="zone-radio">
+              <input type="radio" name="zone" value="C" onchange="onZoneChange()">
+              <div class="zone-radio-card">
+                <div class="zr-floor">2F</div>
+                <div class="zr-name kep-font">"C" Zone</div>
+                <div class="zr-price">500K / 2h</div>
+              </div>
+            </label>
+            <label class="zone-radio">
+              <input type="radio" name="zone" value="Full" onchange="onZoneChange()">
+              <div class="zone-radio-card">
+                <div class="zr-floor">✦</div>
+                <div class="zr-name kep-font">Full House</div>
+                <div class="zr-price">Liên hệ</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label>Mục đích chụp</label>
+            <div class="tag-group">
+              <button type="button" class="tag-btn" onclick="toggleTag(this)">Photography</button>
+              <button type="button" class="tag-btn" onclick="toggleTag(this)">Videography</button>
+              <button type="button" class="tag-btn" onclick="toggleTag(this)">Fashion</button>
+              <button type="button" class="tag-btn" onclick="toggleTag(this)">Beauty / Makeup</button>
+              <button type="button" class="tag-btn" onclick="toggleTag(this)">Event / Workshop</button>
+              <button type="button" class="tag-btn" onclick="toggleTag(this)">Khác</button>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-next" onclick="goStep(2)">Tiếp Theo →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="form-step" id="fs2">
+          <h3 class="step-title">Chọn ngày & giờ</h3>
+          <div class="form-group">
+            <label>Ngày</label>
+            <input type="date" id="fDate" onchange="onDateChange()"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Giờ bắt đầu</label>
+              <div class="select-wrap">
+                <select id="fStart" onchange="onTimeChange()">
+                  <option value="">-- Chọn giờ --</option>
+                  <option>08:00</option><option>09:00</option><option>10:00</option>
+                  <option>11:00</option><option>12:00</option><option>13:00</option>
+                  <option>14:00</option><option>15:00</option><option>16:00</option>
+                  <option>17:00</option><option>18:00</option><option>19:00</option>
+                  <option>20:00</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Giờ kết thúc</label>
+              <div class="select-wrap">
+                <select id="fEnd" onchange="onTimeChange()">
+                  <option value="">-- Chọn giờ --</option>
+                  <option>09:00</option><option>10:00</option><option>11:00</option>
+                  <option>12:00</option><option>13:00</option><option>14:00</option>
+                  <option>15:00</option><option>16:00</option><option>17:00</option>
+                  <option>18:00</option><option>19:00</option><option>20:00</option>
+                  <option>21:00</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="duration-info" id="durationInfo" style="display:none"></div>
+          <div class="conflict-warn" id="conflictWarn" style="display:none">
+            ⚠ Khung giờ này đã có lịch. Vui lòng chọn khung giờ khác.
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="goStep(1)">← Quay lại</button>
+            <button type="button" class="btn-next" onclick="goStep(3)">Tiếp Theo →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="form-step" id="fs3">
+          <h3 class="step-title">Thiết bị thuê thêm <span style="opacity:.5;font-size:.8em;">(tuỳ chọn)</span></h3>
+          <div class="equip-list">
+            <div class="equip-item" data-key="softbox" data-price="200" onclick="toggleEquip(this)">
+              <div class="equip-check">✓</div>
+              <span class="equip-label">2× Đèn 300W Softbox</span>
+              <span class="equip-price">+200K</span>
+            </div>
+            <div class="equip-item" data-key="spotlight" data-price="150" onclick="toggleEquip(this)">
+              <div class="equip-check">✓</div>
+              <span class="equip-label">1× Đèn 500W Spotlight</span>
+              <span class="equip-price">+150K</span>
+            </div>
+            <div class="equip-item" data-key="backdrop" data-price="100" onclick="toggleEquip(this)">
+              <div class="equip-check">✓</div>
+              <span class="equip-label">Backdrop trơn (trắng / đen / xám)</span>
+              <span class="equip-price">+100K</span>
+            </div>
+            <div class="equip-item" data-key="reflector" data-price="50" onclick="toggleEquip(this)">
+              <div class="equip-check">✓</div>
+              <span class="equip-label">Reflector 5-in-1</span>
+              <span class="equip-price">+50K</span>
+            </div>
+            <div class="equip-item" data-key="screen" data-price="120" onclick="toggleEquip(this)">
+              <div class="equip-check">✓</div>
+              <span class="equip-label">Màn hình LED 55" + tripod</span>
+              <span class="equip-price">+120K</span>
+            </div>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="goStep(2)">← Quay lại</button>
+            <button type="button" class="btn-next" onclick="goStep(4)">Tiếp Theo →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="form-step" id="fs4">
+          <h3 class="step-title">Thông tin liên hệ</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Họ tên *</label>
+              <input type="text" id="fName" placeholder="Nguyễn Văn A"/>
+            </div>
+            <div class="form-group">
+              <label>SĐT / Zalo *</label>
+              <input type="tel" id="fPhone" placeholder="0xxx xxx xxx"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Ghi chú</label>
+            <textarea id="fNote" placeholder="Số người, yêu cầu đặc biệt…"></textarea>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="goStep(3)">← Quay lại</button>
+            <button type="button" class="btn-next" onclick="goStep(5)">Xem Tổng Kết →</button>
+          </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="form-step" id="fs5">
+          <h3 class="step-title">Xác nhận đặt lịch</h3>
+          <div class="summary-box" id="summaryBox"></div>
+          <div class="form-nav">
+            <button type="button" class="btn-prev" onclick="goStep(4)">← Quay lại</button>
+            <button type="button" class="btn-submit" onclick="submitBooking()">Xác Nhận & Đặt Lịch ✦</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-brand kep-font">"Kép"</div>
+    <div class="footer-meta">
+      <span>Creative Studio · Ho Chi Minh City</span>
+      <span>© 2025 Kép Studio. All rights reserved.</span>
+    </div>
+  </footer>
+</main>
+
+
+<!-- ══════════════════════════════════
+     MODALS
+══════════════════════════════════ -->
+
+<!-- Zone Lightbox -->
+<div class="modal-overlay" id="zoneLightbox" onclick="closeModal('zoneLightbox')">
+  <div class="lightbox-box" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeModal('zoneLightbox')">✕</button>
+    <h3 class="lightbox-title kep-font" id="lightboxTitle"></h3>
+    <div class="lightbox-grid" id="lightboxGrid"></div>
+    <div class="lightbox-info" id="lightboxInfo"></div>
+    <button class="lightbox-book-btn" id="lightboxBookBtn" onclick="bookFromLightbox()">Đặt lịch ngay →</button>
+  </div>
+</div>
+
+<!-- QR Payment Modal -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal-box qr-modal-box">
+    <div class="qr-status-icon">✓</div>
+    <h3 class="modal-title kep-font">Đặt Lịch Thành Công!</h3>
+    <p class="modal-sub">Lịch của bạn đang <strong>chờ xác nhận</strong>. Vui lòng thanh toán đặt cọc 50% để giữ lịch.</p>
+    <div class="qr-code-wrap">
+      <img id="qrImg" src="" alt="QR Code" class="qr-img"/>
+      <div class="qr-amount-label">Số tiền đặt cọc: <strong id="qrAmount"></strong></div>
+    </div>
+    <div class="qr-bank-info">
+      <div class="bank-row"><span>Ngân hàng</span><strong>MoMo / VietQR</strong></div>
+      <div class="bank-row"><span>Số tài khoản</span><strong>0xxx xxx xxx</strong></div>
+      <div class="bank-row"><span>Nội dung</span><strong id="qrContent"></strong></div>
+    </div>
+    <p class="qr-note">Sau khi chuyển khoản, chúng tôi sẽ xác nhận trong vòng 2 giờ làm việc.</p>
+    <button class="modal-btn" onclick="closeModal('qrModal')">Đã hiểu, đóng</button>
+  </div>
+</div>
+
+<!-- Login Modal (Admin) -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box login-box" onclick="event.stopPropagation()">
+    <h3 class="modal-title kep-font">Admin Access</h3>
+    <p class="login-error" id="loginError" style="display:none">Mật khẩu không đúng.</p>
+    <div class="form-group">
+      <label>Mật khẩu</label>
+      <input type="password" id="adminPw" placeholder="••••••••"
+             onkeydown="if(event.key==='Enter') tryLogin()"/>
+    </div>
+    <div class="form-nav" style="margin-top:8px;">
+      <button type="button" class="btn-prev" onclick="closeModal('loginModal')">Huỷ</button>
+      <button type="button" class="btn-next" onclick="tryLogin()">Đăng nhập →</button>
+    </div>
+    <p style="margin-top:12px;font-size:.7rem;color:var(--warm-grey);">Demo: <strong>kep2025</strong></p>
+  </div>
+</div>
+
+<!-- ══ AUTH FRAME MODAL (Load login.html / register.html) ══ -->
+<div class="modal-overlay" id="authFrameModal">
+  <div class="modal-box auth-box" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeAuthFrame()">✕</button>
+
+    <iframe
+      id="authFrame"
+      src=""
+      title="Kép Auth"
+      style="width:100%;height:560px;border:none;display:block;background:transparent;"
+    ></iframe>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL ══ -->
+<div id="adminPanel" class="admin-panel">
+  <div class="admin-header">
+    <span class="admin-title kep-font">"Kép" Admin</span>
+    <button class="admin-close-btn" onclick="closeAdmin()">✕ Đóng</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-stats" id="adminStats"></div>
+    <div class="admin-filters">
+      <button class="filter-btn active" onclick="filterBookings('all',this)">Tất cả</button>
+      <button class="filter-btn" onclick="filterBookings('pending',this)">Chờ duyệt</button>
+      <button class="filter-btn" onclick="filterBookings('confirmed',this)">Đã xác nhận</button>
+      <button class="filter-btn" onclick="filterBookings('rejected',this)">Từ chối</button>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Tên</th><th>SĐT</th><th>Zone</th>
+            <th>Ngày</th><th>Giờ</th><th>Tổng</th><th>Trạng thái</th><th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="adminTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- User info bar (when logged in) -->
+<div class="user-bar" id="userBar" style="display:none">
+  <span class="user-bar-name" id="userBarName"></span>
+  <button class="user-bar-logout" onclick="doLogout()">Đăng xuất</button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="./assets/js/global.js"></script>
+
+<script>
+  function openAuthFrame(type = "login") {
+    const modal = document.getElementById("authFrameModal");
+    const frame = document.getElementById("authFrame");
+
+    if (!modal || !frame) return;
+
+    frame.src = type === "register"
+      ? "./pages/auth/register.html"
+      : "./pages/auth/login.html";
+
+    modal.classList.add("show");
+  }
+
+  function closeAuthFrame() {
+    const modal = document.getElementById("authFrameModal");
+    const frame = document.getElementById("authFrame");
+
+    if (!modal || !frame) return;
+
+    modal.classList.remove("show");
+    frame.src = "";
+  }
+
+  window.openAuthFrame = openAuthFrame;
+  window.closeAuthFrame = closeAuthFrame;
+</script>
+
+</body>
+</html>

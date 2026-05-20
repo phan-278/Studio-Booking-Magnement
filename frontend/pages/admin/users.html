@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quản lý Người dùng — Kép Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red:#a31c1c; --red-light:#c0392b; --ink:#1a1a1a; --ink-light:#444;
+      --warm-grey:#888; --border:#e8e0d8; --bg:#faf9f7;
+      --font-brand:'Playfair Display',serif; --font-body:'Be Vietnam Pro',sans-serif;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:flex; }
+
+    .dash-sidebar { width:220px; min-height:100vh; background:var(--ink); color:#fff; display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; }
+    .dash-brand { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .dash-brand-name { font-family:var(--font-brand); font-size:1.3rem; color:#fff; text-decoration:none; display:block; font-style:italic; }
+    .dash-brand-role { font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:2px; display:block; }
+    .dash-nav { flex:1; padding:16px 0; }
+    .dash-nav-section { font-size:.45rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.3); padding:12px 24px 4px; }
+    .dash-nav-link { display:flex; align-items:center; gap:10px; padding:10px 24px; font-size:.62rem; letter-spacing:.04em; color:rgba(255,255,255,.6); text-decoration:none; transition:all .2s; }
+    .dash-nav-link:hover { color:#fff; background:rgba(255,255,255,.05); }
+    .dash-nav-link.active { color:#fff; background:rgba(163,28,28,.35); border-left:2px solid var(--red); }
+    .nav-icon { font-size:.8rem; width:16px; text-align:center; }
+    .dash-sidebar-footer { padding:20px 24px; border-top:1px solid rgba(255,255,255,.08); }
+    .dash-user-info { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .dash-user-avatar { width:32px; height:32px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:600; color:#fff; flex-shrink:0; }
+    .dash-user-name { font-size:.6rem; font-weight:600; color:#fff; }
+    .dash-user-email { font-size:.52rem; color:rgba(255,255,255,.4); }
+    .dash-logout-btn { width:100%; padding:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.7); font-family:var(--font-body); font-size:.55rem; cursor:pointer; transition:all .2s; }
+    .dash-logout-btn:hover { background:rgba(163,28,28,.4); color:#fff; border-color:var(--red); }
+
+    .dash-main { flex:1; display:flex; flex-direction:column; min-height:100vh; overflow:auto; }
+    .dash-topbar { padding:20px 32px; border-bottom:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .dash-page-title { font-family:var(--font-brand); font-size:1.3rem; font-weight:700; }
+    .dash-content { padding:28px 32px; flex:1; }
+    .section-title { font-family:var(--font-brand); font-size:.85rem; font-weight:700; margin-bottom:14px; }
+
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+    .stat-card { background:#fff; border:1px solid var(--border); padding:16px 20px; }
+    .stat-label { font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:6px; }
+    .stat-val { font-family:var(--font-brand); font-size:1.6rem; font-weight:700; line-height:1; }
+    .stat-sub { font-size:.52rem; color:var(--warm-grey); margin-top:4px; }
+
+    /* FILTERS */
+    .filters-bar { display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+    .filter-chip { padding:6px 14px; border:1px solid var(--border); background:#fff; font-family:var(--font-body); font-size:.58rem; color:var(--ink-light); cursor:pointer; transition:all .2s; }
+    .filter-chip:hover { border-color:var(--ink); }
+    .filter-chip.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+    .search-input { padding:7px 14px; border:1px solid var(--border); background:#fff; font-family:var(--font-body); font-size:.6rem; outline:none; width:260px; }
+    .search-input:focus { border-color:var(--ink); }
+
+    /* TABLE */
+    .dash-table-wrap { background:#fff; border:1px solid var(--border); overflow-x:auto; margin-bottom:28px; }
+    .dash-table { width:100%; border-collapse:collapse; }
+    .dash-table thead th { padding:12px 14px; font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warm-grey); border-bottom:1px solid var(--border); text-align:left; white-space:nowrap; }
+    .dash-table tbody tr { border-bottom:1px solid rgba(163,28,28,.05); transition:background .15s; }
+    .dash-table tbody tr:hover { background:#fdf7f0; }
+    .dash-table td { padding:12px 14px; font-size:.62rem; vertical-align:middle; }
+    .user-avatar-sm { width:34px; height:34px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:600; flex-shrink:0; }
+    .user-cell { display:flex; align-items:center; gap:10px; }
+    .user-name { font-weight:600; font-size:.66rem; }
+    .user-id { font-size:.5rem; color:var(--warm-grey); font-family:monospace; }
+    .badge-vip { display:inline-block; padding:2px 8px; background:#fff8e1; color:#b8860b; border:1px solid #f0d060; font-size:.5rem; }
+    .badge-regular { display:inline-block; padding:2px 8px; background:#f0f4ff; color:#3949ab; border:1px solid #9fa8da; font-size:.5rem; }
+    .badge-new { display:inline-block; padding:2px 8px; background:#e8f5e9; color:#2E7D32; border:1px solid #a5d6a7; font-size:.5rem; }
+    .tbl-actions { display:flex; gap:6px; }
+    .tbl-btn { padding:5px 11px; font-family:var(--font-body); font-size:.52rem; border:none; cursor:pointer; transition:all .2s; }
+    .tbl-btn.view { background:#f5f5f5; color:var(--ink); border:1px solid var(--border); }
+    .tbl-btn.view:hover { background:var(--ink); color:#fff; }
+    .tbl-btn.del { background:#fff5f5; color:var(--red); border:1px solid #f5b0b0; }
+    .tbl-btn.del:hover { background:var(--red); color:#fff; }
+
+    /* TOP USERS */
+    .top-users-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px; }
+    .top-user-card { background:#fff; border:1px solid var(--border); padding:20px; display:flex; align-items:center; gap:14px; }
+    .rank-badge { width:28px; height:28px; background:var(--ink); color:#fff; font-size:.6rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .rank-badge.gold { background:#d4a017; }
+    .rank-badge.silver { background:#888; }
+    .rank-badge.bronze { background:#cd7f32; }
+    .top-user-info { flex:1; }
+    .top-user-name { font-weight:600; font-size:.66rem; margin-bottom:2px; }
+    .top-user-meta { font-size:.54rem; color:var(--warm-grey); }
+    .top-user-stat { text-align:right; }
+    .top-user-count { font-family:var(--font-brand); font-size:1rem; font-weight:700; color:var(--red); }
+    .top-user-lbl { font-size:.46rem; color:var(--warm-grey); }
+
+    /* ── MODAL (shared) ── */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; }
+    .modal-box { background:#fff; width:100%; max-width:560px; padding:36px; position:relative; max-height:90vh; overflow-y:auto; }
+    .modal-close { position:absolute; top:16px; right:16px; background:none; border:none; font-size:1.1rem; cursor:pointer; color:var(--warm-grey); }
+    .modal-title { font-family:var(--font-brand); font-size:1.3rem; font-weight:700; margin-bottom:20px; }
+    .detail-row { display:flex; gap:8px; padding:10px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+    .detail-row:last-child { border-bottom:none; }
+    .detail-label { font-size:.52rem; letter-spacing:.1em; text-transform:uppercase; color:var(--warm-grey); width:120px; flex-shrink:0; padding-top:2px; }
+    .detail-val { font-size:.64rem; color:var(--ink); font-weight:500; flex:1; }
+    .modal-actions { display:flex; gap:12px; margin-top:24px; justify-content:flex-end; }
+    .btn-modal { padding:9px 20px; font-family:var(--font-body); font-size:.6rem; border:none; cursor:pointer; transition:all .2s; }
+    .btn-modal.close { background:#f5f5f5; color:var(--ink); border:1px solid var(--border); }
+    .btn-modal.close:hover { background:var(--ink); color:#fff; }
+    .btn-modal.del { background:var(--red); color:#fff; }
+    .btn-modal.del:hover { background:#800000; }
+
+    .mini-booking-list { margin-top:16px; }
+    .mini-booking-item { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:.6rem; }
+    .mini-booking-item:last-child { border-bottom:none; }
+
+    /* ── DELETE CONFIRM MODAL ── */
+    .confirm-modal-box {
+      background:#fff;
+      width:100%;
+      max-width:420px;
+      padding:36px;
+      position:relative;
+      text-align:center;
+    }
+    .confirm-modal-icon {
+      font-size:2.2rem;
+      margin-bottom:16px;
+      opacity:.7;
+    }
+    .confirm-modal-title {
+      font-family:var(--font-brand);
+      font-size:1.1rem;
+      font-weight:700;
+      color:var(--ink);
+      margin-bottom:8px;
+    }
+    .confirm-modal-sub {
+      font-family:var(--font-body);
+      font-size:.64rem;
+      color:var(--warm-grey);
+      line-height:1.6;
+      margin-bottom:8px;
+    }
+    .confirm-modal-name {
+      font-family:var(--font-body);
+      font-size:.72rem;
+      font-weight:600;
+      color:var(--ink);
+      background:#faf5f5;
+      border:1px solid rgba(163,28,28,.12);
+      padding:8px 16px;
+      margin: 12px 0 20px;
+      display:inline-block;
+    }
+    .confirm-modal-actions {
+      display:flex;
+      gap:12px;
+      justify-content:center;
+    }
+    .confirm-warning {
+      font-size:.56rem;
+      color:var(--warm-grey);
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px solid var(--border);
+    }
+
+    .toast { position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:12px 20px; font-family:var(--font-body); font-size:.64rem; transform:translateY(80px); opacity:0; transition:all .3s; z-index:9999; pointer-events:none; }
+    .toast.show { transform:translateY(0); opacity:1; }
+  </style>
+</head>
+<body>
+
+<div class="dash-sidebar">
+  <div class="dash-brand">
+    <a class="dash-brand-name" href="../../index.html">"Kép"</a>
+    <span class="dash-brand-role">Admin Panel</span>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tổng quan</div>
+    <a class="dash-nav-link" href="index.html"><span class="nav-icon">◈</span> Dashboard</a>
+    <div class="dash-nav-section">Quản lý</div>
+    <a class="dash-nav-link" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
+    <a class="dash-nav-link" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
+    <a class="dash-nav-link" href="equipments.html"><span class="nav-icon">◉</span> Thiết bị</a>
+    <a class="dash-nav-link active" href="users.html"><span class="nav-icon">◎</span> Người dùng</a>
+    <a class="dash-nav-link" href="reports.html"><span class="nav-icon">◻</span> Báo cáo</a>
+    <div class="dash-nav-section">Hệ thống</div>
+    <a class="dash-nav-link" href="../../index.html"><span class="nav-icon">↗</span> Xem trang chủ</a>
+  </nav>
+  <div class="dash-sidebar-footer">
+    <div class="dash-user-info">
+      <div class="dash-user-avatar" style="background:var(--red);">A</div>
+      <div><div class="dash-user-name">Admin</div><div class="dash-user-email">Kép Studio</div></div>
+    </div>
+    <button class="dash-logout-btn" onclick="doAdminLogout()">Đăng xuất</button>
+  </div>
+</div>
+
+<div class="dash-main">
+  <div class="dash-topbar">
+    <h1 class="dash-page-title">Người dùng</h1>
+    <span style="font-size:.58rem;color:var(--warm-grey);" id="todayDate"></span>
+  </div>
+
+  <div class="dash-content">
+    <!-- Stats -->
+    <div class="stats-row" id="userStats"></div>
+
+    <!-- Top Users -->
+    <div class="section-title">Khách hàng thân thiết (nhiều booking nhất)</div>
+    <div class="top-users-grid" id="topUsersGrid"></div>
+
+    <!-- Filters -->
+    <div class="section-title">Danh sách người dùng</div>
+    <div class="filters-bar">
+      <button class="filter-chip active" onclick="setFilter('all',this)">Tất cả</button>
+      <button class="filter-chip" onclick="setFilter('vip',this)">VIP (≥5 booking)</button>
+      <button class="filter-chip" onclick="setFilter('new',this)">Mới (≤1 booking)</button>
+      <input class="search-input" type="text" placeholder="Tìm tên, SĐT, email..." id="searchInput" oninput="renderTable()">
+    </div>
+
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Người dùng</th>
+            <th>SĐT</th>
+            <th>Email</th>
+            <th>Tổng booking</th>
+            <th>Đã xác nhận</th>
+            <th>Tổng chi tiêu</th>
+            <th>Phân loại</th>
+            <th>Ngày đăng ký</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="userTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- User Detail Modal -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">Thông tin người dùng</div>
+    <div id="modalContent"></div>
+    <div class="modal-actions">
+      <button class="btn-modal del" id="delBtn">Xóa tài khoản</button>
+      <button class="btn-modal close" onclick="closeModal()">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── DELETE CONFIRM MODAL ── -->
+<div class="modal-overlay" id="deleteConfirmModal">
+  <div class="confirm-modal-box">
+    <div class="confirm-modal-icon">🗑️</div>
+    <div class="confirm-modal-title">Xác nhận xóa tài khoản</div>
+    <div class="confirm-modal-sub">Bạn có chắc chắn muốn xóa tài khoản của</div>
+    <div class="confirm-modal-name" id="deleteTargetName">—</div>
+    <div class="confirm-modal-actions">
+      <button class="btn-modal close" onclick="closeDeleteConfirm()">Hủy bỏ</button>
+      <button class="btn-modal del" id="confirmDeleteBtn">Xóa tài khoản</button>
+    </div>
+    <div class="confirm-warning">Hành động này không thể hoàn tác. Dữ liệu người dùng sẽ bị xóa vĩnh viễn.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+if (!localStorage.getItem('kep_admin_auth')) window.location.href = '../../index.html';
+
+const USERS_KEY    = 'kep_users';
+const BOOKINGS_KEY = 'kep_bookings';
+
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString('vi-VN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+function ensureDemoUsers() {
+  const u = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+  if (u.length) return;
+  const names = ['Nguyễn Thị Mai','Trần Văn Hùng','Lê Thu Hương','Phạm Minh Đức','Võ Thị Lan','Đặng Quốc Tuấn','Hoàng Yến Nhi','Bùi Văn Long','Ngô Minh Châu','Lý Gia Hân'];
+  const phones = ['0901234567','0912345678','0923456789','0934567890','0945678901','0956789012','0967890123','0978901234','0989012345','0990123456'];
+  const emails = ['mai@gmail.com','hung@gmail.com','huong@gmail.com','duc@gmail.com','lan@gmail.com','tuan@gmail.com','nhi@gmail.com','long@gmail.com','chau@gmail.com','han@gmail.com'];
+  const users = names.map((name,i) => {
+    const d = new Date(); d.setDate(d.getDate() - Math.floor(Math.random()*180));
+    return { id:'U-'+String(i+1).padStart(4,'0'), name, phone:phones[i], email:emails[i], password:btoa('demo123'), role:'user', createdAt:d.toISOString() };
+  });
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+ensureDemoUsers();
+
+function getUsers() { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
+function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+function getBookings() { return JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]'); }
+
+function getUserBookings(user) {
+  const bk = getBookings();
+  return bk.filter(b => b.name === user.name || b.phone === user.phone || b.email === user.email);
+}
+
+function getUserTier(count) {
+  if (count >= 5) return { label:'VIP', badge:'badge-vip' };
+  if (count >= 2) return { label:'Thường xuyên', badge:'badge-regular' };
+  return { label:'Mới', badge:'badge-new' };
+}
+
+let filterMode = 'all';
+
+function renderStats() {
+  const users = getUsers();
+  const bk = getBookings();
+  const newThisMonth = users.filter(u => { const d = new Date(u.createdAt); return d.getMonth() === new Date().getMonth() && d.getFullYear() === new Date().getFullYear(); }).length;
+  const vip = users.filter(u => getUserBookings(u).length >= 5).length;
+  document.getElementById('userStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Tổng người dùng</div><div class="stat-val">${users.length}</div><div class="stat-sub">Đã đăng ký</div></div>
+    <div class="stat-card"><div class="stat-label">Mới tháng này</div><div class="stat-val" style="color:#2E7D32;">${newThisMonth}</div><div class="stat-sub">Đăng ký mới</div></div>
+    <div class="stat-card"><div class="stat-label">Khách VIP</div><div class="stat-val" style="color:#d4a017;">${vip}</div><div class="stat-sub">≥ 5 booking</div></div>
+    <div class="stat-card"><div class="stat-label">Tổng Booking</div><div class="stat-val" style="color:var(--red);">${bk.length}</div><div class="stat-sub">Từ tất cả user</div></div>
+  `;
+}
+
+function renderTopUsers() {
+  const users = getUsers();
+  const ranked = users.map(u => ({ ...u, bkCount: getUserBookings(u).length, spend: getUserBookings(u).filter(b=>b.status==='confirmed').reduce((s,b)=>s+(b.total||0),0) }))
+    .sort((a,b) => b.bkCount - a.bkCount).slice(0, 6);
+
+  const rankClass = ['gold','silver','bronze','','',''];
+  const grid = document.getElementById('topUsersGrid');
+
+  if (!ranked.filter(u=>u.bkCount>0).length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--warm-grey);font-size:.62rem;">Chưa có booking nào.</div>`;
+    return;
+  }
+
+  grid.innerHTML = ranked.filter(u=>u.bkCount>0).map((u,i) => {
+    const initials = u.name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    return `<div class="top-user-card">
+      <div class="rank-badge ${rankClass[i]||''}">${i+1}</div>
+      <div class="user-avatar-sm" style="background:${['var(--red)','var(--ink)','#2E7D32','#555','#777','#999'][i]};">${initials}</div>
+      <div class="top-user-info">
+        <div class="top-user-name">${u.name}</div>
+        <div class="top-user-meta">${u.phone}</div>
+      </div>
+      <div class="top-user-stat">
+        <div class="top-user-count">${u.bkCount}</div>
+        <div class="top-user-lbl">booking</div>
+        <div style="font-size:.52rem;color:var(--red);margin-top:2px;">${u.spend.toLocaleString()}K</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setFilter(f, btn) {
+  filterMode = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+
+function renderTable() {
+  const q = (document.getElementById('searchInput').value||'').toLowerCase();
+  let users = getUsers().map(u => ({ ...u, bkCount: getUserBookings(u).length, spend: getUserBookings(u).filter(b=>b.status==='confirmed').reduce((s,b)=>s+(b.total||0),0) }));
+  if (q) users = users.filter(u => u.name.toLowerCase().includes(q) || (u.phone||'').includes(q) || (u.email||'').toLowerCase().includes(q));
+  if (filterMode === 'vip') users = users.filter(u => u.bkCount >= 5);
+  if (filterMode === 'new') users = users.filter(u => u.bkCount <= 1);
+  users.sort((a,b) => b.bkCount - a.bkCount);
+
+  const tbody = document.getElementById('userTbody');
+  if (!users.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--warm-grey);font-size:.62rem;">Không tìm thấy người dùng nào.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = users.map(u => {
+    const initials = u.name.trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    const tier = getUserTier(u.bkCount);
+    const confirmed = getUserBookings(u).filter(b=>b.status==='confirmed').length;
+    return `<tr>
+      <td>
+        <div class="user-cell">
+          <div class="user-avatar-sm">${initials}</div>
+          <div>
+            <div class="user-name">${u.name}</div>
+            <div class="user-id">${u.id}</div>
+          </div>
+        </div>
+      </td>
+      <td>${u.phone||'—'}</td>
+      <td style="font-size:.58rem;">${u.email||'—'}</td>
+      <td style="font-weight:600;text-align:center;">${u.bkCount}</td>
+      <td style="color:#2E7D32;font-weight:600;text-align:center;">${confirmed}</td>
+      <td style="color:var(--red);font-weight:600;">${u.spend ? u.spend.toLocaleString()+'K' : '0K'}</td>
+      <td><span class="${tier.badge}">${tier.label}</span></td>
+      <td style="font-size:.56rem;white-space:nowrap;">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN') : '—'}</td>
+      <td><div class="tbl-actions">
+        <button class="tbl-btn view" onclick='openUserModal("${u.id}")'>Xem</button>
+        <button class="tbl-btn del" onclick='promptDeleteUser("${u.id}")'>✕ Xóa</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openUserModal(userId) {
+  const u = getUsers().find(x => x.id === userId);
+  if (!u) return;
+  const bk = getUserBookings(u);
+  const confirmed = bk.filter(b => b.status === 'confirmed');
+  const spend = confirmed.reduce((s,b) => s+(b.total||0),0);
+  const tier = getUserTier(bk.length);
+
+  document.getElementById('modalTitle').textContent = u.name;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="detail-row"><span class="detail-label">Mã user</span><span class="detail-val" style="font-family:monospace;">${u.id}</span></div>
+    <div class="detail-row"><span class="detail-label">SĐT / Zalo</span><span class="detail-val">${u.phone||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val">${u.email||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Phân loại</span><span class="detail-val"><span class="${tier.badge}">${tier.label}</span></span></div>
+    <div class="detail-row"><span class="detail-label">Tổng booking</span><span class="detail-val">${bk.length} (${confirmed.length} đã xác nhận)</span></div>
+    <div class="detail-row"><span class="detail-label">Tổng chi tiêu</span><span class="detail-val" style="color:var(--red);font-weight:600;">${spend.toLocaleString()}K</span></div>
+    <div class="detail-row"><span class="detail-label">Ngày đăng ký</span><span class="detail-val">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN',{year:'numeric',month:'long',day:'numeric'}) : '—'}</span></div>
+    ${bk.length ? `
+    <div style="margin-top:16px;">
+      <div style="font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-grey);margin-bottom:8px;">Booking gần đây</div>
+      <div class="mini-booking-list">
+        ${bk.slice(0,5).map(b => `
+          <div class="mini-booking-item">
+            <span>${b.id} · ${b.zone} Zone · ${b.date ? formatDate(b.date) : '—'}</span>
+            <span class="${'badge-'+b.status}" style="display:inline-block;padding:2px 8px;font-size:.48rem;">${{pending:'Chờ duyệt',confirmed:'Đã xác nhận',rejected:'Từ chối',cancelled:'Đã hủy'}[b.status]||b.status}</span>
+          </div>`).join('')}
+      </div>
+    </div>` : ''}
+  `;
+
+  // Wire delete button in detail modal to the confirm flow
+  document.getElementById('delBtn').onclick = () => {
+    closeModal();
+    promptDeleteUser(userId);
+  };
+
+  document.getElementById('userModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('userModal').classList.remove('open'); }
+
+/* ── DELETE CONFIRM FLOW ── */
+let pendingDeleteId = null;
+
+function promptDeleteUser(id) {
+  const u = getUsers().find(x => x.id === id);
+  if (!u) return;
+  pendingDeleteId = id;
+  document.getElementById('deleteTargetName').textContent = u.name;
+  document.getElementById('confirmDeleteBtn').onclick = executeDelete;
+  document.getElementById('deleteConfirmModal').classList.add('open');
+}
+
+function closeDeleteConfirm() {
+  pendingDeleteId = null;
+  document.getElementById('deleteConfirmModal').classList.remove('open');
+}
+
+function executeDelete() {
+  if (!pendingDeleteId) return;
+  const users = getUsers().filter(u => u.id !== pendingDeleteId);
+  saveUsers(users);
+  pendingDeleteId = null;
+  closeDeleteConfirm();
+  showToast('Đã xóa tài khoản.');
+  renderAll();
+}
+
+function formatDate(str) { if(!str) return '—'; const [y,m,d] = str.split('-'); return `${d}/${m}/${y}`; }
+function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html'; }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+
+function renderAll() { renderStats(); renderTopUsers(); renderTable(); }
+document.addEventListener('DOMContentLoaded', renderAll);
+</script>
+</body>
+</html>

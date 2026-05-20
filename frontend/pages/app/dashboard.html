@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Kép Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/global.css"/>
+  <link rel="stylesheet" href="../../assets/css/dashboard.css"/>
+  <link rel="stylesheet" href="../../assets/css/responsive.css"/>
+</head>
+<body>
+
+<div class="dash-layout">
+  <!-- ── SIDEBAR ── -->
+  <aside class="dash-sidebar" id="dashSidebar">
+    <div class="dash-brand">
+      <a class="dash-brand-name" href="../../index.html">"Kép"</a>
+      <span class="dash-brand-role">User Portal</span>
+    </div>
+
+    <nav class="dash-nav">
+      <div class="dash-nav-section">Tổng quan</div>
+      <a class="dash-nav-link active" href="dashboard.html">
+        <span class="nav-icon">◈</span> Dashboard
+      </a>
+
+      <div class="dash-nav-section">Booking</div>
+      <a class="dash-nav-link" href="../booking/new-booking.html">
+        <span class="nav-icon">＋</span> Đặt lịch mới
+      </a>
+      <a class="dash-nav-link" href="my-bookings.html">
+        <span class="nav-icon">◷</span> Lịch của tôi
+      </a>
+
+      <div class="dash-nav-section">Tài khoản</div>
+      <a class="dash-nav-link" href="profile.html">
+        <span class="nav-icon">◎</span> Hồ sơ
+      </a>
+      <a class="dash-nav-link" href="settings.html">
+        <span class="nav-icon">⚙</span> Cài đặt
+      </a>
+    </nav>
+
+    <div class="dash-sidebar-footer">
+      <div class="dash-user-info">
+        <div class="dash-user-avatar" id="avatarInitials">—</div>
+        <div>
+          <div class="dash-user-name" id="sidebarName">—</div>
+          <div class="dash-user-email" id="sidebarEmail">—</div>
+        </div>
+      </div>
+      <button class="dash-logout-btn" onclick="doLogout()">Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="dash-main">
+    <div class="dash-topbar">
+      <h1 class="dash-page-title">Dashboard</h1>
+      <div class="dash-topbar-actions">
+        <a class="dash-action-btn primary" href="../booking/new-booking.html">+ Đặt lịch mới</a>
+      </div>
+    </div>
+
+    <div class="dash-content">
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card-d">
+          <div class="stat-card-label">Tổng booking</div>
+          <div class="stat-card-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card-d">
+          <div class="stat-card-label">Chờ xác nhận</div>
+          <div class="stat-card-value red" id="statPending">0</div>
+        </div>
+        <div class="stat-card-d">
+          <div class="stat-card-label">Đã xác nhận</div>
+          <div class="stat-card-value green" id="statConfirmed">0</div>
+        </div>
+        <div class="stat-card-d">
+          <div class="stat-card-label">Tổng chi tiêu</div>
+          <div class="stat-card-value" id="statSpend">0K</div>
+        </div>
+      </div>
+
+      <!-- Recent bookings -->
+      <div class="dash-section-title">
+        Booking gần đây
+        <a href="my-bookings.html">Xem tất cả →</a>
+      </div>
+      <div id="recentBookings">
+        <div class="empty-state">
+          <div class="empty-state-icon">◷</div>
+          <div class="empty-state-title">Chưa có lịch nào</div>
+          <div class="empty-state-sub">Đặt lịch đầu tiên của bạn ngay hôm nay!</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const CURRENT_USER_KEY = 'kep_current_user';
+const BOOKINGS_KEY     = 'kep_bookings';
+
+/* ── Auth guard ── */
+const user = JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || 'null');
+if (!user) window.location.href = '../auth/login.html';
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', () => {
+  if (!user) return;
+
+  // Sidebar user info
+  const initials = user.name.trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase();
+  document.getElementById('avatarInitials').textContent = initials;
+  document.getElementById('sidebarName').textContent    = user.name;
+  document.getElementById('sidebarEmail').textContent   = user.email || '';
+
+  renderStats();
+  renderRecent();
+});
+
+function getMyBookings() {
+  const all = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+  // Filter by name/phone match (demo — real app uses user ID)
+  return all.filter(b => b.name === user.name || b.phone === user.phone || b.email === user.email);
+}
+
+function renderStats() {
+  const bookings  = getMyBookings();
+  const pending   = bookings.filter(b => b.status === 'pending').length;
+  const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+  const spend     = bookings.filter(b => b.status !== 'rejected').reduce((s, b) => s + (b.total || 0), 0);
+
+  document.getElementById('statTotal').textContent     = bookings.length;
+  document.getElementById('statPending').textContent   = pending;
+  document.getElementById('statConfirmed').textContent = confirmed;
+  document.getElementById('statSpend').textContent     = spend.toLocaleString() + 'K';
+}
+
+function renderRecent() {
+  const bookings = getMyBookings().slice(0, 5);
+  const wrap = document.getElementById('recentBookings');
+
+  if (!bookings.length) return;
+
+  const STATUS = { pending:'Chờ duyệt', confirmed:'Đã xác nhận', rejected:'Từ chối', cancelled:'Đã hủy' };
+  const BADGE  = { pending:'badge-pending', confirmed:'badge-confirmed', rejected:'badge-rejected', cancelled:'badge-cancelled' };
+
+  wrap.innerHTML = bookings.map(b => `
+    <div class="booking-card">
+      <div>
+        <div class="booking-card-code">${b.id}</div>
+        <div class="booking-card-zone">${b.zone || '—'} Zone</div>
+        <div class="booking-card-meta">
+          ${b.date ? formatDate(b.date) : '—'} &nbsp;·&nbsp; ${b.startTime || '—'} &nbsp;·&nbsp; ${b.duration || '—'}h
+        </div>
+      </div>
+      <div class="booking-card-right">
+        <div class="booking-card-amount">${b.total ? b.total.toLocaleString() + 'K' : 'Liên hệ'}</div>
+        <span class="badge ${BADGE[b.status] || ''}">${STATUS[b.status] || b.status}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function formatDate(str) {
+  if (!str) return '—';
+  const [y, m, d] = str.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function doLogout() {
+  localStorage.removeItem(CURRENT_USER_KEY);
+  window.location.href = '../../index.html';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
