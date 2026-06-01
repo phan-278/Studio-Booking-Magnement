@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Báo cáo Doanh thu — Kép Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red:#a31c1c; --red-light:#c0392b; --ink:#1a1a1a; --ink-light:#444;
+      --warm-grey:#888; --border:#e8e0d8; --bg:#faf9f7; --white:#fff;
+      --green:#2E7D32; --gold:#d4a017; --muted:#f5f0eb;
+      --font-brand:'Playfair Display',serif; --font-body:'Be Vietnam Pro',sans-serif;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:flex; }
+
+    /* SIDEBAR */
+    .dash-sidebar { width:220px; min-height:100vh; background:var(--ink); color:#fff; display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; }
+    .dash-brand { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .dash-brand-name { font-family:var(--font-brand); font-size:1.3rem; color:#fff; text-decoration:none; display:block; font-style:italic; }
+    .dash-brand-role { font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-top:2px; display:block; }
+    .dash-nav { flex:1; padding:16px 0; overflow-y:auto; }
+    .dash-nav-section { font-size:.45rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.3); padding:12px 24px 4px; }
+    .dash-nav-link { display:flex; align-items:center; gap:10px; padding:10px 24px; font-size:.62rem; letter-spacing:.04em; color:rgba(255,255,255,.6); text-decoration:none; transition:all .2s; }
+    .dash-nav-link:hover { color:#fff; background:rgba(255,255,255,.05); }
+    .dash-nav-link.active { color:#fff; background:rgba(163,28,28,.35); border-left:2px solid var(--red); }
+    .nav-icon { font-size:.8rem; width:16px; text-align:center; }
+    .dash-sidebar-footer { padding:20px 24px; border-top:1px solid rgba(255,255,255,.08); }
+    .dash-user-info { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .dash-user-avatar { width:32px; height:32px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:600; color:#fff; flex-shrink:0; }
+    .dash-user-name { font-size:.6rem; font-weight:600; color:#fff; }
+    .dash-user-email { font-size:.52rem; color:rgba(255,255,255,.4); }
+    .dash-logout-btn { width:100%; padding:8px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.7); font-family:var(--font-body); font-size:.55rem; letter-spacing:.06em; cursor:pointer; transition:all .2s; }
+    .dash-logout-btn:hover { background:rgba(163,28,28,.4); color:#fff; border-color:var(--red); }
+
+    /* MAIN */
+    .dash-main { flex:1; display:flex; flex-direction:column; min-height:100vh; overflow:auto; }
+    .dash-topbar { padding:20px 32px; border-bottom:1px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .dash-page-title { font-family:var(--font-brand); font-size:1.3rem; font-weight:700; color:var(--ink); }
+    .dash-page-sub { font-size:.58rem; color:var(--warm-grey); margin-top:2px; }
+    .dash-topbar-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .dash-select { padding:8px 13px; border:1px solid var(--border); background:#fff; font-family:var(--font-body); font-size:.58rem; color:var(--ink); outline:none; cursor:pointer; }
+    .dash-select:focus { border-color:var(--ink); }
+    .dash-action-btn { padding:9px 18px; font-family:var(--font-body); font-size:.6rem; letter-spacing:.08em; text-decoration:none; cursor:pointer; border:none; transition:all .2s; }
+    .dash-action-btn.primary { background:var(--red); color:#fff; }
+    .dash-action-btn.primary:hover { background:var(--red-light); }
+    .dash-action-btn.secondary { background:transparent; color:var(--ink); border:1px solid var(--border); }
+    .dash-action-btn.secondary:hover { border-color:var(--ink); }
+    .dash-content { padding:28px 32px; flex:1; }
+
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+    .stat-card { background:#fff; border:1px solid var(--border); padding:16px 20px; position:relative; overflow:hidden; }
+    .stat-card::after { content:""; position:absolute; top:0; right:0; width:46px; height:100%; background:linear-gradient(90deg,transparent,rgba(163,28,28,.05)); pointer-events:none; }
+    .stat-label { font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:6px; }
+    .stat-val { font-family:var(--font-brand); font-size:1.6rem; font-weight:700; line-height:1; color:var(--ink); }
+    .stat-val.red { color:var(--red); }
+    .stat-val.green { color:var(--green); }
+    .stat-val.gold { color:var(--gold); }
+    .stat-sub { font-size:.52rem; color:var(--warm-grey); margin-top:5px; }
+
+    .section-title { font-family:var(--font-brand); font-size:.9rem; font-weight:700; letter-spacing:.03em; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; }
+    .section-title span { font-family:var(--font-body); font-size:.54rem; font-weight:400; color:var(--warm-grey); letter-spacing:0; }
+    .report-grid { display:grid; grid-template-columns:minmax(0,2fr) 360px; gap:24px; margin-bottom:28px; }
+    .panel { background:#fff; border:1px solid var(--border); padding:24px; }
+
+    /* CHART */
+    .chart-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:18px; }
+    .chart-kicker { font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:4px; }
+    .chart-title { font-family:var(--font-brand); font-size:1rem; font-weight:700; }
+    .chart-note { font-size:.54rem; color:var(--warm-grey); margin-top:4px; }
+    .chart-bars { display:flex; align-items:flex-end; gap:8px; height:190px; padding:18px 0 8px; border-bottom:1px solid var(--border); }
+    .chart-col { display:flex; flex-direction:column; align-items:center; flex:1; gap:5px; height:100%; justify-content:flex-end; min-width:34px; }
+    .chart-val { font-size:.48rem; color:var(--ink); font-weight:600; height:14px; }
+    .chart-bar { width:100%; min-height:4px; background:var(--red); opacity:.72; transition:height .5s cubic-bezier(.16,1,.3,1), opacity .2s; cursor:pointer; position:relative; }
+    .chart-bar:hover { opacity:1; }
+    .chart-label { font-size:.46rem; color:var(--warm-grey); white-space:nowrap; }
+    .chart-legend { display:flex; gap:14px; margin-top:14px; flex-wrap:wrap; }
+    .legend-item { font-size:.52rem; color:var(--warm-grey); display:flex; align-items:center; gap:6px; }
+    .legend-dot { width:8px; height:8px; background:var(--red); display:inline-block; }
+    .legend-dot.green { background:var(--green); }
+
+    /* INSIGHT */
+    .insight-list { display:flex; flex-direction:column; gap:12px; }
+    .insight-item { padding:14px 0; border-bottom:1px solid rgba(163,28,28,.07); }
+    .insight-item:last-child { border-bottom:none; }
+    .insight-label { font-size:.52rem; letter-spacing:.12em; text-transform:uppercase; color:var(--warm-grey); margin-bottom:4px; }
+    .insight-value { font-family:var(--font-brand); font-size:1.1rem; font-weight:700; color:var(--ink); }
+    .insight-text { font-size:.58rem; color:var(--ink-light); line-height:1.6; margin-top:4px; }
+    .tip-box { margin-top:18px; padding:16px; background:#fff8f8; border-left:3px solid var(--red); font-size:.58rem; color:var(--ink-light); line-height:1.6; }
+
+    /* TABLE */
+    .dash-table-wrap { background:#fff; border:1px solid var(--border); overflow-x:auto; margin-bottom:28px; }
+    .dash-table { width:100%; border-collapse:collapse; }
+    .dash-table thead th { padding:12px 14px; font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--warm-grey); border-bottom:1px solid var(--border); text-align:left; white-space:nowrap; }
+    .dash-table tbody tr { border-bottom:1px solid rgba(163,28,28,.05); transition:background .15s; }
+    .dash-table tbody tr:hover { background:#fdf7f0; }
+    .dash-table tbody tr:last-child { border-bottom:none; }
+    .dash-table td { padding:12px 14px; font-size:.62rem; vertical-align:middle; }
+    .zone-name { font-family:var(--font-brand); font-size:.82rem; font-weight:700; font-style:italic; }
+    .zone-meta { font-size:.5rem; color:var(--warm-grey); margin-top:2px; }
+    .amount-cell { font-weight:600; color:var(--ink); white-space:nowrap; }
+    .progress-wrap { display:flex; align-items:center; gap:8px; min-width:130px; }
+    .progress-track { height:6px; background:#eee; flex:1; min-width:70px; overflow:hidden; border-radius:3px; }
+    .progress-fill { height:100%; background:var(--red); border-radius:3px; transition:width .3s; }
+    .progress-num { font-size:.56rem; color:var(--ink); font-weight:600; min-width:34px; }
+    .badge { display:inline-block; padding:3px 10px; font-size:.5rem; letter-spacing:.08em; text-transform:uppercase; }
+    .badge-good { background:#e8f5e9; color:var(--green); border:1px solid #a5d6a7; }
+    .badge-mid { background:#fff8e1; color:#b8860b; border:1px solid #f0d060; }
+    .badge-low { background:#fff5f5; color:var(--red); border:1px solid #f5b0b0; }
+
+    /* ── BOTTOM GRID: full width for top-period tables ── */
+    .bottom-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .mini-list { display:flex; flex-direction:column; }
+    .mini-item { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid rgba(163,28,28,.07); }
+    .mini-item:last-child { border-bottom:none; }
+    .mini-main { min-width:0; }
+    .mini-title { font-weight:600; font-size:.64rem; }
+    .mini-sub { font-size:.52rem; color:var(--warm-grey); margin-top:2px; }
+    .mini-val { font-family:var(--font-brand); font-size:.95rem; font-weight:700; color:var(--red); white-space:nowrap; }
+    .mini-rank { width:22px; height:22px; background:var(--ink); color:#fff; font-size:.52rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .mini-rank.gold   { background:#d4a017; }
+    .mini-rank.silver { background:#888; }
+    .mini-rank.bronze { background:#cd7f32; }
+
+    /* Period tabs on mini panels */
+    .panel-tabs { display:flex; gap:6px; margin-bottom:16px; }
+    .panel-tab { padding:5px 13px; border:1px solid var(--border); background:#fff; font-family:var(--font-body); font-size:.52rem; cursor:pointer; transition:all .2s; color:var(--warm-grey); }
+    .panel-tab.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+    .panel-tab:hover:not(.active) { border-color:var(--ink); color:var(--ink); }
+
+    .empty-state { text-align:center; padding:36px 16px; color:var(--warm-grey); font-size:.64rem; }
+    .toast { position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:12px 20px; font-family:var(--font-body); font-size:.64rem; transform:translateY(80px); opacity:0; transition:all .3s; z-index:9999; pointer-events:none; }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    @media (max-width:1100px) { .stats-row { grid-template-columns:repeat(2,1fr); } .report-grid,.bottom-grid { grid-template-columns:1fr; } }
+    @media (max-width:760px) {
+      body { display:block; }
+      .dash-sidebar { width:100%; height:auto; min-height:auto; position:relative; }
+      .dash-nav { display:grid; grid-template-columns:repeat(2,1fr); padding:10px 0; }
+      .dash-nav-section,.dash-sidebar-footer { display:none; }
+      .dash-content,.dash-topbar { padding-left:18px; padding-right:18px; }
+      .stats-row { grid-template-columns:1fr; }
+      .chart-bars { overflow-x:auto; align-items:flex-end; }
+      .chart-col { min-width:46px; }
+    }
+    @media print {
+      .dash-sidebar,.dash-topbar-actions,.toast { display:none !important; }
+      body { display:block; background:#fff; }
+      .dash-main { display:block; }
+      .dash-topbar { border:none; padding:0 0 18px; }
+      .dash-content { padding:0; }
+      .panel,.dash-table-wrap,.stat-card { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="dash-sidebar">
+  <div class="dash-brand">
+    <a class="dash-brand-name" href="../../index.html">"Kép"</a>
+    <span class="dash-brand-role">Admin Panel</span>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tổng quan</div>
+    <a class="dash-nav-link" href="index.html"><span class="nav-icon">◈</span> Dashboard</a>
+    <div class="dash-nav-section">Quản lý</div>
+    <a class="dash-nav-link" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
+    <a class="dash-nav-link" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
+    <a class="dash-nav-link" href="equipments.html"><span class="nav-icon">◉</span> Thiết bị</a>
+    <a class="dash-nav-link" href="users.html"><span class="nav-icon">◎</span> Người dùng</a>
+    <a class="dash-nav-link active" href="reports.html"><span class="nav-icon">◻</span> Báo cáo</a>
+    <div class="dash-nav-section">Hệ thống</div>
+    <a class="dash-nav-link" href="../../index.html"><span class="nav-icon">↗</span> Xem trang chủ</a>
+  </nav>
+  <div class="dash-sidebar-footer">
+    <div class="dash-user-info">
+      <div class="dash-user-avatar">A</div>
+      <div>
+        <div class="dash-user-name">Admin</div>
+        <div class="dash-user-email">Kép Studio</div>
+      </div>
+    </div>
+    <button class="dash-logout-btn" onclick="doAdminLogout()">Đăng xuất</button>
+  </div>
+</aside>
+
+<main class="dash-main">
+  <div class="dash-topbar">
+    <div>
+      <h1 class="dash-page-title">Báo cáo & Thống kê</h1>
+      <div class="dash-page-sub">Theo dõi doanh thu, hiệu suất zone và xu hướng booking của studio.</div>
+    </div>
+    <div class="dash-topbar-actions">
+      <select class="dash-select" id="periodSelect">
+        <option value="7">7 ngày gần nhất</option>
+        <option value="30" selected>30 ngày gần nhất</option>
+        <option value="90">90 ngày gần nhất</option>
+        <option value="all">Toàn bộ dữ liệu</option>
+      </select>
+      <button class="dash-action-btn secondary" onclick="window.print()">Xuất PDF</button>
+      <a class="dash-action-btn primary" href="bookings.html">Xem booking</a>
+    </div>
+  </div>
+
+  <div class="dash-content">
+    <div class="stats-row" id="reportStats"></div>
+
+    <div class="report-grid">
+      <section class="panel">
+        <div class="chart-head">
+          <div>
+            <div class="chart-kicker">Revenue trend</div>
+            <div class="chart-title">Doanh thu theo thời gian</div>
+            <div class="chart-note" id="chartNote">Tính trên các booking đã xác nhận.</div>
+          </div>
+          <select class="dash-select" id="chartMode">
+            <option value="revenue" selected>Doanh thu</option>
+            <option value="booking">Số booking</option>
+          </select>
+        </div>
+        <div class="chart-bars" id="revenueChart"></div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-dot"></span>Doanh thu / Booking</div>
+          <div class="legend-item"><span class="legend-dot green"></span>Dữ liệu đã xác nhận</div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="section-title">Insight nhanh <span id="periodLabel">30 ngày gần nhất</span></div>
+        <div class="insight-list" id="insightList"></div>
+        <div class="tip-box" id="tipBox"></div>
+      </aside>
+    </div>
+
+    <div class="section-title">Hiệu suất theo Zone <span>Doanh thu, lượt đặt và tỷ trọng</span></div>
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Zone</th>
+            <th>Lượt đặt</th>
+            <th>Tỷ trọng</th>
+            <th>Doanh thu</th>
+            <th>Giá trị TB</th>
+            <th>Nhận xét</th>
+          </tr>
+        </thead>
+        <tbody id="zoneTbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Top revenue: month and quarter side by side -->
+    <div class="bottom-grid">
+
+      <!-- Top tháng doanh thu cao -->
+      <section class="panel">
+        <div class="section-title">Top tháng doanh thu cao <span>Theo booking xác nhận</span></div>
+        <div class="mini-list" id="topMonthsList"></div>
+      </section>
+
+      <!-- Top quý doanh thu cao -->
+      <section class="panel">
+        <div class="section-title">Top quý doanh thu cao <span>Theo booking xác nhận</span></div>
+        <div class="mini-list" id="topQuartersList"></div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── Auth guard ── */
+if (!localStorage.getItem('kep_admin_auth')) window.location.href = '../../index.html';
+
+const BOOKINGS_KEY = 'kep_bookings';
+const ZONE_META = {
+  O: 'Classic Room',
+  C: 'Creative Room',
+  Q: 'Modern Room',
+  Full: 'Full House',
+  'Full House': 'Trọn studio'
+};
+
+let currentPeriod = '30';
+let currentMode   = 'revenue';
+
+document.addEventListener('DOMContentLoaded', () => {
+  ensureReportDemoData();
+  document.getElementById('periodSelect').addEventListener('change', e => {
+    currentPeriod = e.target.value;
+    renderAll();
+  });
+  document.getElementById('chartMode').addEventListener('change', e => {
+    currentMode = e.target.value;
+    renderChart(getFilteredBookings());
+  });
+  renderAll();
+});
+
+function ensureReportDemoData() {
+  const bk = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+  if (bk.length) return;
+  const zones = ['O','C','Full'];
+  const names = ['Nguyễn Thị Mai','Trần Văn Hùng','Lê Thu Hương','Phạm Minh Đức','Võ Thị Lan','Đặng Quốc Tuấn','Hoàng Yến Nhi','Bùi Văn Long'];
+  const statuses = ['confirmed','confirmed','pending','confirmed','rejected','confirmed','cancelled'];
+  const demo = [];
+  for (let i = 0; i < 40; i++) {
+    const d = new Date(); d.setDate(d.getDate() - Math.floor(Math.random()*180));
+    const zone = zones[i % zones.length];
+    const dur = 2 + Math.floor(Math.random()*4);
+    const base = zone === 'O' ? 600 : zone === 'C' ? 500 : 1100;
+    const total = base + (dur - 2) * (zone === 'O' ? 250 : zone === 'C' ? 220 : 400) + (i % 4 === 0 ? 180 : 0);
+    demo.push({
+      id:'BK-' + String(i+1).padStart(4,'0'),
+      name:names[i % names.length],
+      zone,
+      date:d.toISOString().split('T')[0],
+      startTime:String(8 + (i % 10)).padStart(2,'0') + ':00',
+      duration:dur,
+      total,
+      deposit:Math.round(total/2),
+      status:statuses[i % statuses.length],
+      createdAt:new Date(d.getTime() - 86400000).toISOString()
+    });
+  }
+  localStorage.setItem(BOOKINGS_KEY, JSON.stringify(demo));
+}
+
+function getBookings() { return JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]'); }
+function getFilteredBookings() {
+  const bk = getBookings();
+  if (currentPeriod === 'all') return bk;
+  const days = Number(currentPeriod);
+  const start = new Date(); start.setHours(0,0,0,0); start.setDate(start.getDate() - days + 1);
+  return bk.filter(b => {
+    if (!b.date) return false;
+    return new Date(b.date + 'T00:00:00') >= start;
+  });
+}
+function getConfirmed(bk) { return bk.filter(b => b.status === 'confirmed'); }
+function money(v) { return (v || 0).toLocaleString('vi-VN') + 'K'; }
+function percent(a,b) { return b ? Math.round((a/b)*100) : 0; }
+
+function renderAll() {
+  const bk = getFilteredBookings();
+  document.getElementById('periodLabel').textContent = document.getElementById('periodSelect').selectedOptions[0].textContent;
+  renderStats(bk);
+  renderChart(bk);
+  renderInsights(bk);
+  renderZoneTable(bk);
+  renderTopMonths();
+  renderTopQuarters();
+}
+
+function renderStats(bk) {
+  const confirmed = getConfirmed(bk);
+  const revenue = confirmed.reduce((s,b) => s + (b.total || 0), 0);
+  const deposit = confirmed.reduce((s,b) => s + (b.deposit || 0), 0);
+  const pending = bk.filter(b => b.status === 'pending').length;
+  const avg = confirmed.length ? Math.round(revenue / confirmed.length) : 0;
+  const confirmRate = percent(confirmed.length, bk.length);
+
+  document.getElementById('reportStats').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Doanh thu xác nhận</div>
+      <div class="stat-val red">${money(revenue)}</div>
+      <div class="stat-sub">Cọc đã ghi nhận: ${money(deposit)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Booking trong kỳ</div>
+      <div class="stat-val">${bk.length}</div>
+      <div class="stat-sub">${pending} booking đang chờ duyệt</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Tỷ lệ xác nhận</div>
+      <div class="stat-val green">${confirmRate}%</div>
+      <div class="stat-sub">${confirmed.length}/${bk.length || 0} booking đã xác nhận</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Giá trị TB / Booking</div>
+      <div class="stat-val gold">${money(avg)}</div>
+      <div class="stat-sub">Tính trên booking xác nhận</div>
+    </div>
+  `;
+}
+
+function renderChart(bk) {
+  const confirmed = getConfirmed(bk);
+  const wrap = document.getElementById('revenueChart');
+  const isLong = (currentPeriod === '90' || currentPeriod === 'all');
+  const daysCount = currentPeriod === '7' ? 7 : isLong ? 12 : 10;
+  const buckets = [];
+
+  if (isLong) {
+    for (let i = daysCount - 1; i >= 0; i--) {
+      const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i);
+      const key = d.toISOString().slice(0,7);
+      buckets.push({ key, label: `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getFullYear()).slice(2)}`, revenue:0, count:0 });
+    }
+    confirmed.forEach(b => {
+      const key = (b.date || '').slice(0,7);
+      const bucket = buckets.find(x => x.key === key);
+      if (bucket) { bucket.revenue += b.total || 0; bucket.count += 1; }
+    });
+  } else {
+    for (let i = daysCount - 1; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const key = d.toISOString().split('T')[0];
+      buckets.push({ key, label: key.split('-').slice(1).reverse().join('/'), revenue:0, count:0 });
+    }
+    confirmed.forEach(b => {
+      const bucket = buckets.find(x => x.key === b.date);
+      if (bucket) { bucket.revenue += b.total || 0; bucket.count += 1; }
+    });
+  }
+
+  const values = buckets.map(x => currentMode === 'revenue' ? x.revenue : x.count);
+  const max = Math.max(...values, 1);
+  document.getElementById('chartNote').textContent = currentMode === 'revenue'
+    ? 'Đơn vị hiển thị: nghìn VNĐ (K), chỉ tính booking đã xác nhận.'
+    : 'Đơn vị hiển thị: số booking đã xác nhận.';
+
+  wrap.innerHTML = buckets.map(b => {
+    const val = currentMode === 'revenue' ? b.revenue : b.count;
+    const h = Math.max(Math.round((val / max) * 150), val ? 8 : 4);
+    return `
+      <div class="chart-col" title="${b.label}: ${currentMode === 'revenue' ? money(val) : val + ' booking'}">
+        <div class="chart-val">${val ? (currentMode === 'revenue' ? compactMoney(val) : val) : ''}</div>
+        <div class="chart-bar" style="height:${h}px"></div>
+        <div class="chart-label">${b.label}</div>
+      </div>`;
+  }).join('');
+}
+
+function compactMoney(v) {
+  if (v >= 1000) return (v/1000).toFixed(v >= 10000 ? 0 : 1).replace('.0','') + 'M';
+  return v + 'K';
+}
+
+function renderInsights(bk) {
+  const confirmed = getConfirmed(bk);
+  const revenue = confirmed.reduce((s,b)=>s+(b.total||0),0);
+  const topZone = getZoneStats(confirmed).sort((a,b)=>b.revenue-a.revenue)[0];
+  const pending = bk.filter(b=>b.status==='pending').length;
+  const avg = confirmed.length ? Math.round(revenue/confirmed.length) : 0;
+
+  document.getElementById('insightList').innerHTML = `
+    <div class="insight-item">
+      <div class="insight-label">Zone mạnh nhất</div>
+      <div class="insight-value">${topZone ? topZone.zone : '—'}</div>
+      <div class="insight-text">${topZone ? `${money(topZone.revenue)} từ ${topZone.count} lượt đặt.` : 'Chưa có dữ liệu xác nhận trong kỳ.'}</div>
+    </div>
+    <div class="insight-item">
+      <div class="insight-label">Booking cần xử lý</div>
+      <div class="insight-value">${pending}</div>
+      <div class="insight-text">Duyệt sớm để tránh mất slot và giữ trải nghiệm khách hàng.</div>
+    </div>
+    <div class="insight-item">
+      <div class="insight-label">Giá trị trung bình</div>
+      <div class="insight-value">${money(avg)}</div>
+      <div class="insight-text">Có thể tăng bằng combo thuê phòng + thiết bị ánh sáng.</div>
+    </div>
+  `;
+
+  const tip = pending > 0
+    ? `Có ${pending} booking đang chờ duyệt. Nên xử lý trước các đơn có giá trị cao hoặc các slot cuối tuần.`
+    : `Không có booking chờ duyệt. Có thể dùng khoảng trống giữa tuần để chạy ưu đãi hoặc đẩy combo thiết bị.`;
+  document.getElementById('tipBox').innerHTML = `<strong>Gợi ý vận hành:</strong> ${tip}`;
+}
+
+function getZoneStats(confirmed) {
+  const map = {};
+  confirmed.forEach(b => {
+    const zone = b.zone || 'Khác';
+    if (!map[zone]) map[zone] = { zone, count:0, revenue:0 };
+    map[zone].count += 1;
+    map[zone].revenue += b.total || 0;
+  });
+  return Object.values(map);
+}
+
+function renderZoneTable(bk) {
+  const confirmed = getConfirmed(bk);
+  const stats = getZoneStats(confirmed).sort((a,b)=>b.revenue-a.revenue);
+  const totalRevenue = stats.reduce((s,z)=>s+z.revenue,0);
+  const tbody = document.getElementById('zoneTbody');
+
+  if (!stats.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Chưa có booking đã xác nhận trong kỳ này.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = stats.map(z => {
+    const share = percent(z.revenue,totalRevenue);
+    const avg = z.count ? Math.round(z.revenue/z.count) : 0;
+    const cls = share >= 40 ? 'badge-good' : share >= 20 ? 'badge-mid' : 'badge-low';
+    const text = share >= 40 ? 'Mũi nhọn' : share >= 20 ? 'Ổn định' : 'Cần đẩy mạnh';
+    return `
+      <tr>
+        <td><div class="zone-name">${z.zone} Zone</div><div class="zone-meta">${ZONE_META[z.zone] || 'Studio service'}</div></td>
+        <td>${z.count}</td>
+        <td><div class="progress-wrap"><div class="progress-track"><div class="progress-fill" style="width:${share}%"></div></div><span class="progress-num">${share}%</span></div></td>
+        <td class="amount-cell">${money(z.revenue)}</td>
+        <td>${money(avg)}</td>
+        <td><span class="badge ${cls}">${text}</span></td>
+      </tr>`;
+  }).join('');
+}
+
+/* ── TOP MONTHS: uses ALL confirmed bookings (not period-filtered) ── */
+function renderTopMonths() {
+  const confirmed = getConfirmed(getBookings()); // all-time
+  const map = {};
+  confirmed.forEach(b => {
+    if (!b.date) return;
+    const key = b.date.slice(0,7); // YYYY-MM
+    if (!map[key]) map[key] = { key, revenue:0, count:0 };
+    map[key].revenue += b.total || 0;
+    map[key].count += 1;
+  });
+  const top = Object.values(map).sort((a,b)=>b.revenue-a.revenue).slice(0, 6);
+  const rankClass = ['gold','silver','bronze','','',''];
+  const wrap = document.getElementById('topMonthsList');
+
+  if (!top.length) {
+    wrap.innerHTML = `<div class="empty-state">Chưa có dữ liệu doanh thu.</div>`;
+    return;
+  }
+
+  wrap.innerHTML = top.map((m, i) => {
+    const [y, mo] = m.key.split('-');
+    const label = `Tháng ${parseInt(mo)}/${y}`;
+    return `<div class="mini-item">
+      <div class="mini-rank ${rankClass[i]||''}">${i+1}</div>
+      <div class="mini-main">
+        <div class="mini-title">${label}</div>
+        <div class="mini-sub">${m.count} booking xác nhận</div>
+      </div>
+      <div class="mini-val">${money(m.revenue)}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── TOP QUARTERS: uses ALL confirmed bookings ── */
+function renderTopQuarters() {
+  const confirmed = getConfirmed(getBookings()); // all-time
+  const map = {};
+  confirmed.forEach(b => {
+    if (!b.date) return;
+    const d = new Date(b.date + 'T00:00:00');
+    const y = d.getFullYear();
+    const q = Math.ceil((d.getMonth() + 1) / 3);
+    const key = `${y}-Q${q}`;
+    if (!map[key]) map[key] = { key, year:y, quarter:q, revenue:0, count:0 };
+    map[key].revenue += b.total || 0;
+    map[key].count += 1;
+  });
+  const top = Object.values(map).sort((a,b)=>b.revenue-a.revenue).slice(0, 6);
+  const rankClass = ['gold','silver','bronze','','',''];
+  const wrap = document.getElementById('topQuartersList');
+
+  if (!top.length) {
+    wrap.innerHTML = `<div class="empty-state">Chưa có dữ liệu doanh thu.</div>`;
+    return;
+  }
+
+  wrap.innerHTML = top.map((q, i) => {
+    return `<div class="mini-item">
+      <div class="mini-rank ${rankClass[i]||''}">${i+1}</div>
+      <div class="mini-main">
+        <div class="mini-title">Quý ${q.quarter} / ${q.year}</div>
+        <div class="mini-sub">${q.count} booking xác nhận</div>
+      </div>
+      <div class="mini-val">${money(q.revenue)}</div>
+    </div>`;
+  }).join('');
+}
+
+function doAdminLogout() {
+  localStorage.removeItem('kep_admin_auth');
+  window.location.href = '../../index.html';
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>

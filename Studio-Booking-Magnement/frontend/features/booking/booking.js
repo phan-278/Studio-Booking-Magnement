@@ -1,168 +1,8 @@
-/* =====================================================
-   KÉP STUDIO — script.js
-   1. Storage
-   2. Hero Slideshow
-   3. Scroll Reveal + 3D Tilt
-   4. Navigation
-   5. Marquee
-   6. Zone Lightbox
-   7. Calendar (mini + hourly timeline)
-   8. Booking Form (5 steps)
-   9. Admin Panel
-   10. Auth (Login / Register)
-   11. Utilities
-   ===================================================== */
+import { getBookings, addBooking, updateBookingStatus } from '../../services/api.js';
+import { BASE_PRICES, ADD_PRICES } from '../../utils/constants.js';
+import { toDateStr, formatDate, getSelectedZone, openModal, closeModal, showToast } from '../../utils/helpers.js';
 
-
-/* ================================================================
-   1. STORAGE — Local fallback (Supabase-ready)
-================================================================ */
-let _bookings = JSON.parse(localStorage.getItem('kep_bookings') || '[]');
-let _users    = JSON.parse(localStorage.getItem('kep_users')    || '[]');
-let _currentUser = JSON.parse(localStorage.getItem('kep_current_user') || 'null');
-
-function getBookings() { return _bookings; }
-function saveBookings() { localStorage.setItem('kep_bookings', JSON.stringify(_bookings)); }
-
-function addBooking(data) {
-  const entry = {
-    ...data,
-    id: 'BK-' + Date.now(),
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  };
-  _bookings.unshift(entry);
-  saveBookings();
-  return entry;
-}
-
-function updateBookingStatus(id, status) {
-  const b = _bookings.find(x => x.id === id);
-  if (b) { b.status = status; saveBookings(); }
-}
-
-
-/* ================================================================
-   2. HERO SLIDESHOW
-================================================================ */
-(function initSlideshow() {
-  const slides   = document.querySelectorAll('.slide');
-  const dotsWrap = document.getElementById('slideDots');
-  let current = 0;
-  let timer;
-
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'slide-dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => { goSlide(i); resetTimer(); };
-    dotsWrap.appendChild(d);
-  });
-
-  function goSlide(n) {
-    slides[current].classList.remove('active');
-    dotsWrap.children[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dotsWrap.children[current].classList.add('active');
-  }
-
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(() => goSlide(current + 1), 5000);
-  }
-
-  resetTimer();
-  window.nextSlide = () => { goSlide(current + 1); resetTimer(); };
-  window.prevSlide = () => { goSlide(current - 1); resetTimer(); };
-
-  const hero = document.querySelector('.hero');
-  hero.addEventListener('mouseenter', () => clearInterval(timer));
-  hero.addEventListener('mouseleave', resetTimer);
-})();
-
-
-/* ================================================================
-   3. SCROLL REVEAL + 3D TILT
-================================================================ */
-(function initReveal() {
-  const els = document.querySelectorAll('.reveal-up');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const siblings = entry.target.parentElement.querySelectorAll('.reveal-up');
-      siblings.forEach((sib, i) => {
-        if (!sib.classList.contains('visible')) {
-          setTimeout(() => sib.classList.add('visible'), i * 90);
-        }
-      });
-      entry.target.classList.add('visible');
-      obs.unobserve(entry.target);
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-  els.forEach(el => obs.observe(el));
-
-  setTimeout(() => {
-    document.querySelectorAll('.hero .reveal-up').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), 300 + i * 150);
-    });
-  }, 100);
-})();
-
-(function init3DTilt() {
-  document.querySelectorAll('.studio-card, .zone-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r  = card.getBoundingClientRect();
-      const rx = -((e.clientY - r.top)  / r.height - 0.5) * 7;
-      const ry =  ((e.clientX - r.left) / r.width  - 0.5) * 7;
-      card.style.transform  = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.01)`;
-      card.style.transition = 'transform 0.1s';
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform  = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
-      card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-    });
-  });
-})();
-
-
-/* ================================================================
-   4. NAVIGATION
-================================================================ */
-(function initNav() {
-  const links = document.querySelectorAll('.nav-link');
-  const secs  = document.querySelectorAll('section[id]');
-
-  links.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(link.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  window.addEventListener('scroll', () => {
-    let active = '';
-    secs.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 220) active = s.id;
-    });
-    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + active));
-  });
-})();
-
-
-/* ================================================================
-   5. MARQUEE
-================================================================ */
-(function initMarquee() {
-  const mq = document.querySelector('.marquee-track');
-  if (!mq) return;
-  mq.addEventListener('mouseenter', () => mq.style.animationPlayState = 'paused');
-  mq.addEventListener('mouseleave', () => mq.style.animationPlayState = 'running');
-})();
-
-
-/* ================================================================
+/* ==========
    6. ZONE LIGHTBOX
 ================================================================ */
 const ZONE_DATA = {
@@ -237,7 +77,8 @@ window.bookFromLightbox = bookFromLightbox;
 
 
 
-/* ================================================================
+
+/* ==========
    7. CALENDAR & TIMELINE
 ================================================================ */
 const WEEKDAY_LABELS = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
@@ -493,7 +334,8 @@ function renderTimeline(dateStr) {
 }
 
 
-/* ================================================================
+
+/* ==========
    8. BOOKING FORM
 ================================================================ */
 let currentStep = 1;
@@ -511,8 +353,10 @@ function goStep(n) {
 
 function markStep(n, state) {
   const el = document.getElementById('sp' + n);
-  el.classList.remove('active', 'done');
-  el.classList.add(state);
+  if (el) {
+    el.classList.remove('active', 'done');
+    el.classList.add(state);
+  }
 }
 
 function validateStep(n) {
@@ -586,6 +430,7 @@ function updateDurationInfo() {
   `;
 }
 
+// Thay đổi checkConflict để tránh trùng lặp ngày/giờ/zone
 function checkConflict() {
   const zone  = getSelectedZone();
   const date  = document.getElementById('fDate').value;
@@ -618,9 +463,6 @@ function toggleEquip(el) {
   if (el.classList.contains('selected')) selectedEquip[key] = price;
   else delete selectedEquip[key];
 }
-
-const BASE_PRICES = { O: 600, C: 500, Full: 0 };
-const ADD_PRICES  = { O: 250, C: 200, Full: 0 };
 
 function calcPrice(zone, hours) {
   if (!zone || zone === 'Full') return 0;
@@ -666,7 +508,7 @@ function renderSummary() {
   `;
 }
 
-function submitBooking() {
+async function submitBooking() {
   const zone  = getSelectedZone();
   const date  = document.getElementById('fDate').value;
   const start = document.getElementById('fStart').value;
@@ -683,31 +525,24 @@ function submitBooking() {
   const deposit = Math.round(total / 2);
   const purposes = [...document.querySelectorAll('.tag-btn.active')].map(b => b.textContent);
 
-  const booking = addBooking({
-    name, phone, zone,
-    date, startTime: start, endTime: end, hours,
-    equipments: Object.keys(selectedEquip),
-    purposes,
-    note: document.getElementById('fNote').value,
-    total, deposit
-  });
+  try {
+    const booking = await addBooking({
+      name, phone, zone,
+      date, startTime: start, endTime: end, hours,
+      equipments: Object.keys(selectedEquip),
+      purposes,
+      note: document.getElementById('fNote').value,
+      total, deposit
+    });
 
-  renderCalendar();
-  if (calSelectedDay === date) renderTimeline(date);
-  showQRModal(booking);
-  resetForm();
-}
-
-function showQRModal(booking) {
-  const amount  = booking.zone === 'Full' ? 'Liên hệ' : (booking.deposit || 0).toLocaleString() + 'K';
-  const content = `KEP ${booking.id}`;
-  const qrData  = encodeURIComponent(`MOMO:0xxx-${content}-${amount}`);
-  const qrUrl   = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${qrData}`;
-
-  document.getElementById('qrImg').src               = qrUrl;
-  document.getElementById('qrAmount').textContent    = amount;
-  document.getElementById('qrContent').textContent   = content;
-  openModal('qrModal');
+    renderCalendar();
+    if (calSelectedDay === date) renderTimeline(date);
+    showQRModal(booking);
+    resetForm();
+  } catch (err) {
+    // Error is handled in addBooking via showToast
+    console.error("Booking failed:", err);
+  }
 }
 
 function resetForm() {
@@ -737,306 +572,31 @@ window.toggleTag     = toggleTag;
 window.toggleEquip   = toggleEquip;
 window.submitBooking = submitBooking;
 
-
-/* ================================================================
-   9. ADMIN PANEL
-================================================================ */
-const ADMIN_PASSWORD = 'kep2025';
-let adminFilter = 'all';
-
-function openLogin() { openModal('loginModal'); }
-
-function tryLogin() {
-  const pw = document.getElementById('adminPw').value;
-
-  if (pw === ADMIN_PASSWORD) {
-    localStorage.setItem('kep_admin_auth', '1');
-
-    closeModal('loginModal');
-    document.getElementById('adminPw').value = '';
-    document.getElementById('loginError').style.display = 'none';
-
-    window.location.href = './pages/admin/index.html';
-  } else {
-    document.getElementById('loginError').style.display = 'block';
+// Thay đổi showQRModal để hỗ trợ thanh toán thẻ tín dụng
+window.showQRModal = function(booking) {
+  const amount  = booking.zone === 'Full' ? 'Liên hệ' : (booking.deposit || 0).toLocaleString() + 'K';
+  
+  // Sửa HTML modal QR thành Modal Thanh toán Credit Card
+  document.getElementById('qrAmount').textContent = amount;
+  document.getElementById('qrContent').textContent = 'KEP ' + booking.id;
+  
+  const qrImg = document.getElementById('qrImg');
+  if (qrImg) {
+    qrImg.style.display = 'none'; // Ẩn ảnh QR Momo
   }
-}
-
-function openAdminPanel() {
-  document.getElementById('adminPanel').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  renderAdmin();
-}
-
-function closeAdmin() {
-  document.getElementById('adminPanel').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function renderAdmin() {
-  const all = getBookings();
-  const counts = {
-    pending:   all.filter(b => b.status === 'pending').length,
-    confirmed: all.filter(b => b.status === 'confirmed').length,
-    rejected:  all.filter(b => b.status === 'rejected').length,
-    revenue:   all.filter(b => b.status === 'confirmed').reduce((s, b) => s + (b.total || 0), 0)
-  };
-
-  document.getElementById('adminStats').innerHTML = `
-    <div class="stat-card"><div class="stat-lbl">Chờ duyệt</div><div class="stat-val red">${counts.pending}</div></div>
-    <div class="stat-card"><div class="stat-lbl">Đã xác nhận</div><div class="stat-val">${counts.confirmed}</div></div>
-    <div class="stat-card"><div class="stat-lbl">Từ chối</div><div class="stat-val">${counts.rejected}</div></div>
-    <div class="stat-card"><div class="stat-lbl">Doanh thu</div><div class="stat-val">${counts.revenue.toLocaleString()}K</div></div>
-  `;
-  renderAdminTable(all);
-}
-
-function filterBookings(f, btn) {
-  adminFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAdminTable(getBookings());
-}
-
-function renderAdminTable(all) {
-  const rows  = adminFilter === 'all' ? all : all.filter(b => b.status === adminFilter);
-  const tbody = document.getElementById('adminTbody');
-
-  if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--warm-grey);padding:24px;">Không có booking nào.</td></tr>';
-    return;
+  
+  // Có thể thêm 1 div nhỏ báo nhập Credit Card
+  let creditInfo = document.getElementById('creditInfo');
+  if (!creditInfo) {
+    creditInfo = document.createElement('div');
+    creditInfo.id = 'creditInfo';
+    creditInfo.innerHTML = '<p style="margin-top:15px; font-size:14px;">Vui lòng thanh toán qua thẻ Tín dụng / Ghi nợ để giữ chỗ.</p><button class="btn" style="margin-top:10px; width:100%;" onclick="window.closeModal(\'qrModal\'); window.showToast(\'Chuyển hướng đến cổng thanh toán...\')">Thanh toán Credit Card</button>';
+    qrImg.parentNode.insertBefore(creditInfo, qrImg.nextSibling);
   }
-
-  tbody.innerHTML = rows.map((b, i) => `
-    <tr>
-      <td style="font-size:.5rem;color:var(--warm-grey);">${b.id || i + 1}</td>
-      <td>${b.name || '—'}</td>
-      <td>${b.phone || '—'}</td>
-      <td>${b.zone || '—'}</td>
-      <td>${b.date || '—'}</td>
-      <td>${b.startTime || '—'} – ${b.endTime || '—'}</td>
-      <td>${b.total ? b.total.toLocaleString() + 'K' : 'Liên hệ'}</td>
-      <td><span class="status-badge s-${b.status}">${statusLabel(b.status)}</span></td>
-      <td>
-        <div class="action-btns">
-          ${b.status !== 'confirmed' ? `<button class="act-btn act-confirm" onclick="actBooking('${b.id}','confirmed')">✓ Duyệt</button>` : ''}
-          ${b.status !== 'rejected'  ? `<button class="act-btn act-reject"  onclick="actBooking('${b.id}','rejected')">✕ Từ chối</button>` : ''}
-        </div>
-      </td>
-    </tr>
-  `).join('');
+  
+  openModal('qrModal');
 }
 
-function actBooking(id, status) {
-  updateBookingStatus(id, status);
-  renderAdmin();
-  renderCalendar();
-  if (calSelectedDay) renderTimeline(calSelectedDay);
-  showToast(status === 'confirmed' ? '✓ Đã xác nhận booking.' : 'Đã cập nhật trạng thái.');
-}
-
-function statusLabel(s) {
-  return { pending: 'Chờ duyệt', confirmed: 'Đã xác nhận', rejected: 'Từ chối' }[s] || s;
-}
-
-window.openLogin      = openLogin;
-window.tryLogin       = tryLogin;
-window.closeAdmin     = closeAdmin;
-window.filterBookings = filterBookings;
-window.actBooking     = actBooking;
-
-
-/* ================================================================
-   10. AUTH — Guest Login / Register
-================================================================ */
-
-function openAuthModal(tab) {
-  switchAuthTab(tab || 'login');
-  openModal('authModal');
-}
-
-function switchAuthTab(tab) {
-  const isLogin = tab === 'login';
-  document.getElementById('tabLogin').classList.toggle('active', isLogin);
-  document.getElementById('tabRegister').classList.toggle('active', !isLogin);
-  document.getElementById('authFormLogin').style.display    = isLogin ? 'block' : 'none';
-  document.getElementById('authFormRegister').style.display = isLogin ? 'none' : 'block';
-}
-
-function doLogin() {
-  const email    = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
-  const errEl    = document.getElementById('authLoginError');
-
-  if (!email || !password) {
-    errEl.textContent = 'Vui lòng điền đầy đủ thông tin.';
-    errEl.style.display = 'block'; return;
-  }
-
-  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
-  const user  = users.find(u => u.email === email && u.password === btoa(password));
-
-  if (!user) {
-    errEl.textContent = 'Email hoặc mật khẩu không đúng.';
-    errEl.style.display = 'block'; return;
-  }
-
-  errEl.style.display = 'none';
-  setCurrentUser(user);
-  closeModal('authModal');
-  showToast('✓ Đăng nhập thành công. Chào ' + user.name + '!');
-  document.getElementById('loginEmail').value    = '';
-  document.getElementById('loginPassword').value = '';
-}
-
-function doRegister() {
-  const name     = document.getElementById('regName').value.trim();
-  const phone    = document.getElementById('regPhone').value.trim();
-  const email    = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value;
-  const errEl    = document.getElementById('authRegError');
-
-  if (!name || !phone || !email || !password) {
-    errEl.textContent = 'Vui lòng điền đầy đủ thông tin.';
-    errEl.style.display = 'block'; return;
-  }
-  if (password.length < 6) {
-    errEl.textContent = 'Mật khẩu phải có ít nhất 6 ký tự.';
-    errEl.style.display = 'block'; return;
-  }
-
-  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
-  if (users.find(u => u.email === email)) {
-    errEl.textContent = 'Email này đã được đăng ký.';
-    errEl.style.display = 'block'; return;
-  }
-
-  const newUser = { id: 'U-' + Date.now(), name, phone, email, password: btoa(password) };
-  users.push(newUser);
-  localStorage.setItem('kep_users', JSON.stringify(users));
-
-  errEl.style.display = 'none';
-  setCurrentUser(newUser);
-  closeModal('authModal');
-  showToast('✓ Đăng ký thành công. Chào mừng, ' + name + '!');
-  document.getElementById('regName').value     = '';
-  document.getElementById('regPhone').value    = '';
-  document.getElementById('regEmail').value    = '';
-  document.getElementById('regPassword').value = '';
-}
-
-function setCurrentUser(user) {
-  _currentUser = user;
-  localStorage.setItem('kep_current_user', JSON.stringify(user));
-  updateUserUI();
-}
-
-function doLogout() {
-  _currentUser = null;
-  localStorage.removeItem('kep_current_user');
-  updateUserUI();
-  showToast('Đã đăng xuất.');
-}
-
-function updateUserUI() {
-  const bar    = document.getElementById('userBar');
-  const nameEl = document.getElementById('userBarName');
-  const userBtn = document.querySelector('.user-btn .admin-label');
-
-  if (_currentUser) {
-    bar.style.display = 'flex';
-    if (nameEl) nameEl.textContent = _currentUser.name;
-    if (userBtn) userBtn.textContent = ' ' + _currentUser.name;
-    // Pre-fill booking form with user info
-    const fName  = document.getElementById('fName');
-    const fPhone = document.getElementById('fPhone');
-    if (fName && !fName.value)  fName.value  = _currentUser.name;
-    if (fPhone && !fPhone.value) fPhone.value = _currentUser.phone;
-  } else {
-    bar.style.display = 'none';
-    if (userBtn) userBtn.textContent = ' Đăng nhập';
-  }
-}
-
-window.openAuthModal  = openAuthModal;
-window.switchAuthTab  = switchAuthTab;
-window.doLogin        = doLogin;
-window.doRegister     = doRegister;
-window.doLogout       = doLogout;
-
-// Init user UI on load
-updateUserUI();
-
-
-/* ================================================================
-   11. UTILITIES
-================================================================ */
-function openModal(id) { document.getElementById(id).classList.add('show'); }
-function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) overlay.classList.remove('show');
-  });
-});
-
-window.openModal  = openModal;
-window.closeModal = closeModal;
-
-function showToast(msg, dur = 3000) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
-}
-
-function toDateStr(d) {
-  return d.getFullYear() + '-' +
-    String(d.getMonth() + 1).padStart(2, '0') + '-' +
-    String(d.getDate()).padStart(2, '0');
-}
-
-function formatDate(str) {
-  if (!str) return '—';
-  const [y, m, d] = str.split('-');
-  return `${d}/${m}/${y}`;
-}
-
-function getSelectedZone() {
-  const r = document.querySelector('input[name="zone"]:checked');
-  return r ? r.value : '';
-}
-
-function openAuthFrame(type = "login") {
-  const modal = document.getElementById("authFrameModal");
-  const frame = document.getElementById("authFrame");
-
-  if (!modal || !frame) return;
-
-  if (type === "register") {
-    frame.src = "./pages/auth/register.html";
-  } else {
-    frame.src = "./pages/auth/login.html";
-  }
-
-  modal.classList.add("show");
-}
-
-function closeAuthFrame() {
-  const modal = document.getElementById("authFrameModal");
-  const frame = document.getElementById("authFrame");
-
-  if (!modal || !frame) return;
-
-  modal.classList.remove("show");
-  frame.src = "";
-}
-
-window.openAuthFrame = openAuthFrame;
-window.closeAuthFrame = closeAuthFrame;
-
-
-/* ================================================================
-   INIT
-================================================================ */
-renderCalendar();
+window.renderCalendar = renderCalendar;
+window.renderTimeline = renderTimeline;
+Object.defineProperty(window, 'calSelectedDay', { get: () => calSelectedDay });

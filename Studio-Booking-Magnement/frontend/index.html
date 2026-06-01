@@ -15,52 +15,32 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+SC:wght@300;500;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="./assets/css/global.css"/>
+  
+  <link rel="stylesheet" href="./assets/css/main.css"/>
+  <link rel="stylesheet" href="./features/auth/auth.css"/>
+  <link rel="stylesheet" href="./features/booking/booking.css"/>
+  <link rel="stylesheet" href="./features/admin/admin.css"/>
+
 </head>
 <body>
 
 <!-- ══════════════════════════════════
      SIDEBAR (collapsible)
-══════════════════════════════════ -->
-<aside class="sidebar" id="sidebar">
-  <a class="brand" href="#about">
-    <span class="brand-kep kep-font">"Kép"</span>
-    <span class="brand-sub">Da Space · HCMC</span>
-  </a>
-
-  <nav class="sidebar-nav">
-    <a href="#about"   class="nav-link active"><span class="nav-num">01</span><span class="nav-label"> About Us</span></a>
-    <a href="#zone"    class="nav-link"><span class="nav-num">02</span><span class="nav-label"> Zone</span></a>
-    <a href="#booking" class="nav-link"><span class="nav-num">03</span><span class="nav-label"> Đặt Lịch</span></a>
-  </nav>
-
-  <div class="sidebar-foot">
-    <button class="admin-btn" onclick="openLogin()">
-      <span class="admin-icon">⊞</span>
-      <span class="admin-label"> Admin</span>
-    </button>
-
-    <button class="user-btn" onclick="openAuthFrame('login')">
-      <span class="admin-icon">◎</span>
-      <span class="admin-label"> Đăng nhập</span>
-    </button>
-
-    <span class="copy">© 2025 Kép Studio</span>
-  </div>
-</aside>
+     ══════════════════════════════════ -->
+<div id="sidebar-placeholder"></div>
 
 <!-- ══════════════════════════════════
      MAIN CONTENT
-══════════════════════════════════ -->
+     ══════════════════════════════════ -->
 <main class="main">
 
   <!-- ── HERO / ABOUT US ── -->
   <section id="about" class="hero">
     <div class="hero-slides">
-      <div class="slide active" style="background-image:url('KepDaSpace/intro7.jpg')"></div>
-      <div class="slide"        style="background-image:url('KepDaSpace/intro4.jpg')"></div>
-      <div class="slide"        style="background-image:url('KepDaSpace/intro5.jpg')"></div>
-      <div class="slide"        style="background-image:url('KepDaSpace/intro6.jpg')"></div>
+      <div class="slide active" style="background-image:url('./assets/KepDaSpace/intro7.jpg')"></div>
+      <div class="slide"        style="background-image:url('./assets/KepDaSpace/intro4.jpg')"></div>
+      <div class="slide"        style="background-image:url('./assets/KepDaSpace/intro5.jpg')"></div>
+      <div class="slide"        style="background-image:url('./assets/KepDaSpace/intro6.jpg')"></div>
     </div>
     <div class="hero-overlay"></div>
 
@@ -96,19 +76,19 @@
     </div>
     <div class="studio-grid">
       <div class="studio-card large reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/intro5.jpg')"></div>
+        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro5.jpg')"></div>
         <div class="card-info"><span class="card-tag">Main Hall · 2F</span><span class="card-area">~80 m²</span></div>
       </div>
       <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/intro4.jpg')"></div>
+        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro4.jpg')"></div>
         <div class="card-info"><span class="card-tag">Interior Space</span><span class="card-area">Natural Light</span></div>
       </div>
       <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/intro6.jpg')"></div>
+        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro6.jpg')"></div>
         <div class="card-info"><span class="card-tag">Exterior View</span><span class="card-area">Garden</span></div>
       </div>
       <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('KepDaSpace/intro7.jpg')"></div>
+        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro7.jpg')"></div>
         <div class="card-info"><span class="card-tag">Entrance · Iconic</span><span class="card-area">Brand Sign</span></div>
       </div>
     </div>
@@ -401,19 +381,13 @@
   </section>
 
   <!-- ── FOOTER ── -->
-  <footer class="footer">
-    <div class="footer-brand kep-font">"Kép"</div>
-    <div class="footer-meta">
-      <span>Creative Studio · Ho Chi Minh City</span>
-      <span>© 2025 Kép Studio. All rights reserved.</span>
-    </div>
-  </footer>
+  <div id="footer-placeholder"></div>
 </main>
 
 
 <!-- ══════════════════════════════════
      MODALS
-══════════════════════════════════ -->
+     ══════════════════════════════════ -->
 
 <!-- Zone Lightbox -->
 <div class="modal-overlay" id="zoneLightbox" onclick="closeModal('zoneLightbox')">
@@ -515,7 +489,7 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<script src="./assets/js/global.js"></script>
+<script type="module" src="./assets/js/main.js"></script>
 
 <script>
   function openAuthFrame(type = "login") {
@@ -525,8 +499,8 @@
     if (!modal || !frame) return;
 
     frame.src = type === "register"
-      ? "./pages/auth/register.html"
-      : "./pages/auth/login.html";
+      ? "./features/auth/register.html"
+      : "./features/auth/login.html";
 
     modal.classList.add("show");
   }

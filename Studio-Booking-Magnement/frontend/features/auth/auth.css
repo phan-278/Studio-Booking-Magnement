@@ -1,0 +1,62 @@
+/* ── AUTH MODAL ── */
+.auth-box {
+  max-width: 480px; text-align: left; position: relative;
+}
+.auth-tabs {
+  display: flex; gap: 0; margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.auth-tab {
+  font-family: var(--font-body);
+  font-size: .58rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--warm-grey); background: transparent;
+  border: none; border-bottom: 2px solid transparent;
+  padding: 8px 16px 10px; cursor: pointer; transition: all .3s;
+}
+.auth-tab.active { color: var(--red); border-bottom-color: var(--red); }
+.auth-tab:hover  { color: var(--ink); }
+
+.auth-form { }
+.auth-error {
+  font-family: var(--font-body);
+  font-size: .62rem;          /* nhỏ lại */
+  color: var(--red);
+  margin-bottom: 6px;         /* giảm khoảng cách */
+  padding: 0;                 /* bỏ padding */
+  background: none;           /* bỏ nền */
+  border: none;               /* bỏ viền */
+  line-height: 1.4;
+}
+
+.auth-success {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .62rem;
+  color: #1f8f5f;
+  margin: -4px 0 8px;
+  padding: 0;
+  background: none;
+  border: none;
+  line-height: 1.4;
+}
+
+/* User bar (logged-in state) */
+.user-bar {
+  position: fixed; bottom: 24px; right: 24px; z-index: 900;
+  background: var(--ink); color: var(--cream);
+  padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+  border: 1px solid rgba(237,229,208,.1);
+  font-family: var(--font-body);
+}
+.user-bar-name {
+  font-size: .62rem; letter-spacing: .08em;
+}
+.user-bar-logout {
+  font-family: var(--font-body);
+  font-size: .52rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--red); background: transparent; border: 1px solid var(--red);
+  padding: 4px 10px; cursor: pointer; transition: all .3s;
+}
+.user-bar-logout:hover { background: var(--red); color: #fff; }
+
+
