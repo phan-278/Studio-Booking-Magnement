@@ -99,6 +99,20 @@ body {
 }
 .sidebar:hover .brand-sub { opacity: 1; }
 
+.brand-logo-img {
+  width: 90px;          /* kích thước khi collapsed — chỉnh tuỳ ý */
+  height: auto;
+  display: block;
+  margin-left: -33px; /* căn chỉnh logo khi collapsed — chỉnh tuỳ ý */
+  margin-right: auto;
+  transition: width 0.35s var(--ease), margin 0.35s var(--ease);
+}
+
+.sidebar:hover .brand-logo-img {
+  width: 200px;         /* kích thước khi expanded — chỉnh tuỳ ý */
+  margin: 0 auto;       /* căn giữa khi sidebar mở rộng */
+}
+
 /* Nav */
 .sidebar-nav { display: flex; flex-direction: column; gap: 4px; padding: 0; }
 .nav-link {
@@ -188,10 +202,10 @@ body {
 .hero-label {
   font-family: var(--font-body);
   font-size: .58rem; letter-spacing: .4em;
-  text-transform: uppercase; color: var(--red); margin-bottom: 16px;
+  text-transform: uppercase; color: var(--red); margin-bottom: -100px;
 }
 .hero-title {
-  line-height: .9; margin-bottom: 24px;
+  line-height: .9; margin-bottom: -50px;
 }
 .hero-title .kep-font {
   font-size: clamp(5rem, 14vw, 11rem);

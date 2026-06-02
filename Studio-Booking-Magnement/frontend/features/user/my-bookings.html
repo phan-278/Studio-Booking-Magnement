@@ -3,36 +3,104 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lịch của tôi — Kép Studio</title>
+  <title>Lịch sử đặt lịch — Kép Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/main.css"/>
-  <link rel="stylesheet" href="../../assets/css/dashboard.css"/>
-  <link rel="stylesheet" href="../../assets/css/responsive.css"/>
+  <style>
+    :root{--cream:#EDE5D0;--cream-dark:#DDD3B8;--cream-deep:#CFC3A6;--red:#A31C1C;--red-light:#C42B2B;--red-dim:#7A1515;--ink:#1E1710;--ink-light:#3A2E20;--warm-grey:#8A7D6A;--border:rgba(163,28,28,0.15);--ease:cubic-bezier(0.16,1,0.3,1);--font-brand:'Playfair Display',Georgia,serif;--font-display:'DM Serif Display',Georgia,serif;--font-body:'Be Vietnam Pro',sans-serif;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{font-size:16px;} body{background:var(--cream);color:var(--ink);font-family:var(--font-body);min-height:100vh;}
+    .dash-layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+    .dash-sidebar{background:var(--ink);display:flex;flex-direction:column;padding:32px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+    .dash-brand{padding:0 24px 28px;border-bottom:1px solid rgba(237,229,208,.08);margin-bottom:16px;}
+    .dash-brand-name{font-family:var(--font-brand);font-style:italic;font-weight:700;font-size:1.5rem;color:var(--cream);text-decoration:none;display:block;}
+    .dash-brand-role{font-family:var(--font-body);font-size:.44rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(237,229,208,.3);margin-top:4px;display:block;}
+    .dash-nav{flex:1;}
+    .dash-nav-section{font-family:var(--font-body);font-size:.42rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(237,229,208,.22);padding:16px 24px 7px;}
+    .dash-nav-link{display:flex;align-items:center;gap:10px;padding:11px 24px;font-family:var(--font-body);font-size:.62rem;letter-spacing:.06em;color:rgba(237,229,208,.48);text-decoration:none;transition:all .25s;border-left:2px solid transparent;}
+    .dash-nav-link .nav-icon{font-size:.82rem;opacity:.55;flex-shrink:0;}
+    .dash-nav-link:hover{color:var(--cream);background:rgba(237,229,208,.04);}
+    .dash-nav-link.active{color:var(--cream);border-left-color:var(--red);background:rgba(163,28,28,.14);}
+    .dash-nav-link.active .nav-icon{opacity:1;}
+    .dash-sidebar-footer{padding:20px 24px 0;border-top:1px solid rgba(237,229,208,.08);margin-top:16px;}
+    .dash-user-avatar{width:34px;height:34px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--font-body);font-size:.76rem;font-weight:600;color:#fff;flex-shrink:0;}
+    .dash-user-info{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+    .dash-user-name{font-family:var(--font-body);font-size:.65rem;color:var(--cream);font-weight:500;}
+    .dash-user-email{font-family:var(--font-body);font-size:.5rem;color:rgba(237,229,208,.32);}
+    .dash-logout-btn{width:100%;padding:9px;background:transparent;border:1px solid rgba(237,229,208,.14);color:rgba(237,229,208,.45);font-family:var(--font-body);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
+    .dash-logout-btn:hover{border-color:var(--red);color:var(--red);}
+    .dash-main{display:flex;flex-direction:column;min-height:100vh;}
+    .dash-topbar{background:#fff;border-bottom:1px solid var(--border);padding:16px 36px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+    .dash-page-title{font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:var(--ink);}
+    .dash-action-btn{font-family:var(--font-body);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-block;background:var(--red);color:#fff;border:none;}
+    .dash-action-btn:hover{background:var(--red-dim);}
+    .dash-content{padding:36px;flex:1;}
+
+    /* Filters */
+    .filters-bar{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+    .filter-chip{font-family:var(--font-body);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 15px;border:1px solid var(--border);background:transparent;color:var(--warm-grey);cursor:pointer;transition:all .25s;}
+    .filter-chip.active{background:var(--ink);border-color:var(--ink);color:var(--cream);}
+    .filter-chip:hover:not(.active){border-color:var(--ink);color:var(--ink);}
+
+    /* Booking card */
+    .bk-card{background:#fff;border:1px solid var(--border);padding:24px 26px;margin-bottom:12px;cursor:pointer;transition:border-color .3s,box-shadow .3s;}
+    .bk-card:hover{border-color:var(--cream-deep);box-shadow:0 2px 12px rgba(30,23,16,.06);}
+    .bk-card-header{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;margin-bottom:0;}
+    .bk-code{font-family:var(--font-body);font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:6px;}
+    .bk-zone{font-family:var(--font-brand);font-style:italic;font-weight:700;font-size:1.05rem;color:var(--ink);margin-bottom:5px;}
+    .bk-meta{font-family:var(--font-body);font-size:.63rem;color:var(--warm-grey);line-height:1.9;}
+    .bk-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+    .bk-amount{font-family:var(--font-display);font-style:italic;font-size:1.25rem;color:var(--ink);}
+    .badge{font-family:var(--font-body);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;}
+    .badge-pending{background:rgba(212,160,23,.12);color:#8a6200;}
+    .badge-confirmed{background:rgba(46,125,50,.1);color:#2E7D32;}
+    .badge-rejected{background:rgba(163,28,28,.1);color:var(--red);}
+    .badge-cancelled{background:rgba(138,125,106,.1);color:var(--warm-grey);}
+
+    /* Detail expand */
+    .bk-detail{display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);}
+    .bk-detail.open{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .bk-detail-group{}
+    .bk-detail-label{font-family:var(--font-body);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:10px;}
+    .bk-detail-row{display:flex;justify-content:space-between;font-family:var(--font-body);font-size:.63rem;color:var(--warm-grey);padding:6px 0;border-bottom:1px solid rgba(163,28,28,.05);}
+    .bk-detail-row:last-child{border-bottom:none;}
+    .bk-detail-row strong{color:var(--ink);}
+
+    .bk-toggle-btn{font-family:var(--font-body);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);background:transparent;border:none;cursor:pointer;padding:0;margin-top:8px;display:block;}
+
+    /* Empty */
+    .empty-state{text-align:center;padding:80px 40px;background:#fff;border:1px solid var(--border);}
+    .empty-icon{font-size:2.5rem;opacity:.2;margin-bottom:16px;}
+    .empty-title{font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:var(--warm-grey);margin-bottom:8px;}
+    .empty-sub{font-family:var(--font-body);font-size:.64rem;color:var(--cream-deep);margin-bottom:28px;}
+    .empty-cta{font-family:var(--font-body);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;padding:13px 28px;background:var(--red);color:#fff;border:none;cursor:pointer;text-decoration:none;display:inline-block;}
+
+    @media(max-width:960px){.dash-layout{grid-template-columns:1fr;} .dash-sidebar{display:none;} .bk-detail.open{grid-template-columns:1fr;}}
+  </style>
 </head>
 <body>
 <div class="dash-layout">
   <aside class="dash-sidebar">
     <div class="dash-brand">
       <a class="dash-brand-name" href="../../index.html">"Kép"</a>
-      <span class="dash-brand-role">User Portal</span>
+      <span class="dash-brand-role">Trang cá nhân</span>
     </div>
     <nav class="dash-nav">
       <div class="dash-nav-section">Tổng quan</div>
       <a class="dash-nav-link" href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
       <div class="dash-nav-section">Booking</div>
-      <a class="dash-nav-link" href="../booking/new-booking.html"><span class="nav-icon">＋</span> Đặt lịch mới</a>
-      <a class="dash-nav-link active" href="my-bookings.html"><span class="nav-icon">◷</span> Lịch của tôi</a>
+      <a class="dash-nav-link" href="new-booking.html"><span class="nav-icon">✦</span> Đặt lịch mới</a>
+      <a class="dash-nav-link active" href="my-bookings.html"><span class="nav-icon">◷</span> Lịch sử đặt lịch</a>
       <div class="dash-nav-section">Tài khoản</div>
-      <a class="dash-nav-link" href="profile.html"><span class="nav-icon">◎</span> Hồ sơ</a>
-      <a class="dash-nav-link" href="settings.html"><span class="nav-icon">⚙</span> Cài đặt</a>
+      <a class="dash-nav-link" href="profile.html"><span class="nav-icon">◎</span> Hồ sơ cá nhân</a>
+      <a class="dash-nav-link" href="settings.html"><span class="nav-icon">◫</span> Cài đặt</a>
+      <div class="dash-nav-section">Khác</div>
+      <a class="dash-nav-link" href="../../index.html"><span class="nav-icon">↗</span> Về trang chủ</a>
     </nav>
     <div class="dash-sidebar-footer">
       <div class="dash-user-info">
-        <div class="dash-user-avatar" id="avatarInitials">—</div>
-        <div>
-          <div class="dash-user-name" id="sidebarName">—</div>
-        </div>
+        <div class="dash-user-avatar" id="sbAvatar">K</div>
+        <div><div class="dash-user-name" id="sbName">—</div><div class="dash-user-email" id="sbEmail">—</div></div>
       </div>
       <button class="dash-logout-btn" onclick="doLogout()">Đăng xuất</button>
     </div>
@@ -40,156 +108,95 @@
 
   <div class="dash-main">
     <div class="dash-topbar">
-      <h1 class="dash-page-title">Lịch của tôi</h1>
-      <div class="dash-topbar-actions">
-        <a class="dash-action-btn primary" href="../booking/new-booking.html">+ Đặt lịch mới</a>
-      </div>
+      <h1 class="dash-page-title">Lịch sử đặt lịch</h1>
+      <a class="dash-action-btn" href="new-booking.html">✦ Đặt lịch mới</a>
     </div>
 
     <div class="dash-content">
-      <!-- Filters -->
+      <!-- Filter chips -->
       <div class="filters-bar">
-        <button class="filter-chip active" onclick="setFilter('all',this)">Tất cả</button>
-        <button class="filter-chip" onclick="setFilter('pending',this)">Chờ duyệt</button>
-        <button class="filter-chip" onclick="setFilter('confirmed',this)">Đã xác nhận</button>
-        <button class="filter-chip" onclick="setFilter('rejected',this)">Từ chối</button>
+        <button class="filter-chip active" onclick="filterBk('all',this)">Tất cả</button>
+        <button class="filter-chip" onclick="filterBk('pending',this)">Chờ xác nhận</button>
+        <button class="filter-chip" onclick="filterBk('confirmed',this)">Đã xác nhận</button>
+        <button class="filter-chip" onclick="filterBk('rejected',this)">Từ chối</button>
       </div>
 
-      <div id="bookingsList"></div>
+      <div id="bkList"></div>
     </div>
   </div>
 </div>
-
-<!-- Cancel modal -->
-<div class="dash-modal-overlay" id="cancelModal">
-  <div class="dash-modal-box">
-    <button class="dash-modal-close" onclick="closeCancelModal()">✕</button>
-    <h3 class="dash-modal-title">Hủy booking?</h3>
-    <p style="font-family:var(--font-body);font-size:.68rem;color:var(--warm-grey);margin-bottom:24px;line-height:1.7;">
-      Bạn có chắc muốn hủy booking này không? Hành động này không thể hoàn tác.
-    </p>
-    <div style="display:flex;gap:12px;justify-content:flex-end;">
-      <button onclick="closeCancelModal()" class="tbl-action-btn edit" style="padding:10px 20px;">Không</button>
-      <button onclick="confirmCancel()" class="tbl-action-btn reject" style="padding:10px 20px;">Xác nhận hủy</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-const CURRENT_USER_KEY = 'kep_current_user';
-const BOOKINGS_KEY     = 'kep_bookings';
+const _u = JSON.parse(localStorage.getItem('kep_user') || 'null');
+if (!_u) { window.location.href = '../../index.html'; }
+document.getElementById('sbName').textContent   = (_u?.firstName||'') + ' ' + (_u?.lastName||'');
+document.getElementById('sbEmail').textContent  = _u?.email || '';
+document.getElementById('sbAvatar').textContent = ((_u?.firstName||_u?.name||'K')[0]).toUpperCase();
 
-const user = JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || 'null');
-if (!user) window.location.href = '../auth/login.html';
+function doLogout(){ localStorage.removeItem('kep_user'); window.location.href='../../index.html'; }
 
-let currentFilter = 'all';
-let cancelTarget  = null;
+let activeFilter = 'all';
+const allBk = JSON.parse(localStorage.getItem('kep_bookings')||'[]');
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (!user) return;
-  const initials = user.name.trim().split(/\s+/).map(w => w[0]).slice(0,2).join('').toUpperCase();
-  document.getElementById('avatarInitials').textContent = initials;
-  document.getElementById('sidebarName').textContent    = user.name;
-  renderList();
-});
-
-function getMyBookings() {
-  const all = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
-  return all.filter(b => b.name === user.name || b.phone === user.phone || b.email === user.email);
-}
-
-function setFilter(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+function filterBk(f, btn){
+  activeFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
   renderList();
 }
 
-function renderList() {
-  let bookings = getMyBookings();
-  if (currentFilter !== 'all') bookings = bookings.filter(b => b.status === currentFilter);
-
-  const wrap = document.getElementById('bookingsList');
-
-  if (!bookings.length) {
-    wrap.innerHTML = `<div class="empty-state">
-      <div class="empty-state-icon">◷</div>
-      <div class="empty-state-title">Không có booking nào</div>
-      <div class="empty-state-sub">Thử chọn bộ lọc khác hoặc đặt lịch mới.</div>
-    </div>`;
+function renderList(){
+  const list = document.getElementById('bkList');
+  const bks  = (activeFilter === 'all' ? allBk : allBk.filter(b=>b.status===activeFilter)).reverse();
+  if (!bks.length){
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">◷</div><div class="empty-title">Chưa có booking nào</div><div class="empty-sub">Hãy bắt đầu trải nghiệm không gian sáng tạo của Kép Studio.</div><a class="empty-cta" href="new-booking.html">Đặt lịch ngay →</a></div>`;
     return;
   }
-
-  const STATUS = { pending:'Chờ duyệt', confirmed:'Đã xác nhận', rejected:'Từ chối', cancelled:'Đã hủy' };
-  const BADGE  = { pending:'badge-pending', confirmed:'badge-confirmed', rejected:'badge-rejected', cancelled:'badge-cancelled' };
-
-  wrap.innerHTML = bookings.map(b => {
-    const canCancel = b.status === 'pending';
-    return `
-    <div class="booking-card">
-      <div>
-        <div class="booking-card-code">${b.id}</div>
-        <div class="booking-card-zone">${b.zone || '—'} Zone</div>
-        <div class="booking-card-meta">
-          ${b.date ? formatDate(b.date) : '—'} &nbsp;·&nbsp;
-          ${b.startTime || '—'} — ${endTime(b.startTime, b.duration)} &nbsp;·&nbsp;
-          ${b.duration || '—'}h
+  const bLabel = s=>({pending:'Chờ xác nhận',confirmed:'Đã xác nhận',rejected:'Từ chối',cancelled:'Đã hủy'}[s]||s);
+  list.innerHTML = bks.map((b,i)=>`
+    <div class="bk-card" onclick="toggleDetail(${i})">
+      <div class="bk-card-header">
+        <div>
+          <div class="bk-code">${b.id}</div>
+          <div class="bk-zone">${b.zone}</div>
+          <div class="bk-meta">${b.date||'—'}&nbsp;·&nbsp;${b.startTime||''} – ${b.endTime||''}&nbsp;·&nbsp;${b.duration||'?'} giờ</div>
         </div>
-        ${b.note ? `<div class="booking-card-meta" style="margin-top:4px;font-style:italic;">"${b.note}"</div>` : ''}
+        <div class="bk-right">
+          <div class="bk-amount">${b.total?b.total.toLocaleString()+'K':'TBD'}</div>
+          <span class="badge badge-${b.status}">${bLabel(b.status)}</span>
+        </div>
       </div>
-      <div class="booking-card-right">
-        <div class="booking-card-amount">${b.total ? b.total.toLocaleString() + 'K' : 'Liên hệ'}</div>
-        <span class="badge ${BADGE[b.status] || ''}">${STATUS[b.status] || b.status}</span>
-        ${canCancel ? `<br><button class="tbl-action-btn reject" style="margin-top:8px;" onclick="openCancelModal('${b.id}')">Hủy</button>` : ''}
+      <button class="bk-toggle-btn" id="tbtn${i}">Chi tiết ↓</button>
+      <div class="bk-detail" id="detail${i}">
+        <div class="bk-detail-group">
+          <div class="bk-detail-label">Thời gian & Zone</div>
+          <div class="bk-detail-row"><span>Zone</span><strong>${b.zone}</strong></div>
+          <div class="bk-detail-row"><span>Ngày</span><strong>${b.date||'—'}</strong></div>
+          <div class="bk-detail-row"><span>Bắt đầu</span><strong>${b.startTime||'—'}</strong></div>
+          <div class="bk-detail-row"><span>Kết thúc</span><strong>${b.endTime||'—'}</strong></div>
+          <div class="bk-detail-row"><span>Thời lượng</span><strong>${b.duration||'?'} giờ</strong></div>
+        </div>
+        <div class="bk-detail-group">
+          <div class="bk-detail-label">Chi phí</div>
+          <div class="bk-detail-row"><span>Tổng</span><strong>${b.total?b.total.toLocaleString()+'K':'TBD'}</strong></div>
+          <div class="bk-detail-row"><span>Đặt cọc (30%)</span><strong>${b.deposit?b.deposit.toLocaleString()+'K':'—'}</strong></div>
+          ${b.purpose?`<div class="bk-detail-row"><span>Mục đích</span><strong>${b.purpose}</strong></div>`:''}
+          ${b.note?`<div class="bk-detail-row"><span>Ghi chú</span><strong>${b.note}</strong></div>`:''}
+        </div>
       </div>
-    </div>`;
-  }).join('');
+    </div>
+  `).join('');
 }
 
-function endTime(start, dur) {
-  if (!start || !dur) return '—';
-  const [h, m] = start.split(':').map(Number);
-  return String(h + dur).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+function toggleDetail(i){
+  const d    = document.getElementById('detail'+i);
+  const btn  = document.getElementById('tbtn'+i);
+  const open = d.classList.contains('open');
+  d.classList.toggle('open', !open);
+  btn.textContent = open ? 'Chi tiết ↓' : 'Thu gọn ↑';
 }
 
-function formatDate(str) {
-  if (!str) return '—';
-  const [y, m, d] = str.split('-');
-  return `${d}/${m}/${y}`;
-}
-
-function openCancelModal(id) {
-  cancelTarget = id;
-  document.getElementById('cancelModal').classList.add('open');
-}
-
-function closeCancelModal() {
-  cancelTarget = null;
-  document.getElementById('cancelModal').classList.remove('open');
-}
-
-function confirmCancel() {
-  if (!cancelTarget) return;
-  const bookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
-  const b = bookings.find(x => x.id === cancelTarget);
-  if (b) { b.status = 'cancelled'; localStorage.setItem(BOOKINGS_KEY, JSON.stringify(bookings)); }
-  closeCancelModal();
-  showToast('Đã hủy booking ' + cancelTarget);
-  renderList();
-}
-
-function doLogout() {
-  localStorage.removeItem(CURRENT_USER_KEY);
-  window.location.href = '../../index.html';
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
+renderList();
 </script>
 </body>
 </html>

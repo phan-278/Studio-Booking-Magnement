@@ -188,10 +188,10 @@ body {
 .hero-label {
   font-family: var(--font-body);
   font-size: .58rem; letter-spacing: .4em;
-  text-transform: uppercase; color: var(--red); margin-bottom: 16px;
+  text-transform: uppercase; color: var(--red); margin-bottom: -100px;
 }
 .hero-title {
-  line-height: .9; margin-bottom: 24px;
+  line-height: .9; margin-bottom: -50px;
 }
 .hero-title .kep-font {
   font-size: clamp(5rem, 14vw, 11rem);
@@ -984,6 +984,7 @@ select { appearance: none; cursor: pointer; }
   padding: 4px 10px; cursor: pointer; transition: all .3s;
 }
 .user-bar-logout:hover { background: var(--red); color: #fff; }
+
 
 
 /* ================================================================

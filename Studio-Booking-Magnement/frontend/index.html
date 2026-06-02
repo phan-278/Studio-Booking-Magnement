@@ -46,7 +46,7 @@
 
     <div class="hero-content">
       <p  class="hero-label reveal-up"><b>Creative Studio · For Rent</b></p>
-      <h1 class="hero-title reveal-up"><span class="kep-font">"Kép"</span></h1>
+      <h1 class="hero-title reveal-up"><span class="hero-logo-wrap"><img src="./assets/KepDaSpace/INTRO11.png" alt="Kép" class="hero-logo-img"/></span></h1>
       <p  class="hero-sub   reveal-up"><b>Không gian sáng tạo · Chụp ảnh · Quay phim · Sự kiện</b></p>
       <a  href="#booking"   class="hero-cta reveal-up">Đặt Lịch Ngay →</a>
     </div>
@@ -160,225 +160,666 @@
   </section>
 
   <!-- ══ BOOKING SECTION ══ -->
-  <section class="booking-section" id="booking">
-    <div class="section-header reveal-up">
-      <p class="eyebrow">Đặt Lịch</p>
-      <h2 class="sec-title">Book Studio</h2>
+  <!-- ================================================================
+   PHẦN ĐẶT LỊCH — index.html
+   Thay thế toàn bộ booking section cũ
+   Dán vào section id="booking" trong index.html
+================================================================ -->
+<section class="booking-section" id="booking">
+
+  <!-- Decorative background texture -->
+  <div class="booking-bg-pattern" aria-hidden="true">
+    <span class="bp-line bp-line-1"></span>
+    <span class="bp-line bp-line-2"></span>
+    <span class="bp-line bp-line-3"></span>
+  </div>
+
+  <div class="booking-cta-wrap">
+
+    <!-- Label -->
+    <p class="booking-eyebrow">Đặt lịch</p>
+
+    <!-- Heading -->
+    <h2 class="booking-cta-heading">
+      <em>Không gian của bạn</em><br>
+      đang chờ
+    </h2>
+
+    <!-- Subtext -->
+    <p class="booking-cta-sub">
+      O Zone · C Zone · Full House<br>
+      <span>Chụp ảnh · Quay phim · Workshop · Event thương mại</span>
+    </p>
+
+    <!-- Availability pills -->
+    <div class="booking-avail-row">
+      <span class="avail-pill avail-open">
+        <span class="avail-dot"></span> O Zone — Còn trống
+      </span>
+      <span class="avail-pill avail-open">
+        <span class="avail-dot"></span> C Zone — Còn trống
+      </span>
+      <span class="avail-pill avail-busy">
+        <span class="avail-dot"></span> Full House — Liên hệ
+      </span>
     </div>
 
-    <div class="booking-layout">
+    <!-- Main CTA button -->
+    <button class="booking-main-cta" onclick="handleBookingCTA()">
+      <span class="cta-text">Đặt lịch ngay</span>
+      <span class="cta-arrow">→</span>
+    </button>
 
-      <!-- ── LEFT: Calendar Panel ── -->
-      <div class="cal-panel reveal-up">
-        <div class="mini-cal">
-          <div class="cal-header">
-            <button class="cal-nav-btn" onclick="calPrev()">←</button>
-            <span class="cal-month-title" id="calTitle"></span>
-            <button class="cal-nav-btn" onclick="calNext()">→</button>
-          </div>
-          <div class="cal-weekdays" id="calWeekdays"></div>
-          <div class="cal-days"     id="calDays"></div>
-        </div>
+    <!-- Fine print -->
+    <p class="booking-fine-print">Yêu cầu đăng nhập · Xác nhận trong 24h · Đặt cọc 30%</p>
 
-        <div class="timeline-zone-tabs">
-          <button class="tz-tab active" data-zone="O" onclick="switchTimelineZone('O',this)">O Zone · 1F</button>
-          <button class="tz-tab" data-zone="C" onclick="switchTimelineZone('C',this)">C Zone · 2F</button>
-          <button class="tz-tab" data-zone="Full" onclick="switchTimelineZone('Full',this)">Full House</button>
-        </div>
+  </div>
 
-        <div class="timeline-wrap" id="timelineWrap">
-          <div class="timeline-label">Chọn một ngày để xem lịch theo giờ</div>
-        </div>
-
-        <div class="cal-legend">
-          <div class="legend-item"><span class="dot dot-avail"></span> Còn trống</div>
-          <div class="legend-item"><span class="dot dot-pending"></span> Đang chờ</div>
-          <div class="legend-item"><span class="dot dot-confirmed"></span> Đã xác nhận</div>
-        </div>
-
-        <div class="cal-notes">
-          <p>✦ OT tính trọn giờ — không tính 30/45 phút</p>
-          <p>✦ Đặt cọc 50% trong 24h để giữ lịch</p>
-          <p>✦ Xác nhận trong vòng 2 giờ làm việc</p>
-        </div>
-      </div>
-
-      <!-- ── RIGHT: Booking Form ── -->
-      <div class="form-panel reveal-up">
-        <div class="steps-bar">
-          <div class="step-item active" id="sp1"><span class="step-num">1</span><span class="step-lbl">Zone</span></div>
-          <div class="step-divider"></div>
-          <div class="step-item" id="sp2"><span class="step-num">2</span><span class="step-lbl">Thời Gian</span></div>
-          <div class="step-divider"></div>
-          <div class="step-item" id="sp3"><span class="step-num">3</span><span class="step-lbl">Thiết Bị</span></div>
-          <div class="step-divider"></div>
-          <div class="step-item" id="sp4"><span class="step-num">4</span><span class="step-lbl">Thông Tin</span></div>
-          <div class="step-divider"></div>
-          <div class="step-item" id="sp5"><span class="step-num">5</span><span class="step-lbl">Xác Nhận</span></div>
-        </div>
-
-        <!-- STEP 1 -->
-        <div class="form-step active" id="fs1">
-          <h3 class="step-title">Chọn khu vực</h3>
-          <div class="zone-radio-group">
-            <label class="zone-radio">
-              <input type="radio" name="zone" value="O" onchange="onZoneChange()">
-              <div class="zone-radio-card">
-                <div class="zr-floor">1F</div>
-                <div class="zr-name kep-font">"O" Zone</div>
-                <div class="zr-price">600K / 2h</div>
-              </div>
-            </label>
-            <label class="zone-radio">
-              <input type="radio" name="zone" value="C" onchange="onZoneChange()">
-              <div class="zone-radio-card">
-                <div class="zr-floor">2F</div>
-                <div class="zr-name kep-font">"C" Zone</div>
-                <div class="zr-price">500K / 2h</div>
-              </div>
-            </label>
-            <label class="zone-radio">
-              <input type="radio" name="zone" value="Full" onchange="onZoneChange()">
-              <div class="zone-radio-card">
-                <div class="zr-floor">✦</div>
-                <div class="zr-name kep-font">Full House</div>
-                <div class="zr-price">Liên hệ</div>
-              </div>
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label>Mục đích chụp</label>
-            <div class="tag-group">
-              <button type="button" class="tag-btn" onclick="toggleTag(this)">Photography</button>
-              <button type="button" class="tag-btn" onclick="toggleTag(this)">Videography</button>
-              <button type="button" class="tag-btn" onclick="toggleTag(this)">Fashion</button>
-              <button type="button" class="tag-btn" onclick="toggleTag(this)">Beauty / Makeup</button>
-              <button type="button" class="tag-btn" onclick="toggleTag(this)">Event / Workshop</button>
-              <button type="button" class="tag-btn" onclick="toggleTag(this)">Khác</button>
-            </div>
-          </div>
-          <div class="form-nav">
-            <button type="button" class="btn-next" onclick="goStep(2)">Tiếp Theo →</button>
-          </div>
-        </div>
-
-        <!-- STEP 2 -->
-        <div class="form-step" id="fs2">
-          <h3 class="step-title">Chọn ngày & giờ</h3>
-          <div class="form-group">
-            <label>Ngày</label>
-            <input type="date" id="fDate" onchange="onDateChange()"/>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Giờ bắt đầu</label>
-              <div class="select-wrap">
-                <select id="fStart" onchange="onTimeChange()">
-                  <option value="">-- Chọn giờ --</option>
-                  <option>08:00</option><option>09:00</option><option>10:00</option>
-                  <option>11:00</option><option>12:00</option><option>13:00</option>
-                  <option>14:00</option><option>15:00</option><option>16:00</option>
-                  <option>17:00</option><option>18:00</option><option>19:00</option>
-                  <option>20:00</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Giờ kết thúc</label>
-              <div class="select-wrap">
-                <select id="fEnd" onchange="onTimeChange()">
-                  <option value="">-- Chọn giờ --</option>
-                  <option>09:00</option><option>10:00</option><option>11:00</option>
-                  <option>12:00</option><option>13:00</option><option>14:00</option>
-                  <option>15:00</option><option>16:00</option><option>17:00</option>
-                  <option>18:00</option><option>19:00</option><option>20:00</option>
-                  <option>21:00</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="duration-info" id="durationInfo" style="display:none"></div>
-          <div class="conflict-warn" id="conflictWarn" style="display:none">
-            ⚠ Khung giờ này đã có lịch. Vui lòng chọn khung giờ khác.
-          </div>
-          <div class="form-nav">
-            <button type="button" class="btn-prev" onclick="goStep(1)">← Quay lại</button>
-            <button type="button" class="btn-next" onclick="goStep(3)">Tiếp Theo →</button>
-          </div>
-        </div>
-
-        <!-- STEP 3 -->
-        <div class="form-step" id="fs3">
-          <h3 class="step-title">Thiết bị thuê thêm <span style="opacity:.5;font-size:.8em;">(tuỳ chọn)</span></h3>
-          <div class="equip-list">
-            <div class="equip-item" data-key="softbox" data-price="200" onclick="toggleEquip(this)">
-              <div class="equip-check">✓</div>
-              <span class="equip-label">2× Đèn 300W Softbox</span>
-              <span class="equip-price">+200K</span>
-            </div>
-            <div class="equip-item" data-key="spotlight" data-price="150" onclick="toggleEquip(this)">
-              <div class="equip-check">✓</div>
-              <span class="equip-label">1× Đèn 500W Spotlight</span>
-              <span class="equip-price">+150K</span>
-            </div>
-            <div class="equip-item" data-key="backdrop" data-price="100" onclick="toggleEquip(this)">
-              <div class="equip-check">✓</div>
-              <span class="equip-label">Backdrop trơn (trắng / đen / xám)</span>
-              <span class="equip-price">+100K</span>
-            </div>
-            <div class="equip-item" data-key="reflector" data-price="50" onclick="toggleEquip(this)">
-              <div class="equip-check">✓</div>
-              <span class="equip-label">Reflector 5-in-1</span>
-              <span class="equip-price">+50K</span>
-            </div>
-            <div class="equip-item" data-key="screen" data-price="120" onclick="toggleEquip(this)">
-              <div class="equip-check">✓</div>
-              <span class="equip-label">Màn hình LED 55" + tripod</span>
-              <span class="equip-price">+120K</span>
-            </div>
-          </div>
-          <div class="form-nav">
-            <button type="button" class="btn-prev" onclick="goStep(2)">← Quay lại</button>
-            <button type="button" class="btn-next" onclick="goStep(4)">Tiếp Theo →</button>
-          </div>
-        </div>
-
-        <!-- STEP 4 -->
-        <div class="form-step" id="fs4">
-          <h3 class="step-title">Thông tin liên hệ</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Họ tên *</label>
-              <input type="text" id="fName" placeholder="Nguyễn Văn A"/>
-            </div>
-            <div class="form-group">
-              <label>SĐT / Zalo *</label>
-              <input type="tel" id="fPhone" placeholder="0xxx xxx xxx"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Ghi chú</label>
-            <textarea id="fNote" placeholder="Số người, yêu cầu đặc biệt…"></textarea>
-          </div>
-          <div class="form-nav">
-            <button type="button" class="btn-prev" onclick="goStep(3)">← Quay lại</button>
-            <button type="button" class="btn-next" onclick="goStep(5)">Xem Tổng Kết →</button>
-          </div>
-        </div>
-
-        <!-- STEP 5 -->
-        <div class="form-step" id="fs5">
-          <h3 class="step-title">Xác nhận đặt lịch</h3>
-          <div class="summary-box" id="summaryBox"></div>
-          <div class="form-nav">
-            <button type="button" class="btn-prev" onclick="goStep(4)">← Quay lại</button>
-            <button type="button" class="btn-submit" onclick="submitBooking()">Xác Nhận & Đặt Lịch ✦</button>
-          </div>
-        </div>
-      </div>
+  <!-- Info strip -->
+  <div class="booking-info-strip">
+    <div class="bi-item">
+      <span class="bi-num">600K</span>
+      <span class="bi-label">O Zone / 2 giờ</span>
     </div>
-  </section>
+    <div class="bi-divider"></div>
+    <div class="bi-item">
+      <span class="bi-num">500K</span>
+      <span class="bi-label">C Zone / 2 giờ</span>
+    </div>
+    <div class="bi-divider"></div>
+    <div class="bi-item">
+      <span class="bi-num">7AM</span>
+      <span class="bi-label">Mở cửa sớm nhất</span>
+    </div>
+    <div class="bi-divider"></div>
+    <div class="bi-item">
+      <span class="bi-num">10PM</span>
+      <span class="bi-label">Đóng cửa muộn nhất</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- Auth Gate Modal — hiện khi chưa đăng nhập -->
+<div class="auth-gate-overlay" id="authGateOverlay" onclick="closeAuthGate(event)">
+  <div class="auth-gate-box" onclick="event.stopPropagation()">
+
+    <button class="auth-gate-close" onclick="closeAuthGate()">&times;</button>
+
+    <div class="auth-gate-brand">
+      <span class="auth-gate-brand-name">"Kép"</span>
+      <span class="auth-gate-brand-sub">Studio</span>
+    </div>
+
+    <h3 class="auth-gate-title">Đăng nhập để đặt lịch</h3>
+    <p class="auth-gate-sub">Tạo tài khoản miễn phí hoặc đăng nhập để bắt đầu đặt không gian sáng tạo của bạn.</p>
+
+    <!-- Tabs -->
+    <div class="auth-gate-tabs">
+      <button class="agt-tab active" onclick="switchGateTab('login', this)">Đăng nhập</button>
+      <button class="agt-tab" onclick="switchGateTab('register', this)">Đăng kí</button>
+    </div>
+
+    <!-- Login Form -->
+    <div class="agt-form active" id="gateFormLogin">
+      <div class="agt-field">
+        <label>Email</label>
+        <input type="email" id="gateEmail" placeholder="ten@email.com" autocomplete="email"/>
+      </div>
+      <div class="agt-field">
+        <label>Mật khẩu</label>
+        <input type="password" id="gatePw" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <p class="agt-msg error" id="gateMsgLogin"></p>
+      <button class="agt-submit" onclick="doGateLogin()">Đăng nhập & đặt lịch →</button>
+    </div>
+
+    <!-- Register Form -->
+    <div class="agt-form" id="gateFormRegister">
+      <div class="agt-row-2">
+        <div class="agt-field">
+          <label>Họ</label>
+          <input type="text" id="regLastName" placeholder="Nguyễn" />
+        </div>
+        <div class="agt-field">
+          <label>Tên</label>
+          <input type="text" id="regFirstName" placeholder="Minh" />
+        </div>
+      </div>
+      <div class="agt-field">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="ten@email.com" />
+      </div>
+      <div class="agt-field">
+        <label>Số điện thoại</label>
+        <input type="tel" id="regPhone" placeholder="0901 234 567" />
+      </div>
+      <div class="agt-field">
+        <label>Mật khẩu</label>
+        <input type="password" id="regPw" placeholder="Tối thiểu 8 ký tự" />
+      </div>
+      <p class="agt-msg error" id="gateMsgRegister"></p>
+      <button class="agt-submit" onclick="doGateRegister()">Tạo tài khoản & đặt lịch →</button>
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* ================================================================
+   BOOKING SECTION — index.html inline styles
+   (hoặc chuyển vào main.css / booking.css)
+================================================================ */
+
+/* ── Section ── */
+.booking-section {
+  position: relative;
+  background: var(--ink);
+  padding: 0;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Decorative lines */
+.booking-bg-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bp-line {
+  position: absolute;
+  background: rgba(237,229,208,.04);
+}
+
+.bp-line-1 { left: 18%; top: 0; bottom: 0; width: 1px; }
+.bp-line-2 { left: 50%; top: 0; bottom: 0; width: 1px; }
+.bp-line-3 { left: 78%; top: 0; bottom: 0; width: 1px; }
+
+/* ── Main content ── */
+.booking-cta-wrap {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+}
+
+/* Eyebrow */
+.booking-eyebrow {
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.booking-eyebrow::before,
+.booking-eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--red);
+  opacity: .5;
+}
+
+/* Heading */
+.booking-cta-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5.2rem);
+  color: var(--cream);
+  line-height: 1.12;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+.booking-cta-heading em {
+  font-style: italic;
+  color: var(--cream-deep);
+}
+
+/* Subtext */
+.booking-cta-sub {
+  font-family: var(--font-body);
+  font-size: .72rem;
+  color: rgba(237,229,208,.45);
+  line-height: 2;
+  margin-bottom: 40px;
+  letter-spacing: .04em;
+}
+
+.booking-cta-sub span {
+  display: block;
+  font-size: .6rem;
+  color: rgba(237,229,208,.3);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Availability pills */
+.booking-avail-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 52px;
+}
+
+.avail-pill {
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid rgba(237,229,208,.15);
+  color: rgba(237,229,208,.55);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.avail-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.avail-open .avail-dot { background: #4caf7d; animation: blink 2.5s ease-in-out infinite; }
+.avail-busy .avail-dot { background: #d4a017; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* Main CTA button */
+.booking-main-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 52px;
+  background: var(--red);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: .64rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #fff;
+  transition: background .3s, letter-spacing .4s var(--ease), gap .3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.booking-main-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,.06);
+  transform: translateX(-101%);
+  transition: transform .4s var(--ease);
+}
+
+.booking-main-cta:hover::before { transform: translateX(0); }
+.booking-main-cta:hover { letter-spacing: .3em; gap: 26px; background: var(--red-dim); }
+
+.cta-text { position: relative; z-index: 1; }
+.cta-arrow { font-size: .9rem; position: relative; z-index: 1; transition: transform .3s var(--ease); }
+.booking-main-cta:hover .cta-arrow { transform: translateX(6px); }
+
+/* Fine print */
+.booking-fine-print {
+  margin-top: 24px;
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .1em;
+  color: rgba(237,229,208,.2);
+}
+
+/* ── Info strip ── */
+.booking-info-strip {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(237,229,208,.08);
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+  align-items: center;
+  padding: 0;
+}
+
+.bi-item {
+  padding: 32px 40px;
+  text-align: center;
+}
+
+.bi-num {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.bi-label {
+  font-family: var(--font-body);
+  font-size: .48rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(237,229,208,.3);
+}
+
+.bi-divider {
+  height: 40px;
+  width: 1px;
+  background: rgba(237,229,208,.08);
+}
+
+/* ================================================================
+   AUTH GATE MODAL
+================================================================ */
+.auth-gate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30,23,16,.75);
+  backdrop-filter: blur(6px);
+  z-index: 5000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-gate-overlay.open { display: flex; }
+
+.auth-gate-box {
+  background: var(--cream);
+  width: 100%;
+  max-width: 420px;
+  padding: 44px 40px 40px;
+  position: relative;
+  animation: slideUp .4s var(--ease);
+}
+
+@keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.auth-gate-close {
+  position: absolute;
+  top: 16px; right: 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--warm-grey);
+  width: 28px; height: 28px;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: all .25s;
+}
+
+.auth-gate-close:hover { border-color: var(--red); color: var(--red); }
+
+.auth-gate-brand {
+  margin-bottom: 24px;
+}
+
+.auth-gate-brand-name {
+  display: block;
+  font-family: var(--font-brand);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.auth-gate-brand-sub {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .46rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  margin-top: 4px;
+}
+
+.auth-gate-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.auth-gate-sub {
+  font-family: var(--font-body);
+  font-size: .63rem;
+  color: var(--warm-grey);
+  line-height: 1.7;
+  margin-bottom: 26px;
+}
+
+/* Tabs */
+.auth-gate-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 26px;
+}
+
+.agt-tab {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: .54rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 0 10px;
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.agt-tab.active { color: var(--red); border-bottom-color: var(--red); }
+.agt-tab:hover:not(.active) { color: var(--ink); }
+
+/* Forms */
+.agt-form { display: none; }
+.agt-form.active { display: block; }
+
+.agt-field {
+  margin-bottom: 16px;
+}
+
+.agt-field label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  margin-bottom: 6px;
+}
+
+.agt-field input {
+  width: 100%;
+  padding: 11px 13px;
+  background: var(--cream-dark);
+  border: 1px solid var(--border);
+  font-family: var(--font-body);
+  font-size: .74rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .25s, background .25s;
+}
+
+.agt-field input:focus {
+  border-color: var(--red);
+  background: #fff;
+}
+
+.agt-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.agt-msg {
+  font-family: var(--font-body);
+  font-size: .6rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.agt-msg.error { color: var(--red); }
+.agt-msg.success { color: #2E7D32; }
+
+.agt-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background .3s, letter-spacing .3s var(--ease);
+  margin-top: 6px;
+}
+
+.agt-submit:hover { background: var(--red-dim); letter-spacing: .28em; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .booking-info-strip { grid-template-columns: 1fr 1fr; }
+  .bi-divider { display: none; }
+  .bi-item { padding: 24px 20px; }
+  .booking-cta-wrap { padding: 80px 24px 60px; }
+  .auth-gate-box { padding: 36px 24px 32px; }
+}
+</style>
+
+<script>
+/* ── Booking CTA Gate Logic ── */
+
+function handleBookingCTA() {
+  // Kiểm tra đã đăng nhập chưa (dùng localStorage key của app)
+  const user = localStorage.getItem('kep_user');
+  if (user) {
+    // Đã đăng nhập → đi thẳng trang new booking
+    window.location.href = './features/user/new-booking.html';
+  } else {
+    // Chưa → mở auth gate
+    document.getElementById('authGateOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeAuthGate(e) {
+  if (e && e.target !== document.getElementById('authGateOverlay')) return;
+  document.getElementById('authGateOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchGateTab(tab, btn) {
+  document.querySelectorAll('.agt-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.agt-form').forEach(f => f.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('gateForm' + (tab === 'login' ? 'Login' : 'Register')).classList.add('active');
+}
+
+function doGateLogin() {
+  const email = document.getElementById('gateEmail').value.trim();
+  const pw    = document.getElementById('gatePw').value;
+  const msg   = document.getElementById('gateMsgLogin');
+
+  msg.style.display = 'none';
+
+  if (!email || !pw) {
+    msg.textContent = 'Vui lòng nhập đầy đủ email và mật khẩu.';
+    msg.style.display = 'block';
+    return;
+  }
+
+  // Kiểm tra user đã đăng kí (lưu trong localStorage)
+  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
+  const found = users.find(u => u.email === email && u.pw === pw);
+
+  if (!found) {
+    msg.textContent = 'Email hoặc mật khẩu không đúng.';
+    msg.style.display = 'block';
+    return;
+  }
+
+  // Lưu session
+  localStorage.setItem('kep_user', JSON.stringify(found));
+  document.getElementById('authGateOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  window.location.href = './features/user/new-booking.html';
+}
+
+function doGateRegister() {
+  const lastName  = document.getElementById('regLastName').value.trim();
+  const firstName = document.getElementById('regFirstName').value.trim();
+  const email     = document.getElementById('regEmail').value.trim();
+  const phone     = document.getElementById('regPhone').value.trim();
+  const pw        = document.getElementById('regPw').value;
+  const msg       = document.getElementById('gateMsgRegister');
+
+  msg.style.display = 'none';
+
+  if (!lastName || !firstName || !email || !phone || !pw) {
+    msg.textContent = 'Vui lòng điền đầy đủ thông tin.';
+    msg.style.display = 'block';
+    return;
+  }
+
+  if (pw.length < 8) {
+    msg.textContent = 'Mật khẩu tối thiểu 8 ký tự.';
+    msg.style.display = 'block';
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
+  if (users.find(u => u.email === email)) {
+    msg.textContent = 'Email này đã được đăng kí.';
+    msg.style.display = 'block';
+    return;
+  }
+
+  const newUser = {
+    id: 'u_' + Date.now(),
+    lastName, firstName,
+    name: firstName + ' ' + lastName,
+    email, phone, pw,
+    dob: '', createdAt: new Date().toISOString()
+  };
+
+  users.push(newUser);
+  localStorage.setItem('kep_users', JSON.stringify(users));
+  localStorage.setItem('kep_user', JSON.stringify(newUser));
+
+  document.getElementById('authGateOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  window.location.href = './features/user/new-booking.html';
+}
+</script>
 
   <!-- ── FOOTER ── -->
   <div id="footer-placeholder"></div>
