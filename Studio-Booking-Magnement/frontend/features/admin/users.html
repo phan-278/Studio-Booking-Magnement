@@ -471,7 +471,7 @@ function executeDelete() {
 }
 
 function formatDate(str) { if(!str) return '—'; const [y,m,d] = str.split('-'); return `${d}/${m}/${y}`; }
-function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html'; }
+function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html?logout=true'; }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
 function renderAll() { renderStats(); renderTopUsers(); renderTable(); }

@@ -583,7 +583,7 @@ function renderTopQuarters() {
 
 function doAdminLogout() {
   localStorage.removeItem('kep_admin_auth');
-  window.location.href = '../../index.html';
+  window.location.href = '../../index.html?logout=true';
 }
 function showToast(msg) {
   const t = document.getElementById('toast');

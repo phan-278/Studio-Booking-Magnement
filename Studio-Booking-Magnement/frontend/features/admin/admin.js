@@ -1,28 +1,29 @@
-import { getBookings, updateBookingStatus } from '../../services/api.js';
+import { getBookings, updateBookingStatus, _currentUserProfile } from '../../services/api.js';
 import { formatDate, openModal, closeModal, showToast } from '../../utils/helpers.js';
 
 /* ==========
    9. ADMIN PANEL
 ================================================================ */
-const ADMIN_PASSWORD = 'kep2025';
 let adminFilter = 'all';
 
-function openLogin() { openModal('loginModal'); }
+function openLogin() {
+  if (_currentUserProfile && _currentUserProfile.role === 'admin') {
+    openAdminPanel();
+  } else {
+    if (!_currentUserProfile) {
+      showToast('Vui lòng đăng nhập tài khoản Admin');
+      if (typeof window.openAuthFrame === 'function') {
+        window.openAuthFrame('login');
+      }
+    } else {
+      showToast('Tài khoản của bạn không có quyền truy cập Admin');
+    }
+  }
+}
 
 function tryLogin() {
-  const pw = document.getElementById('adminPw').value;
-
-  if (pw === ADMIN_PASSWORD) {
-    localStorage.setItem('kep_admin_auth', '1');
-
-    closeModal('loginModal');
-    document.getElementById('adminPw').value = '';
-    document.getElementById('loginError').style.display = 'none';
-
-    window.location.href = './features/admin/index.html';
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-  }
+  // Legacy function for password modal, no longer needed as we use Supabase Auth
+  openLogin();
 }
 
 function openAdminPanel() {

@@ -3,17 +3,56 @@ import { supabase } from './supabase-config.js';
 let _bookings = [];
 let _users    = [];
 export let _currentUser = null;
+export let _currentUserProfile = null;
 
 export async function fetchInitialData() {
+  // Check for logout query parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('logout')) {
+    await supabase.auth.signOut();
+    localStorage.removeItem('kep_admin_auth');
+    window.history.replaceState({}, document.title, window.location.pathname);
+    window.location.reload();
+    return;
+  }
+
   const { data: userResp } = await supabase.auth.getUser()
   if (userResp.user) {
     _currentUser = userResp.user;
+    
+    // Fetch user profile role from profiles table
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', _currentUser.id)
+      .single();
+      
+    if (profile) {
+      _currentUserProfile = profile;
+      if (_currentUserProfile.role === 'admin') {
+        localStorage.setItem('kep_admin_auth', '1');
+      } else {
+        localStorage.removeItem('kep_admin_auth');
+      }
+    } else {
+      localStorage.removeItem('kep_admin_auth');
+    }
+
     const userBar = document.getElementById('userBar');
     const userBarName = document.getElementById('userBarName');
     if (userBar && userBarName) {
       userBar.style.display = 'flex';
-      userBarName.textContent = userResp.user.user_metadata?.full_name || userResp.user.email;
+      userBarName.textContent = _currentUserProfile?.full_name || _currentUser.user_metadata?.full_name || _currentUser.email;
     }
+    
+    // Hide login button in sidebar
+    const userBtn = document.querySelector('.user-btn');
+    if (userBtn) {
+      userBtn.style.display = 'none';
+    }
+  } else {
+    // If not logged in on Supabase, clear admin auth to sync
+    localStorage.removeItem('kep_admin_auth');
   }
 
   const { data: bookings } = await supabase.from('bookings').select('*');

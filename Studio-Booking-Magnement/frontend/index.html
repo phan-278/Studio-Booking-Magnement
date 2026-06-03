@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kép — Studio for Rent</title>
 
   <!-- 
@@ -13,952 +14,1068 @@
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+SC:wght@300;500;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+SC:wght@300;500;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet">
 
-  
-  <link rel="stylesheet" href="./assets/css/main.css"/>
-  <link rel="stylesheet" href="./features/auth/auth.css"/>
-  <link rel="stylesheet" href="./features/booking/booking.css"/>
-  <link rel="stylesheet" href="./features/admin/admin.css"/>
+
+  <link rel="stylesheet" href="./assets/css/main.css" />
+  <link rel="stylesheet" href="./features/auth/auth.css" />
+  <link rel="stylesheet" href="./features/booking/booking.css" />
+  <link rel="stylesheet" href="./features/admin/admin.css" />
 
 </head>
+
 <body>
 
-<!-- ══════════════════════════════════
+  <!-- ══════════════════════════════════
      SIDEBAR (collapsible)
      ══════════════════════════════════ -->
-<div id="sidebar-placeholder"></div>
+  <div id="sidebar-placeholder"></div>
 
-<!-- ══════════════════════════════════
+  <!-- ══════════════════════════════════
      MAIN CONTENT
      ══════════════════════════════════ -->
-<main class="main">
+  <main class="main">
 
-  <!-- ── HERO / ABOUT US ── -->
-  <section id="about" class="hero">
-    <div class="hero-slides">
-      <div class="slide active" style="background-image:url('./assets/KepDaSpace/intro7.jpg')"></div>
-      <div class="slide"        style="background-image:url('./assets/KepDaSpace/intro4.jpg')"></div>
-      <div class="slide"        style="background-image:url('./assets/KepDaSpace/intro5.jpg')"></div>
-      <div class="slide"        style="background-image:url('./assets/KepDaSpace/intro6.jpg')"></div>
-    </div>
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-      <p  class="hero-label reveal-up"><b>Creative Studio · For Rent</b></p>
-      <h1 class="hero-title reveal-up"><span class="hero-logo-wrap"><img src="./assets/KepDaSpace/INTRO11.png" alt="Kép" class="hero-logo-img"/></span></h1>
-      <p  class="hero-sub   reveal-up"><b>Không gian sáng tạo · Chụp ảnh · Quay phim · Sự kiện</b></p>
-      <a  href="#booking"   class="hero-cta reveal-up">Đặt Lịch Ngay →</a>
-    </div>
-
-    <div class="slide-controls">
-      <button class="slide-btn" onclick="prevSlide()">←</button>
-      <div id="slideDots" class="slide-dots"></div>
-      <button class="slide-btn" onclick="nextSlide()">→</button>
-    </div>
-    <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
-  </section>
-
-  <!-- ── MARQUEE ── -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp; Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
-      <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp; Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
-    </div>
-  </div>
-
-  <!-- ── STUDIO GALLERY ── -->
-  <section class="section-wrap" id="studio">
-    <div class="section-header reveal-up">
-      <p class="eyebrow">Không Gian</p>
-      <h2 class="sec-title">Góc Nhìn Studio</h2>
-      <p class="sec-desc">Không gian brutalist, ánh sáng tự nhiên — nền hoàn hảo cho mọi concept sáng tạo.</p>
-    </div>
-    <div class="studio-grid">
-      <div class="studio-card large reveal-up">
-        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro5.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Main Hall · 2F</span><span class="card-area">~80 m²</span></div>
+    <!-- ── HERO / ABOUT US ── -->
+    <section id="about" class="hero">
+      <div class="hero-slides">
+        <div class="slide active" style="background-image:url('./assets/KepDaSpace/intro7.jpg')"></div>
+        <div class="slide" style="background-image:url('./assets/KepDaSpace/intro4.jpg')"></div>
+        <div class="slide" style="background-image:url('./assets/KepDaSpace/intro5.jpg')"></div>
+        <div class="slide" style="background-image:url('./assets/KepDaSpace/intro6.jpg')"></div>
       </div>
-      <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro4.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Interior Space</span><span class="card-area">Natural Light</span></div>
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <p class="hero-label reveal-up"><b>Creative Studio · For Rent</b></p>
+        <h1 class="hero-title reveal-up"><span class="hero-logo-wrap"><img src="./assets/KepDaSpace/INTRO11.png"
+              alt="Kép" class="hero-logo-img" /></span></h1>
+        <p class="hero-sub   reveal-up"><b>Không gian sáng tạo · Chụp ảnh · Quay phim · Sự kiện</b></p>
+        <a href="#booking" class="hero-cta reveal-up">Đặt Lịch Ngay →</a>
       </div>
-      <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro6.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Exterior View</span><span class="card-area">Garden</span></div>
+
+      <div class="slide-controls">
+        <button class="slide-btn" onclick="prevSlide()">←</button>
+        <div id="slideDots" class="slide-dots"></div>
+        <button class="slide-btn" onclick="nextSlide()">→</button>
       </div>
-      <div class="studio-card reveal-up">
-        <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro7.jpg')"></div>
-        <div class="card-info"><span class="card-tag">Entrance · Iconic</span><span class="card-area">Brand Sign</span></div>
+      <div class="hero-scroll">
+        <div class="scroll-line"></div><span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ── MARQUEE ── -->
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp;
+          Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
+        <span>Studio cho thuê &nbsp;·&nbsp; Photography &nbsp;·&nbsp; Videography &nbsp;·&nbsp; Fashion &nbsp;·&nbsp;
+          Events &nbsp;·&nbsp; HCMC &nbsp;·&nbsp;</span>
       </div>
     </div>
-  </section>
 
-  <!-- ══ ZONE SECTION ══ -->
-  <section class="section-wrap alt" id="zone">
-    <div class="section-header reveal-up">
-      <p class="eyebrow">Các Khu Vực</p>
-      <h2 class="sec-title">Chọn Không Gian</h2>
-      <p class="sec-desc">Nhấn vào từng khu vực để xem hình ảnh và thông tin chi tiết.</p>
-    </div>
-
-    <div class="zones-grid">
-      <!-- O Zone -->
-      <div class="zone-card reveal-up" onclick="openZoneLightbox('O')">
-        <div class="zone-preview zone-preview-empty">
-          <div class="zone-preview-label kep-font">"O" Zone</div>
+    <!-- ── STUDIO GALLERY ── -->
+    <section class="section-wrap" id="studio">
+      <div class="section-header reveal-up">
+        <p class="eyebrow">Không Gian</p>
+        <h2 class="sec-title">Góc Nhìn Studio</h2>
+        <p class="sec-desc">Không gian brutalist, ánh sáng tự nhiên — nền hoàn hảo cho mọi concept sáng tạo.</p>
+      </div>
+      <div class="studio-grid">
+        <div class="studio-card large reveal-up">
+          <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro5.jpg')"></div>
+          <div class="card-info"><span class="card-tag">Main Hall · 2F</span><span class="card-area">~80 m²</span></div>
         </div>
-        <div class="zone-body">
-          <div class="zone-num">1F</div>
-          <h3 class="zone-name kep-font">"O" Zone</h3>
-          <p class="zone-desc">Sảnh chính rộng với cột bê tông, ánh sáng tự nhiên từ cửa sổ vòm.</p>
-          <ul class="zone-list">
-            <li>~80 m² · Điện 3 pha</li>
-            <li>Máy lạnh · Wifi tốc độ cao</li>
-            <li>600K/2h · 250K/h thêm</li>
-          </ul>
-          <div class="zone-cta">Xem hình ảnh →</div>
+        <div class="studio-card reveal-up">
+          <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro4.jpg')"></div>
+          <div class="card-info"><span class="card-tag">Interior Space</span><span class="card-area">Natural
+              Light</span></div>
+        </div>
+        <div class="studio-card reveal-up">
+          <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro6.jpg')"></div>
+          <div class="card-info"><span class="card-tag">Exterior View</span><span class="card-area">Garden</span></div>
+        </div>
+        <div class="studio-card reveal-up">
+          <div class="card-img" style="background-image:url('./assets/KepDaSpace/intro7.jpg')"></div>
+          <div class="card-info"><span class="card-tag">Entrance · Iconic</span><span class="card-area">Brand
+              Sign</span></div>
         </div>
       </div>
+    </section>
 
-      <!-- C Zone -->
-      <div class="zone-card reveal-up" onclick="openZoneLightbox('C')">
-        <div class="zone-preview zone-preview-empty">
-          <div class="zone-preview-label kep-font">"C" Zone</div>
-        </div>
-        <div class="zone-body">
-          <div class="zone-num">2F</div>
-          <h3 class="zone-name kep-font">"C" Zone</h3>
-          <p class="zone-desc">Tầng thượng private, makeup 3 gương, phòng thay đồ, rèm lụa mờ.</p>
-          <ul class="zone-list">
-            <li>Makeup zone 3 gương</li>
-            <li>Khu thay đồ riêng</li>
-            <li>500K/2h · 200K/h thêm</li>
-          </ul>
-          <div class="zone-cta">Xem hình ảnh →</div>
-        </div>
+    <!-- ══ ZONE SECTION ══ -->
+    <section class="section-wrap alt" id="zone">
+      <div class="section-header reveal-up">
+        <p class="eyebrow">Các Khu Vực</p>
+        <h2 class="sec-title">Chọn Không Gian</h2>
+        <p class="sec-desc">Nhấn vào từng khu vực để xem hình ảnh và thông tin chi tiết.</p>
       </div>
 
-      <!-- Full House -->
-      <div class="zone-card reveal-up" onclick="openZoneLightbox('Full')">
-        <div class="zone-preview zone-preview-empty">
-          <div class="zone-preview-label kep-font">Full House</div>
+      <div class="zones-grid">
+        <!-- O Zone -->
+        <div class="zone-card reveal-up" onclick="openZoneLightbox('O')">
+          <div class="zone-preview zone-preview-empty">
+            <div class="zone-preview-label kep-font">"O" Zone</div>
+          </div>
+          <div class="zone-body">
+            <div class="zone-num">1F</div>
+            <h3 class="zone-name kep-font">"O" Zone</h3>
+            <p class="zone-desc">Sảnh chính rộng với cột bê tông, ánh sáng tự nhiên từ cửa sổ vòm.</p>
+            <ul class="zone-list">
+              <li>~80 m² · Điện 3 pha</li>
+              <li>Máy lạnh · Wifi tốc độ cao</li>
+              <li>600K/2h · 250K/h thêm</li>
+            </ul>
+            <div class="zone-cta">Xem hình ảnh →</div>
+          </div>
         </div>
-        <div class="zone-body">
-          <div class="zone-num">✦</div>
-          <h3 class="zone-name kep-font">Full House</h3>
-          <p class="zone-desc">Thuê trọn 2 tầng cho production lớn, workshop hoặc pop-up event.</p>
-          <ul class="zone-list">
-            <li>Cả 2 tầng · Setup support</li>
-            <li>Ưu tiên giờ cao điểm</li>
-            <li>Giá thương lượng</li>
-          </ul>
-          <div class="zone-cta">Xem hình ảnh →</div>
+
+        <!-- C Zone -->
+        <div class="zone-card reveal-up" onclick="openZoneLightbox('C')">
+          <div class="zone-preview zone-preview-empty">
+            <div class="zone-preview-label kep-font">"C" Zone</div>
+          </div>
+          <div class="zone-body">
+            <div class="zone-num">2F</div>
+            <h3 class="zone-name kep-font">"C" Zone</h3>
+            <p class="zone-desc">Tầng thượng private, makeup 3 gương, phòng thay đồ, rèm lụa mờ.</p>
+            <ul class="zone-list">
+              <li>Makeup zone 3 gương</li>
+              <li>Khu thay đồ riêng</li>
+              <li>500K/2h · 200K/h thêm</li>
+            </ul>
+            <div class="zone-cta">Xem hình ảnh →</div>
+          </div>
+        </div>
+
+        <!-- Full House -->
+        <div class="zone-card reveal-up" onclick="openZoneLightbox('Full')">
+          <div class="zone-preview zone-preview-empty">
+            <div class="zone-preview-label kep-font">Full House</div>
+          </div>
+          <div class="zone-body">
+            <div class="zone-num">✦</div>
+            <h3 class="zone-name kep-font">Full House</h3>
+            <p class="zone-desc">Thuê trọn 2 tầng cho production lớn, workshop hoặc pop-up event.</p>
+            <ul class="zone-list">
+              <li>Cả 2 tầng · Setup support</li>
+              <li>Ưu tiên giờ cao điểm</li>
+              <li>Giá thương lượng</li>
+            </ul>
+            <div class="zone-cta">Xem hình ảnh →</div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ══ BOOKING SECTION ══ -->
-  <!-- ================================================================
+    <!-- ══ BOOKING SECTION ══ -->
+    <!-- ================================================================
    PHẦN ĐẶT LỊCH — index.html
    Thay thế toàn bộ booking section cũ
    Dán vào section id="booking" trong index.html
 ================================================================ -->
-<section class="booking-section" id="booking">
+    <section class="booking-section" id="booking">
 
-  <!-- Decorative background texture -->
-  <div class="booking-bg-pattern" aria-hidden="true">
-    <span class="bp-line bp-line-1"></span>
-    <span class="bp-line bp-line-2"></span>
-    <span class="bp-line bp-line-3"></span>
-  </div>
-
-  <div class="booking-cta-wrap">
-
-    <!-- Label -->
-    <p class="booking-eyebrow">Đặt lịch</p>
-
-    <!-- Heading -->
-    <h2 class="booking-cta-heading">
-      <em>Không gian của bạn</em><br>
-      đang chờ
-    </h2>
-
-    <!-- Subtext -->
-    <p class="booking-cta-sub">
-      O Zone · C Zone · Full House<br>
-      <span>Chụp ảnh · Quay phim · Workshop · Event thương mại</span>
-    </p>
-
-    <!-- Availability pills -->
-    <div class="booking-avail-row">
-      <span class="avail-pill avail-open">
-        <span class="avail-dot"></span> O Zone — Còn trống
-      </span>
-      <span class="avail-pill avail-open">
-        <span class="avail-dot"></span> C Zone — Còn trống
-      </span>
-      <span class="avail-pill avail-busy">
-        <span class="avail-dot"></span> Full House — Liên hệ
-      </span>
-    </div>
-
-    <!-- Main CTA button -->
-    <button class="booking-main-cta" onclick="handleBookingCTA()">
-      <span class="cta-text">Đặt lịch ngay</span>
-      <span class="cta-arrow">→</span>
-    </button>
-
-    <!-- Fine print -->
-    <p class="booking-fine-print">Yêu cầu đăng nhập · Xác nhận trong 24h · Đặt cọc 30%</p>
-
-  </div>
-
-  <!-- Info strip -->
-  <div class="booking-info-strip">
-    <div class="bi-item">
-      <span class="bi-num">600K</span>
-      <span class="bi-label">O Zone / 2 giờ</span>
-    </div>
-    <div class="bi-divider"></div>
-    <div class="bi-item">
-      <span class="bi-num">500K</span>
-      <span class="bi-label">C Zone / 2 giờ</span>
-    </div>
-    <div class="bi-divider"></div>
-    <div class="bi-item">
-      <span class="bi-num">7AM</span>
-      <span class="bi-label">Mở cửa sớm nhất</span>
-    </div>
-    <div class="bi-divider"></div>
-    <div class="bi-item">
-      <span class="bi-num">10PM</span>
-      <span class="bi-label">Đóng cửa muộn nhất</span>
-    </div>
-  </div>
-
-</section>
-
-<!-- Auth Gate Modal — hiện khi chưa đăng nhập -->
-<div class="auth-gate-overlay" id="authGateOverlay" onclick="closeAuthGate(event)">
-  <div class="auth-gate-box" onclick="event.stopPropagation()">
-
-    <button class="auth-gate-close" onclick="closeAuthGate()">&times;</button>
-
-    <div class="auth-gate-brand">
-      <span class="auth-gate-brand-name">"Kép"</span>
-      <span class="auth-gate-brand-sub">Studio</span>
-    </div>
-
-    <h3 class="auth-gate-title">Đăng nhập để đặt lịch</h3>
-    <p class="auth-gate-sub">Tạo tài khoản miễn phí hoặc đăng nhập để bắt đầu đặt không gian sáng tạo của bạn.</p>
-
-    <!-- Tabs -->
-    <div class="auth-gate-tabs">
-      <button class="agt-tab active" onclick="switchGateTab('login', this)">Đăng nhập</button>
-      <button class="agt-tab" onclick="switchGateTab('register', this)">Đăng kí</button>
-    </div>
-
-    <!-- Login Form -->
-    <div class="agt-form active" id="gateFormLogin">
-      <div class="agt-field">
-        <label>Email</label>
-        <input type="email" id="gateEmail" placeholder="ten@email.com" autocomplete="email"/>
+      <!-- Decorative background texture -->
+      <div class="booking-bg-pattern" aria-hidden="true">
+        <span class="bp-line bp-line-1"></span>
+        <span class="bp-line bp-line-2"></span>
+        <span class="bp-line bp-line-3"></span>
       </div>
-      <div class="agt-field">
-        <label>Mật khẩu</label>
-        <input type="password" id="gatePw" placeholder="••••••••" autocomplete="current-password"/>
-      </div>
-      <p class="agt-msg error" id="gateMsgLogin"></p>
-      <button class="agt-submit" onclick="doGateLogin()">Đăng nhập & đặt lịch →</button>
-    </div>
 
-    <!-- Register Form -->
-    <div class="agt-form" id="gateFormRegister">
-      <div class="agt-row-2">
-        <div class="agt-field">
-          <label>Họ</label>
-          <input type="text" id="regLastName" placeholder="Nguyễn" />
+      <div class="booking-cta-wrap">
+
+        <!-- Label -->
+        <p class="booking-eyebrow">Đặt lịch</p>
+
+        <!-- Heading -->
+        <h2 class="booking-cta-heading">
+          <em>Không gian của bạn</em><br>
+          đang chờ
+        </h2>
+
+        <!-- Subtext -->
+        <p class="booking-cta-sub">
+          O Zone · C Zone · Full House<br>
+          <span>Chụp ảnh · Quay phim · Workshop · Event thương mại</span>
+        </p>
+
+        <!-- Availability pills -->
+        <div class="booking-avail-row">
+          <span class="avail-pill avail-open">
+            <span class="avail-dot"></span> O Zone — Còn trống
+          </span>
+          <span class="avail-pill avail-open">
+            <span class="avail-dot"></span> C Zone — Còn trống
+          </span>
+          <span class="avail-pill avail-busy">
+            <span class="avail-dot"></span> Full House — Liên hệ
+          </span>
         </div>
-        <div class="agt-field">
-          <label>Tên</label>
-          <input type="text" id="regFirstName" placeholder="Minh" />
+
+        <!-- Main CTA button -->
+        <button class="booking-main-cta" onclick="handleBookingCTA()">
+          <span class="cta-text">Đặt lịch ngay</span>
+          <span class="cta-arrow">→</span>
+        </button>
+
+        <!-- Fine print -->
+        <p class="booking-fine-print">Yêu cầu đăng nhập · Xác nhận trong 24h · Đặt cọc 30%</p>
+
+      </div>
+
+      <!-- Info strip -->
+      <div class="booking-info-strip">
+        <div class="bi-item">
+          <span class="bi-num">600K</span>
+          <span class="bi-label">O Zone / 2 giờ</span>
+        </div>
+        <div class="bi-divider"></div>
+        <div class="bi-item">
+          <span class="bi-num">500K</span>
+          <span class="bi-label">C Zone / 2 giờ</span>
+        </div>
+        <div class="bi-divider"></div>
+        <div class="bi-item">
+          <span class="bi-num">7AM</span>
+          <span class="bi-label">Mở cửa sớm nhất</span>
+        </div>
+        <div class="bi-divider"></div>
+        <div class="bi-item">
+          <span class="bi-num">10PM</span>
+          <span class="bi-label">Đóng cửa muộn nhất</span>
         </div>
       </div>
-      <div class="agt-field">
-        <label>Email</label>
-        <input type="email" id="regEmail" placeholder="ten@email.com" />
+
+    </section>
+
+    <!-- Auth Gate Modal — hiện khi chưa đăng nhập -->
+    <div class="auth-gate-overlay" id="authGateOverlay" onclick="closeAuthGate(event)">
+      <div class="auth-gate-box" onclick="event.stopPropagation()">
+
+        <button class="auth-gate-close" onclick="closeAuthGate()">&times;</button>
+
+        <div class="auth-gate-brand">
+          <span class="auth-gate-brand-name">"Kép"</span>
+          <span class="auth-gate-brand-sub">Studio</span>
+        </div>
+
+        <h3 class="auth-gate-title">Đăng nhập để đặt lịch</h3>
+        <p class="auth-gate-sub">Tạo tài khoản miễn phí hoặc đăng nhập để bắt đầu đặt không gian sáng tạo của bạn.</p>
+
+        <!-- Tabs -->
+        <div class="auth-gate-tabs">
+          <button class="agt-tab active" onclick="switchGateTab('login', this)">Đăng nhập</button>
+          <button class="agt-tab" onclick="switchGateTab('register', this)">Đăng kí</button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="agt-form active" id="gateFormLogin">
+          <div class="agt-field">
+            <label>Email</label>
+            <input type="email" id="gateEmail" placeholder="mail@email.com" autocomplete="email" />
+          </div>
+          <div class="agt-field">
+            <label>Mật khẩu</label>
+            <input type="password" id="gatePw" placeholder="••••••••" autocomplete="current-password" />
+          </div>
+          <p class="agt-msg error" id="gateMsgLogin"></p>
+          <button class="agt-submit" onclick="doGateLogin()">Đăng nhập & đặt lịch →</button>
+        </div>
+
+        <!-- Register Form -->
+        <div class="agt-form" id="gateFormRegister">
+          <div class="agt-row-2">
+            <div class="agt-field">
+              <label>Họ</label>
+              <input type="text" id="regLastName" placeholder="Nguyễn" />
+            </div>
+            <div class="agt-field">
+              <label>Tên</label>
+              <input type="text" id="regFirstName" placeholder="A" />
+            </div>
+          </div>
+          <div class="agt-field">
+            <label>Email</label>
+            <input type="email" id="regEmail" placeholder="ten@email.com" />
+          </div>
+          <div class="agt-field">
+            <label>Số điện thoại</label>
+            <input type="tel" id="regPhone" placeholder="0901 234 567" />
+          </div>
+          <div class="agt-field">
+            <label>Mật khẩu</label>
+            <input type="password" id="regPw" placeholder="Tối thiểu 8 ký tự" />
+          </div>
+          <p class="agt-msg error" id="gateMsgRegister"></p>
+          <button class="agt-submit" onclick="doGateRegister()">Tạo tài khoản & đặt lịch →</button>
+        </div>
+
       </div>
-      <div class="agt-field">
-        <label>Số điện thoại</label>
-        <input type="tel" id="regPhone" placeholder="0901 234 567" />
-      </div>
-      <div class="agt-field">
-        <label>Mật khẩu</label>
-        <input type="password" id="regPw" placeholder="Tối thiểu 8 ký tự" />
-      </div>
-      <p class="agt-msg error" id="gateMsgRegister"></p>
-      <button class="agt-submit" onclick="doGateRegister()">Tạo tài khoản & đặt lịch →</button>
     </div>
 
-  </div>
-</div>
-
-<style>
-/* ================================================================
+    <style>
+      /* ================================================================
    BOOKING SECTION — index.html inline styles
    (hoặc chuyển vào main.css / booking.css)
 ================================================================ */
 
-/* ── Section ── */
-.booking-section {
-  position: relative;
-  background: var(--ink);
-  padding: 0;
-  overflow: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
+      /* ── Section ── */
+      .booking-section {
+        position: relative;
+        background: var(--ink);
+        padding: 0;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-/* Decorative lines */
-.booking-bg-pattern {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
+      /* Decorative lines */
+      .booking-bg-pattern {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
 
-.bp-line {
-  position: absolute;
-  background: rgba(237,229,208,.04);
-}
+      .bp-line {
+        position: absolute;
+        background: rgba(237, 229, 208, .04);
+      }
 
-.bp-line-1 { left: 18%; top: 0; bottom: 0; width: 1px; }
-.bp-line-2 { left: 50%; top: 0; bottom: 0; width: 1px; }
-.bp-line-3 { left: 78%; top: 0; bottom: 0; width: 1px; }
+      .bp-line-1 {
+        left: 18%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+      }
 
-/* ── Main content ── */
-.booking-cta-wrap {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 120px 40px 80px;
-}
+      .bp-line-2 {
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+      }
 
-/* Eyebrow */
-.booking-eyebrow {
-  font-family: var(--font-body);
-  font-size: .5rem;
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+      .bp-line-3 {
+        left: 78%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+      }
 
-.booking-eyebrow::before,
-.booking-eyebrow::after {
-  content: '';
-  display: inline-block;
-  width: 32px;
-  height: 1px;
-  background: var(--red);
-  opacity: .5;
-}
+      /* ── Main content ── */
+      .booking-cta-wrap {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 40px 80px;
+      }
 
-/* Heading */
-.booking-cta-heading {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 7vw, 5.2rem);
-  color: var(--cream);
-  line-height: 1.12;
-  margin-bottom: 28px;
-  letter-spacing: -0.01em;
-}
+      /* Eyebrow */
+      .booking-eyebrow {
+        font-family: var(--font-body);
+        font-size: .5rem;
+        letter-spacing: .32em;
+        text-transform: uppercase;
+        color: var(--red);
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
-.booking-cta-heading em {
-  font-style: italic;
-  color: var(--cream-deep);
-}
+      .booking-eyebrow::before,
+      .booking-eyebrow::after {
+        content: '';
+        display: inline-block;
+        width: 32px;
+        height: 1px;
+        background: var(--red);
+        opacity: .5;
+      }
 
-/* Subtext */
-.booking-cta-sub {
-  font-family: var(--font-body);
-  font-size: .72rem;
-  color: rgba(237,229,208,.45);
-  line-height: 2;
-  margin-bottom: 40px;
-  letter-spacing: .04em;
-}
+      /* Heading */
+      .booking-cta-heading {
+        font-family: var(--font-display);
+        font-size: clamp(2.8rem, 7vw, 5.2rem);
+        color: var(--cream);
+        line-height: 1.12;
+        margin-bottom: 28px;
+        letter-spacing: -0.01em;
+      }
 
-.booking-cta-sub span {
-  display: block;
-  font-size: .6rem;
-  color: rgba(237,229,208,.3);
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  margin-top: 4px;
-}
+      .booking-cta-heading em {
+        font-style: italic;
+        color: var(--cream-deep);
+      }
 
-/* Availability pills */
-.booking-avail-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 52px;
-}
+      /* Subtext */
+      .booking-cta-sub {
+        font-family: var(--font-body);
+        font-size: .72rem;
+        color: rgba(237, 229, 208, .45);
+        line-height: 2;
+        margin-bottom: 40px;
+        letter-spacing: .04em;
+      }
 
-.avail-pill {
-  font-family: var(--font-body);
-  font-size: .5rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border: 1px solid rgba(237,229,208,.15);
-  color: rgba(237,229,208,.55);
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
+      .booking-cta-sub span {
+        display: block;
+        font-size: .6rem;
+        color: rgba(237, 229, 208, .3);
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
 
-.avail-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+      /* Availability pills */
+      .booking-avail-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 52px;
+      }
 
-.avail-open .avail-dot { background: #4caf7d; animation: blink 2.5s ease-in-out infinite; }
-.avail-busy .avail-dot { background: #d4a017; }
+      .avail-pill {
+        font-family: var(--font-body);
+        font-size: .5rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        padding: 6px 14px;
+        border: 1px solid rgba(237, 229, 208, .15);
+        color: rgba(237, 229, 208, .55);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
 
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+      .avail-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
 
-/* Main CTA button */
-.booking-main-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 18px;
-  padding: 20px 52px;
-  background: var(--red);
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: .64rem;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: #fff;
-  transition: background .3s, letter-spacing .4s var(--ease), gap .3s;
-  position: relative;
-  overflow: hidden;
-}
+      .avail-open .avail-dot {
+        background: #4caf7d;
+        animation: blink 2.5s ease-in-out infinite;
+      }
 
-.booking-main-cta::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,.06);
-  transform: translateX(-101%);
-  transition: transform .4s var(--ease);
-}
+      .avail-busy .avail-dot {
+        background: #d4a017;
+      }
 
-.booking-main-cta:hover::before { transform: translateX(0); }
-.booking-main-cta:hover { letter-spacing: .3em; gap: 26px; background: var(--red-dim); }
+      @keyframes blink {
 
-.cta-text { position: relative; z-index: 1; }
-.cta-arrow { font-size: .9rem; position: relative; z-index: 1; transition: transform .3s var(--ease); }
-.booking-main-cta:hover .cta-arrow { transform: translateX(6px); }
+        0%,
+        100% {
+          opacity: 1
+        }
 
-/* Fine print */
-.booking-fine-print {
-  margin-top: 24px;
-  font-family: var(--font-body);
-  font-size: .5rem;
-  letter-spacing: .1em;
-  color: rgba(237,229,208,.2);
-}
+        50% {
+          opacity: .3
+        }
+      }
 
-/* ── Info strip ── */
-.booking-info-strip {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid rgba(237,229,208,.08);
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
-  align-items: center;
-  padding: 0;
-}
+      /* Main CTA button */
+      .booking-main-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 18px;
+        padding: 20px 52px;
+        background: var(--red);
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        font-size: .64rem;
+        letter-spacing: .22em;
+        text-transform: uppercase;
+        color: #fff;
+        transition: background .3s, letter-spacing .4s var(--ease), gap .3s;
+        position: relative;
+        overflow: hidden;
+      }
 
-.bi-item {
-  padding: 32px 40px;
-  text-align: center;
-}
+      .booking-main-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, .06);
+        transform: translateX(-101%);
+        transition: transform .4s var(--ease);
+      }
 
-.bi-num {
-  display: block;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 2rem;
-  color: var(--cream);
-  line-height: 1;
-  margin-bottom: 8px;
-}
+      .booking-main-cta:hover::before {
+        transform: translateX(0);
+      }
 
-.bi-label {
-  font-family: var(--font-body);
-  font-size: .48rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: rgba(237,229,208,.3);
-}
+      .booking-main-cta:hover {
+        letter-spacing: .3em;
+        gap: 26px;
+        background: var(--red-dim);
+      }
 
-.bi-divider {
-  height: 40px;
-  width: 1px;
-  background: rgba(237,229,208,.08);
-}
+      .cta-text {
+        position: relative;
+        z-index: 1;
+      }
 
-/* ================================================================
+      .cta-arrow {
+        font-size: .9rem;
+        position: relative;
+        z-index: 1;
+        transition: transform .3s var(--ease);
+      }
+
+      .booking-main-cta:hover .cta-arrow {
+        transform: translateX(6px);
+      }
+
+      /* Fine print */
+      .booking-fine-print {
+        margin-top: 24px;
+        font-family: var(--font-body);
+        font-size: .5rem;
+        letter-spacing: .1em;
+        color: rgba(237, 229, 208, .2);
+      }
+
+      /* ── Info strip ── */
+      .booking-info-strip {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid rgba(237, 229, 208, .08);
+        display: grid;
+        grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+        align-items: center;
+        padding: 0;
+      }
+
+      .bi-item {
+        padding: 32px 40px;
+        text-align: center;
+      }
+
+      .bi-num {
+        display: block;
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 2rem;
+        color: var(--cream);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .bi-label {
+        font-family: var(--font-body);
+        font-size: .48rem;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: rgba(237, 229, 208, .3);
+      }
+
+      .bi-divider {
+        height: 40px;
+        width: 1px;
+        background: rgba(237, 229, 208, .08);
+      }
+
+      /* ================================================================
    AUTH GATE MODAL
 ================================================================ */
-.auth-gate-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(30,23,16,.75);
-  backdrop-filter: blur(6px);
-  z-index: 5000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+      .auth-gate-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(30, 23, 16, .75);
+        backdrop-filter: blur(6px);
+        z-index: 5000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
 
-.auth-gate-overlay.open { display: flex; }
+      .auth-gate-overlay.open {
+        display: flex;
+      }
 
-.auth-gate-box {
-  background: var(--cream);
-  width: 100%;
-  max-width: 420px;
-  padding: 44px 40px 40px;
-  position: relative;
-  animation: slideUp .4s var(--ease);
-}
+      .auth-gate-box {
+        background: var(--cream);
+        width: 100%;
+        max-width: 420px;
+        padding: 44px 40px 40px;
+        position: relative;
+        animation: slideUp .4s var(--ease);
+      }
 
-@keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      @keyframes slideUp {
+        from {
+          transform: translateY(24px);
+          opacity: 0;
+        }
 
-.auth-gate-close {
-  position: absolute;
-  top: 16px; right: 18px;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--warm-grey);
-  width: 28px; height: 28px;
-  font-size: 1rem;
-  cursor: pointer;
-  line-height: 1;
-  transition: all .25s;
-}
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
 
-.auth-gate-close:hover { border-color: var(--red); color: var(--red); }
+      .auth-gate-close {
+        position: absolute;
+        top: 16px;
+        right: 18px;
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--warm-grey);
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+        cursor: pointer;
+        line-height: 1;
+        transition: all .25s;
+      }
 
-.auth-gate-brand {
-  margin-bottom: 24px;
-}
+      .auth-gate-close:hover {
+        border-color: var(--red);
+        color: var(--red);
+      }
 
-.auth-gate-brand-name {
-  display: block;
-  font-family: var(--font-brand);
-  font-style: italic;
-  font-size: 1.6rem;
-  color: var(--ink);
-  line-height: 1;
-}
+      .auth-gate-brand {
+        margin-bottom: 24px;
+      }
 
-.auth-gate-brand-sub {
-  display: block;
-  font-family: var(--font-body);
-  font-size: .46rem;
-  letter-spacing: .26em;
-  text-transform: uppercase;
-  color: var(--warm-grey);
-  margin-top: 4px;
-}
+      .auth-gate-brand-name {
+        display: block;
+        font-family: var(--font-brand);
+        font-style: italic;
+        font-size: 1.6rem;
+        color: var(--ink);
+        line-height: 1;
+      }
 
-.auth-gate-title {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.15rem;
-  color: var(--ink);
-  margin-bottom: 8px;
-}
+      .auth-gate-brand-sub {
+        display: block;
+        font-family: var(--font-body);
+        font-size: .46rem;
+        letter-spacing: .26em;
+        text-transform: uppercase;
+        color: var(--warm-grey);
+        margin-top: 4px;
+      }
 
-.auth-gate-sub {
-  font-family: var(--font-body);
-  font-size: .63rem;
-  color: var(--warm-grey);
-  line-height: 1.7;
-  margin-bottom: 26px;
-}
+      .auth-gate-title {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.15rem;
+        color: var(--ink);
+        margin-bottom: 8px;
+      }
 
-/* Tabs */
-.auth-gate-tabs {
-  display: flex;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 26px;
-}
+      .auth-gate-sub {
+        font-family: var(--font-body);
+        font-size: .63rem;
+        color: var(--warm-grey);
+        line-height: 1.7;
+        margin-bottom: 26px;
+      }
 
-.agt-tab {
-  flex: 1;
-  font-family: var(--font-body);
-  font-size: .54rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--warm-grey);
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  padding: 8px 0 10px;
-  cursor: pointer;
-  transition: all .25s;
-}
+      /* Tabs */
+      .auth-gate-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 26px;
+      }
 
-.agt-tab.active { color: var(--red); border-bottom-color: var(--red); }
-.agt-tab:hover:not(.active) { color: var(--ink); }
+      .agt-tab {
+        flex: 1;
+        font-family: var(--font-body);
+        font-size: .54rem;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        color: var(--warm-grey);
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid transparent;
+        padding: 8px 0 10px;
+        cursor: pointer;
+        transition: all .25s;
+      }
 
-/* Forms */
-.agt-form { display: none; }
-.agt-form.active { display: block; }
+      .agt-tab.active {
+        color: var(--red);
+        border-bottom-color: var(--red);
+      }
 
-.agt-field {
-  margin-bottom: 16px;
-}
+      .agt-tab:hover:not(.active) {
+        color: var(--ink);
+      }
 
-.agt-field label {
-  display: block;
-  font-family: var(--font-body);
-  font-size: .5rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--warm-grey);
-  margin-bottom: 6px;
-}
+      /* Forms */
+      .agt-form {
+        display: none;
+      }
 
-.agt-field input {
-  width: 100%;
-  padding: 11px 13px;
-  background: var(--cream-dark);
-  border: 1px solid var(--border);
-  font-family: var(--font-body);
-  font-size: .74rem;
-  color: var(--ink);
-  outline: none;
-  transition: border-color .25s, background .25s;
-}
+      .agt-form.active {
+        display: block;
+      }
 
-.agt-field input:focus {
-  border-color: var(--red);
-  background: #fff;
-}
+      .agt-field {
+        margin-bottom: 16px;
+      }
 
-.agt-row-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+      .agt-field label {
+        display: block;
+        font-family: var(--font-body);
+        font-size: .5rem;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+        color: var(--warm-grey);
+        margin-bottom: 6px;
+      }
 
-.agt-msg {
-  font-family: var(--font-body);
-  font-size: .6rem;
-  line-height: 1.5;
-  margin-bottom: 10px;
-  display: none;
-}
+      .agt-field input {
+        width: 100%;
+        padding: 11px 13px;
+        background: var(--cream-dark);
+        border: 1px solid var(--border);
+        font-family: var(--font-body);
+        font-size: .74rem;
+        color: var(--ink);
+        outline: none;
+        transition: border-color .25s, background .25s;
+      }
 
-.agt-msg.error { color: var(--red); }
-.agt-msg.success { color: #2E7D32; }
+      .agt-field input:focus {
+        border-color: var(--red);
+        background: #fff;
+      }
 
-.agt-submit {
-  width: 100%;
-  padding: 14px;
-  background: var(--red);
-  color: #fff;
-  font-family: var(--font-body);
-  font-size: .58rem;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  transition: background .3s, letter-spacing .3s var(--ease);
-  margin-top: 6px;
-}
+      .agt-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
 
-.agt-submit:hover { background: var(--red-dim); letter-spacing: .28em; }
+      .agt-msg {
+        font-family: var(--font-body);
+        font-size: .6rem;
+        line-height: 1.5;
+        margin-bottom: 10px;
+        display: none;
+      }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .booking-info-strip { grid-template-columns: 1fr 1fr; }
-  .bi-divider { display: none; }
-  .bi-item { padding: 24px 20px; }
-  .booking-cta-wrap { padding: 80px 24px 60px; }
-  .auth-gate-box { padding: 36px 24px 32px; }
-}
-</style>
+      .agt-msg.error {
+        color: var(--red);
+      }
 
-<script>
-/* ── Booking CTA Gate Logic ── */
+      .agt-msg.success {
+        color: #2E7D32;
+      }
 
-function handleBookingCTA() {
-  // Kiểm tra đã đăng nhập chưa (dùng localStorage key của app)
-  const user = localStorage.getItem('kep_user');
-  if (user) {
-    // Đã đăng nhập → đi thẳng trang new booking
-    window.location.href = './features/user/new-booking.html';
-  } else {
-    // Chưa → mở auth gate
-    document.getElementById('authGateOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-}
+      .agt-submit {
+        width: 100%;
+        padding: 14px;
+        background: var(--red);
+        color: #fff;
+        font-family: var(--font-body);
+        font-size: .58rem;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        transition: background .3s, letter-spacing .3s var(--ease);
+        margin-top: 6px;
+      }
 
-function closeAuthGate(e) {
-  if (e && e.target !== document.getElementById('authGateOverlay')) return;
-  document.getElementById('authGateOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
+      .agt-submit:hover {
+        background: var(--red-dim);
+        letter-spacing: .28em;
+      }
 
-function switchGateTab(tab, btn) {
-  document.querySelectorAll('.agt-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.agt-form').forEach(f => f.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('gateForm' + (tab === 'login' ? 'Login' : 'Register')).classList.add('active');
-}
+      /* Responsive */
+      @media (max-width: 768px) {
+        .booking-info-strip {
+          grid-template-columns: 1fr 1fr;
+        }
 
-function doGateLogin() {
-  const email = document.getElementById('gateEmail').value.trim();
-  const pw    = document.getElementById('gatePw').value;
-  const msg   = document.getElementById('gateMsgLogin');
+        .bi-divider {
+          display: none;
+        }
 
-  msg.style.display = 'none';
+        .bi-item {
+          padding: 24px 20px;
+        }
 
-  if (!email || !pw) {
-    msg.textContent = 'Vui lòng nhập đầy đủ email và mật khẩu.';
-    msg.style.display = 'block';
-    return;
-  }
+        .booking-cta-wrap {
+          padding: 80px 24px 60px;
+        }
 
-  // Kiểm tra user đã đăng kí (lưu trong localStorage)
-  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
-  const found = users.find(u => u.email === email && u.pw === pw);
+        .auth-gate-box {
+          padding: 36px 24px 32px;
+        }
+      }
+    </style>
 
-  if (!found) {
-    msg.textContent = 'Email hoặc mật khẩu không đúng.';
-    msg.style.display = 'block';
-    return;
-  }
+    <script>
+      /* ── Booking CTA Gate Logic ── */
 
-  // Lưu session
-  localStorage.setItem('kep_user', JSON.stringify(found));
-  document.getElementById('authGateOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-  window.location.href = './features/user/new-booking.html';
-}
+      function handleBookingCTA() {
+        // Kiểm tra đã đăng nhập chưa (dùng localStorage key của app)
+        const user = localStorage.getItem('kep_user');
+        if (user) {
+          // Đã đăng nhập → đi thẳng trang new booking
+          window.location.href = './features/user/new-booking.html';
+        } else {
+          // Chưa → mở auth gate
+          document.getElementById('authGateOverlay').classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      }
 
-function doGateRegister() {
-  const lastName  = document.getElementById('regLastName').value.trim();
-  const firstName = document.getElementById('regFirstName').value.trim();
-  const email     = document.getElementById('regEmail').value.trim();
-  const phone     = document.getElementById('regPhone').value.trim();
-  const pw        = document.getElementById('regPw').value;
-  const msg       = document.getElementById('gateMsgRegister');
+      function closeAuthGate(e) {
+        if (e && e.target !== document.getElementById('authGateOverlay')) return;
+        document.getElementById('authGateOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
 
-  msg.style.display = 'none';
+      function switchGateTab(tab, btn) {
+        document.querySelectorAll('.agt-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.agt-form').forEach(f => f.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('gateForm' + (tab === 'login' ? 'Login' : 'Register')).classList.add('active');
+      }
 
-  if (!lastName || !firstName || !email || !phone || !pw) {
-    msg.textContent = 'Vui lòng điền đầy đủ thông tin.';
-    msg.style.display = 'block';
-    return;
-  }
+      function doGateLogin() {
+        const email = document.getElementById('gateEmail').value.trim();
+        const pw = document.getElementById('gatePw').value;
+        const msg = document.getElementById('gateMsgLogin');
 
-  if (pw.length < 8) {
-    msg.textContent = 'Mật khẩu tối thiểu 8 ký tự.';
-    msg.style.display = 'block';
-    return;
-  }
+        msg.style.display = 'none';
 
-  const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
-  if (users.find(u => u.email === email)) {
-    msg.textContent = 'Email này đã được đăng kí.';
-    msg.style.display = 'block';
-    return;
-  }
+        if (!email || !pw) {
+          msg.textContent = 'Vui lòng nhập đầy đủ email và mật khẩu.';
+          msg.style.display = 'block';
+          return;
+        }
 
-  const newUser = {
-    id: 'u_' + Date.now(),
-    lastName, firstName,
-    name: firstName + ' ' + lastName,
-    email, phone, pw,
-    dob: '', createdAt: new Date().toISOString()
-  };
+        // Kiểm tra user đã đăng kí (lưu trong localStorage)
+        const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
+        const found = users.find(u => u.email === email && u.pw === pw);
 
-  users.push(newUser);
-  localStorage.setItem('kep_users', JSON.stringify(users));
-  localStorage.setItem('kep_user', JSON.stringify(newUser));
+        if (!found) {
+          msg.textContent = 'Email hoặc mật khẩu không đúng.';
+          msg.style.display = 'block';
+          return;
+        }
 
-  document.getElementById('authGateOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-  window.location.href = './features/user/new-booking.html';
-}
-</script>
+        // Lưu session
+        localStorage.setItem('kep_user', JSON.stringify(found));
+        document.getElementById('authGateOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+        window.location.href = './features/user/new-booking.html';
+      }
 
-  <!-- ── FOOTER ── -->
-  <div id="footer-placeholder"></div>
-</main>
+      function doGateRegister() {
+        const lastName = document.getElementById('regLastName').value.trim();
+        const firstName = document.getElementById('regFirstName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const pw = document.getElementById('regPw').value;
+        const msg = document.getElementById('gateMsgRegister');
+
+        msg.style.display = 'none';
+
+        if (!lastName || !firstName || !email || !phone || !pw) {
+          msg.textContent = 'Vui lòng điền đầy đủ thông tin.';
+          msg.style.display = 'block';
+          return;
+        }
+
+        if (pw.length < 8) {
+          msg.textContent = 'Mật khẩu tối thiểu 8 ký tự.';
+          msg.style.display = 'block';
+          return;
+        }
+
+        const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
+        if (users.find(u => u.email === email)) {
+          msg.textContent = 'Email này đã được đăng kí.';
+          msg.style.display = 'block';
+          return;
+        }
+
+        const newUser = {
+          id: 'u_' + Date.now(),
+          lastName, firstName,
+          name: firstName + ' ' + lastName,
+          email, phone, pw,
+          dob: '', createdAt: new Date().toISOString()
+        };
+
+        users.push(newUser);
+        localStorage.setItem('kep_users', JSON.stringify(users));
+        localStorage.setItem('kep_user', JSON.stringify(newUser));
+
+        document.getElementById('authGateOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+        window.location.href = './features/user/new-booking.html';
+      }
+    </script>
+
+    <!-- ── FOOTER ── -->
+    <div id="footer-placeholder"></div>
+  </main>
 
 
-<!-- ══════════════════════════════════
+  <!-- ══════════════════════════════════
      MODALS
      ══════════════════════════════════ -->
 
-<!-- Zone Lightbox -->
-<div class="modal-overlay" id="zoneLightbox" onclick="closeModal('zoneLightbox')">
-  <div class="lightbox-box" onclick="event.stopPropagation()">
-    <button class="lightbox-close" onclick="closeModal('zoneLightbox')">✕</button>
-    <h3 class="lightbox-title kep-font" id="lightboxTitle"></h3>
-    <div class="lightbox-grid" id="lightboxGrid"></div>
-    <div class="lightbox-info" id="lightboxInfo"></div>
-    <button class="lightbox-book-btn" id="lightboxBookBtn" onclick="bookFromLightbox()">Đặt lịch ngay →</button>
-  </div>
-</div>
-
-<!-- QR Payment Modal -->
-<div class="modal-overlay" id="qrModal">
-  <div class="modal-box qr-modal-box">
-    <div class="qr-status-icon">✓</div>
-    <h3 class="modal-title kep-font">Đặt Lịch Thành Công!</h3>
-    <p class="modal-sub">Lịch của bạn đang <strong>chờ xác nhận</strong>. Vui lòng thanh toán đặt cọc 50% để giữ lịch.</p>
-    <div class="qr-code-wrap">
-      <img id="qrImg" src="" alt="QR Code" class="qr-img"/>
-      <div class="qr-amount-label">Số tiền đặt cọc: <strong id="qrAmount"></strong></div>
-    </div>
-    <div class="qr-bank-info">
-      <div class="bank-row"><span>Ngân hàng</span><strong>MoMo / VietQR</strong></div>
-      <div class="bank-row"><span>Số tài khoản</span><strong>0xxx xxx xxx</strong></div>
-      <div class="bank-row"><span>Nội dung</span><strong id="qrContent"></strong></div>
-    </div>
-    <p class="qr-note">Sau khi chuyển khoản, chúng tôi sẽ xác nhận trong vòng 2 giờ làm việc.</p>
-    <button class="modal-btn" onclick="closeModal('qrModal')">Đã hiểu, đóng</button>
-  </div>
-</div>
-
-<!-- Login Modal (Admin) -->
-<div class="modal-overlay" id="loginModal">
-  <div class="modal-box login-box" onclick="event.stopPropagation()">
-    <h3 class="modal-title kep-font">Admin Access</h3>
-    <p class="login-error" id="loginError" style="display:none">Mật khẩu không đúng.</p>
-    <div class="form-group">
-      <label>Mật khẩu</label>
-      <input type="password" id="adminPw" placeholder="••••••••"
-             onkeydown="if(event.key==='Enter') tryLogin()"/>
-    </div>
-    <div class="form-nav" style="margin-top:8px;">
-      <button type="button" class="btn-prev" onclick="closeModal('loginModal')">Huỷ</button>
-      <button type="button" class="btn-next" onclick="tryLogin()">Đăng nhập →</button>
-    </div>
-    <p style="margin-top:12px;font-size:.7rem;color:var(--warm-grey);">Demo: <strong>kep2025</strong></p>
-  </div>
-</div>
-
-<!-- ══ AUTH FRAME MODAL (Load login.html / register.html) ══ -->
-<div class="modal-overlay" id="authFrameModal">
-  <div class="modal-box auth-box" onclick="event.stopPropagation()">
-    <button class="lightbox-close" onclick="closeAuthFrame()">✕</button>
-
-    <iframe
-      id="authFrame"
-      src=""
-      title="Kép Auth"
-      style="width:100%;height:560px;border:none;display:block;background:transparent;"
-    ></iframe>
-  </div>
-</div>
-
-<!-- ══ ADMIN PANEL ══ -->
-<div id="adminPanel" class="admin-panel">
-  <div class="admin-header">
-    <span class="admin-title kep-font">"Kép" Admin</span>
-    <button class="admin-close-btn" onclick="closeAdmin()">✕ Đóng</button>
-  </div>
-  <div class="admin-body">
-    <div class="admin-stats" id="adminStats"></div>
-    <div class="admin-filters">
-      <button class="filter-btn active" onclick="filterBookings('all',this)">Tất cả</button>
-      <button class="filter-btn" onclick="filterBookings('pending',this)">Chờ duyệt</button>
-      <button class="filter-btn" onclick="filterBookings('confirmed',this)">Đã xác nhận</button>
-      <button class="filter-btn" onclick="filterBookings('rejected',this)">Từ chối</button>
-    </div>
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>#</th><th>Tên</th><th>SĐT</th><th>Zone</th>
-            <th>Ngày</th><th>Giờ</th><th>Tổng</th><th>Trạng thái</th><th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody id="adminTbody"></tbody>
-      </table>
+  <!-- Zone Lightbox -->
+  <div class="modal-overlay" id="zoneLightbox" onclick="closeModal('zoneLightbox')">
+    <div class="lightbox-box" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeModal('zoneLightbox')">✕</button>
+      <h3 class="lightbox-title kep-font" id="lightboxTitle"></h3>
+      <div class="lightbox-grid" id="lightboxGrid"></div>
+      <div class="lightbox-info" id="lightboxInfo"></div>
+      <button class="lightbox-book-btn" id="lightboxBookBtn" onclick="bookFromLightbox()">Đặt lịch ngay →</button>
     </div>
   </div>
-</div>
 
-<!-- User info bar (when logged in) -->
-<div class="user-bar" id="userBar" style="display:none">
-  <span class="user-bar-name" id="userBarName"></span>
-  <button class="user-bar-logout" onclick="doLogout()">Đăng xuất</button>
-</div>
+  <!-- QR Payment Modal -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-box qr-modal-box">
+      <div class="qr-status-icon">✓</div>
+      <h3 class="modal-title kep-font">Đặt Lịch Thành Công!</h3>
+      <p class="modal-sub">Lịch của bạn đang <strong>chờ xác nhận</strong>. Vui lòng thanh toán đặt cọc 50% để giữ lịch.
+      </p>
+      <div class="qr-code-wrap">
+        <img id="qrImg" src="" alt="QR Code" class="qr-img" />
+        <div class="qr-amount-label">Số tiền đặt cọc: <strong id="qrAmount"></strong></div>
+      </div>
+      <div class="qr-bank-info">
+        <div class="bank-row"><span>Ngân hàng</span><strong>MoMo / VietQR</strong></div>
+        <div class="bank-row"><span>Số tài khoản</span><strong>0xxx xxx xxx</strong></div>
+        <div class="bank-row"><span>Nội dung</span><strong id="qrContent"></strong></div>
+      </div>
+      <p class="qr-note">Sau khi chuyển khoản, chúng tôi sẽ xác nhận trong vòng 2 giờ làm việc.</p>
+      <button class="modal-btn" onclick="closeModal('qrModal')">Đã hiểu, đóng</button>
+    </div>
+  </div>
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
+  <!-- Login Modal (Admin) -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box login-box" onclick="event.stopPropagation()">
+      <h3 class="modal-title kep-font">Admin Access</h3>
+      <p class="login-error" id="loginError" style="display:none">Mật khẩu không đúng.</p>
+      <div class="form-group">
+        <label>Mật khẩu</label>
+        <input type="password" id="adminPw" placeholder="••••••••" onkeydown="if(event.key==='Enter') tryLogin()" />
+      </div>
+      <div class="form-nav" style="margin-top:8px;">
+        <button type="button" class="btn-prev" onclick="closeModal('loginModal')">Huỷ</button>
+        <button type="button" class="btn-next" onclick="tryLogin()">Đăng nhập →</button>
+      </div>
+      <p style="margin-top:12px;font-size:.7rem;color:var(--warm-grey);">Demo: <strong>kep2025</strong></p>
+    </div>
+  </div>
 
-<script type="module" src="./assets/js/main.js"></script>
+  <!-- ══ AUTH FRAME MODAL (Load login.html / register.html) ══ -->
+  <div class="modal-overlay" id="authFrameModal">
+    <div class="modal-box auth-box" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeAuthFrame()">✕</button>
 
-<script>
-  function openAuthFrame(type = "login") {
-    const modal = document.getElementById("authFrameModal");
-    const frame = document.getElementById("authFrame");
+      <iframe id="authFrame" src="" title="Kép Auth"
+        style="width:100%;height:560px;border:none;display:block;background:transparent;"></iframe>
+    </div>
+  </div>
 
-    if (!modal || !frame) return;
+  <!-- ══ ADMIN PANEL ══ -->
+  <div id="adminPanel" class="admin-panel">
+    <div class="admin-header">
+      <span class="admin-title kep-font">"Kép" Admin</span>
+      <button class="admin-close-btn" onclick="closeAdmin()">✕ Đóng</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-stats" id="adminStats"></div>
+      <div class="admin-filters">
+        <button class="filter-btn active" onclick="filterBookings('all',this)">Tất cả</button>
+        <button class="filter-btn" onclick="filterBookings('pending',this)">Chờ duyệt</button>
+        <button class="filter-btn" onclick="filterBookings('confirmed',this)">Đã xác nhận</button>
+        <button class="filter-btn" onclick="filterBookings('rejected',this)">Từ chối</button>
+      </div>
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Tên</th>
+              <th>SĐT</th>
+              <th>Zone</th>
+              <th>Ngày</th>
+              <th>Giờ</th>
+              <th>Tổng</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="adminTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-    frame.src = type === "register"
-      ? "./features/auth/register.html"
-      : "./features/auth/login.html";
+  <!-- User info bar (when logged in) -->
+  <div class="user-bar" id="userBar" style="display:none">
+    <span class="user-bar-name" id="userBarName"></span>
+    <button class="user-bar-logout" onclick="doLogout()">Đăng xuất</button>
+  </div>
 
-    modal.classList.add("show");
-  }
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
-  function closeAuthFrame() {
-    const modal = document.getElementById("authFrameModal");
-    const frame = document.getElementById("authFrame");
+  <script type="module" src="./assets/js/main.js"></script>
 
-    if (!modal || !frame) return;
+  <script>
+    function openAuthFrame(type = "login") {
+      const modal = document.getElementById("authFrameModal");
+      const frame = document.getElementById("authFrame");
 
-    modal.classList.remove("show");
-    frame.src = "";
-  }
+      if (!modal || !frame) return;
 
-  window.openAuthFrame = openAuthFrame;
-  window.closeAuthFrame = closeAuthFrame;
-</script>
+      frame.src = type === "register"
+        ? "./features/auth/register.html"
+        : "./features/auth/login.html";
+
+      modal.classList.add("show");
+    }
+
+    function closeAuthFrame() {
+      const modal = document.getElementById("authFrameModal");
+      const frame = document.getElementById("authFrame");
+
+      if (!modal || !frame) return;
+
+      modal.classList.remove("show");
+      frame.src = "";
+    }
+
+    window.openAuthFrame = openAuthFrame;
+    window.closeAuthFrame = closeAuthFrame;
+  </script>
 
 </body>
+
 </html>

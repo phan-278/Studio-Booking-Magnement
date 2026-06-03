@@ -29,6 +29,7 @@ export function closeAuthFrame() {
 
 export async function doLogout() {
   await supabase.auth.signOut();
+  localStorage.removeItem('kep_admin_auth');
   window.location.reload();
 }
 

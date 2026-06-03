@@ -460,7 +460,7 @@ function confirmDelete() {
 }
 
 function renderAll() { syncUsage(); renderStats(); renderUsageChart(); renderTable(); }
-function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html'; }
+function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html?logout=true'; }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
 document.addEventListener('DOMContentLoaded', renderAll);

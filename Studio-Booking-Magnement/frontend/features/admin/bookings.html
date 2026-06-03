@@ -1257,7 +1257,7 @@ function getWeekStart(d) {
   const dt=new Date(d); dt.setHours(0,0,0,0);
   const dow=dt.getDay(); dt.setDate(dt.getDate()-dow); return dt;
 }
-function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href='../../index.html'; }
+function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href='../../index.html?logout=true'; }
 function showToast(msg, warn=false) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.toggle('warn',warn); t.classList.add('show'); setTimeout(()=>{t.classList.remove('show');t.classList.remove('warn');},3500); }
 
 // ════════════════════════════════════════

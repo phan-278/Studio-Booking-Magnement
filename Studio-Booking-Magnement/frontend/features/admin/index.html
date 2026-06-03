@@ -222,7 +222,7 @@
 /* ── Auth guard ── */
 const ADMIN_PW_KEY = 'kep_admin_auth';
 if (!localStorage.getItem(ADMIN_PW_KEY)) {
-  window.location.href = '../../index.html';
+  window.location.href = '../../index.html?logout=true';
 }
 
 const BOOKINGS_KEY  = 'kep_bookings';
@@ -435,7 +435,7 @@ function endTime(s, dur) {
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
 
-function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html'; }
+function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html?logout=true'; }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 </script>
 </body>
