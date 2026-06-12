@@ -836,7 +836,7 @@
         const user = localStorage.getItem('kep_user');
         if (user) {
           // Đã đăng nhập → đi thẳng trang new booking
-          window.location.href = './features/user/new-booking.html';
+          window.location.href = './features/booking/new-booking.html';
         } else {
           // Chưa → mở auth gate
           document.getElementById('authGateOverlay').classList.add('open');
@@ -884,7 +884,7 @@
         localStorage.setItem('kep_user', JSON.stringify(found));
         document.getElementById('authGateOverlay').classList.remove('open');
         document.body.style.overflow = '';
-        window.location.href = './features/user/new-booking.html';
+        window.location.href = './features/booking/new-booking.html';
       }
 
       function doGateRegister() {
@@ -930,7 +930,7 @@
 
         document.getElementById('authGateOverlay').classList.remove('open');
         document.body.style.overflow = '';
-        window.location.href = './features/user/new-booking.html';
+        window.location.href = './features/booking/new-booking.html';
       }
     </script>
 
