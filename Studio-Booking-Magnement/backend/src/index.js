@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,20 +16,19 @@ app.get('/api/health', (req, res) => {
 });
 
 // Import Routes
+const authRoutes = require('./routes/auth.route');
 const studioRoutes = require('./routes/studio.route');
 const equipmentRoutes = require('./routes/equipment.route');
-// const bookingRoutes = require('./routes/booking.route');
+const bookingRoutes = require('./routes/booking.route');
 
 // Use Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/studios', studioRoutes);
 app.use('/api/equipments', equipmentRoutes);
-// app.use('/api/bookings', bookingRoutes);
+app.use('/api/bookings', bookingRoutes);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong on the server!' });
-});
+// Error handling middleware (đặt ở cuối cùng)
+app.use(errorHandler);
 
 // Bắt đầu server
 app.listen(port, () => {
