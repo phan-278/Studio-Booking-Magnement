@@ -1,41 +1,108 @@
+// layout.js - Slideshow, Reveal, Nav, Marquee, Sidebar
 
-// layout.js - Slideshow, Reveal, Nav, Marquee
+/* ==========
+   1. SIDEBAR — smooth expand/collapse, logo resize
+================================================================ */
+(function initSidebar() {
+  // Wait for sidebar to be injected by main.js
+  function setupSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+
+    // Prevent flash of un-transitioned state on first load
+    requestAnimationFrame(() => {
+      sidebar.style.transition = 'none';
+      // Force collapsed state paint, then re-enable transitions
+      requestAnimationFrame(() => {
+        sidebar.style.transition = '';
+      });
+    });
+
+    // Optional: click-to-pin on mobile or touch devices
+    let pinned = false;
+    const toggleBtn = document.getElementById('sidebarToggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        pinned = !pinned;
+        sidebar.classList.toggle('open', pinned);
+        toggleBtn.setAttribute('aria-expanded', pinned);
+      });
+    }
+
+    // Close pinned sidebar when clicking outside (mobile)
+    document.addEventListener('click', (e) => {
+      if (pinned && !sidebar.contains(e.target) && e.target !== toggleBtn) {
+        pinned = false;
+        sidebar.classList.remove('open');
+      }
+    });
+  }
+
+  // If sidebar already in DOM, set it up immediately
+  if (document.getElementById('sidebar')) {
+    setupSidebar();
+  } else {
+    // Sidebar is loaded async by main.js — observe for it
+    const mo = new MutationObserver(() => {
+      if (document.getElementById('sidebar')) {
+        mo.disconnect();
+        setupSidebar();
+      }
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+  }
+})();
+
+
+
 /* ==========
    2. HERO SLIDESHOW
 ================================================================ */
 (function initSlideshow() {
-  const slides   = document.querySelectorAll('.slide');
-  const dotsWrap = document.getElementById('slideDots');
-  let current = 0;
-  let timer;
+  function setup() {
+    const slides   = document.querySelectorAll('.slide');
+    const dotsWrap = document.getElementById('slideDots');
+    if (!slides.length || !dotsWrap) return;
 
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'slide-dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => { goSlide(i); resetTimer(); };
-    dotsWrap.appendChild(d);
-  });
+    let current = 0;
+    let timer;
 
-  function goSlide(n) {
-    slides[current].classList.remove('active');
-    dotsWrap.children[current].classList.remove('active');
-    current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dotsWrap.children[current].classList.add('active');
+    slides.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'slide-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => { goSlide(i); resetTimer(); };
+      dotsWrap.appendChild(d);
+    });
+
+    function goSlide(n) {
+      slides[current].classList.remove('active');
+      dotsWrap.children[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dotsWrap.children[current].classList.add('active');
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => goSlide(current + 1), 5000);
+    }
+
+    resetTimer();
+    window.nextSlide = () => { goSlide(current + 1); resetTimer(); };
+    window.prevSlide = () => { goSlide(current - 1); resetTimer(); };
+
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      hero.addEventListener('mouseenter', () => clearInterval(timer));
+      hero.addEventListener('mouseleave', resetTimer);
+    }
   }
 
-  function resetTimer() {
-    clearInterval(timer);
-    timer = setInterval(() => goSlide(current + 1), 5000);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
   }
-
-  resetTimer();
-  window.nextSlide = () => { goSlide(current + 1); resetTimer(); };
-  window.prevSlide = () => { goSlide(current - 1); resetTimer(); };
-
-  const hero = document.querySelector('.hero');
-  hero.addEventListener('mouseenter', () => clearInterval(timer));
-  hero.addEventListener('mouseleave', resetTimer);
 })();
 
 
@@ -121,6 +188,3 @@
   mq.addEventListener('mouseenter', () => mq.style.animationPlayState = 'paused');
   mq.addEventListener('mouseleave', () => mq.style.animationPlayState = 'running');
 })();
-
-
-

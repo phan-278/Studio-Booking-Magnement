@@ -1,0 +1,193 @@
+/* ================================================================
+   AUTH GATE MODAL — assets/css/auth-gate.css
+   Tách từ <style> inline trong index.html
+================================================================ */
+
+.auth-gate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 23, 16, .75);
+  backdrop-filter: blur(6px);
+  z-index: 5000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-gate-overlay.open { display: flex; }
+
+.auth-gate-box {
+  background: var(--cream);
+  width: 100%;
+  max-width: 420px;
+  padding: 44px 40px 40px;
+  position: relative;
+  animation: slideUp .4s var(--ease);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.auth-gate-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--warm-grey);
+  width: 28px;
+  height: 28px;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: all .25s;
+}
+
+.auth-gate-close:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.auth-gate-brand { margin-bottom: 24px; }
+
+.auth-gate-brand-name {
+  display: block;
+  font-family: var(--font-brand);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.auth-gate-brand-sub {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .46rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  margin-top: 4px;
+}
+
+.auth-gate-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.auth-gate-sub {
+  font-family: var(--font-body);
+  font-size: .63rem;
+  color: var(--warm-grey);
+  line-height: 1.7;
+  margin-bottom: 26px;
+}
+
+/* Tabs */
+.auth-gate-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 26px;
+}
+
+.agt-tab {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: .54rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 0 10px;
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.agt-tab.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+.agt-tab:hover:not(.active) { color: var(--ink); }
+
+/* Forms */
+.agt-form        { display: none; }
+.agt-form.active { display: block; }
+
+.agt-field { margin-bottom: 16px; }
+
+.agt-field label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--warm-grey);
+  margin-bottom: 6px;
+}
+
+.agt-field input {
+  width: 100%;
+  padding: 11px 13px;
+  background: var(--cream-dark);
+  border: 1px solid var(--border);
+  font-family: var(--font-body);
+  font-size: .74rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .25s, background .25s;
+}
+
+.agt-field input:focus {
+  border-color: var(--red);
+  background: #fff;
+}
+
+.agt-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.agt-msg {
+  font-family: var(--font-body);
+  font-size: .6rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.agt-msg.error   { color: var(--red); }
+.agt-msg.success { color: #2E7D32; }
+
+.agt-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background .3s, letter-spacing .3s var(--ease);
+  margin-top: 6px;
+}
+
+.agt-submit:hover {
+  background: var(--red-dim);
+  letter-spacing: .28em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-gate-box { padding: 36px 24px 32px; }
+}

@@ -1,0 +1,276 @@
+/* ================================================================
+   BOOKING SECTION — assets/css/booking-section.css
+   Tách từ <style> inline trong index.html
+================================================================ */
+
+/* ── Section ── */
+.booking-section {
+  position: relative;
+  background: var(--ink);
+  padding: 0;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Decorative lines */
+.booking-bg-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bp-line {
+  position: absolute;
+  background: rgba(237, 229, 208, .04);
+}
+
+.bp-line-1 {
+  left: 18%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.bp-line-2 {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.bp-line-3 {
+  left: 78%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+/* ── Main content ── */
+.booking-cta-wrap {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+}
+
+/* Eyebrow */
+.booking-eyebrow {
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.booking-eyebrow::before,
+.booking-eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--red);
+  opacity: .5;
+}
+
+/* Heading */
+.booking-cta-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 5.2rem);
+  color: var(--cream);
+  line-height: 1.12;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+.booking-cta-heading em {
+  font-style: italic;
+  color: var(--cream-deep);
+}
+
+/* Subtext */
+.booking-cta-sub {
+  font-family: var(--font-body);
+  font-size: .72rem;
+  color: rgba(237, 229, 208, .45);
+  line-height: 2;
+  margin-bottom: 40px;
+  letter-spacing: .04em;
+}
+
+.booking-cta-sub span {
+  display: block;
+  font-size: .6rem;
+  color: rgba(237, 229, 208, .3);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Availability pills */
+.booking-avail-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 52px;
+}
+
+.avail-pill {
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid rgba(237, 229, 208, .15);
+  color: rgba(237, 229, 208, .55);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.avail-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.avail-open .avail-dot {
+  background: #4caf7d;
+  animation: blink 2.5s ease-in-out infinite;
+}
+
+.avail-busy .avail-dot {
+  background: #d4a017;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .3; }
+}
+
+/* Main CTA button */
+.booking-main-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 52px;
+  background: var(--red);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: .64rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #fff;
+  transition: background .3s, letter-spacing .4s var(--ease), gap .3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.booking-main-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, .06);
+  transform: translateX(-101%);
+  transition: transform .4s var(--ease);
+}
+
+.booking-main-cta:hover::before { transform: translateX(0); }
+
+.booking-main-cta:hover {
+  letter-spacing: .3em;
+  gap: 26px;
+  background: var(--red-dim);
+}
+
+.cta-text {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-arrow {
+  font-size: .9rem;
+  position: relative;
+  z-index: 1;
+  transition: transform .3s var(--ease);
+}
+
+.booking-main-cta:hover .cta-arrow { transform: translateX(6px); }
+
+/* Fine print */
+.booking-fine-print {
+  margin-top: 24px;
+  font-family: var(--font-body);
+  font-size: .5rem;
+  letter-spacing: .1em;
+  color: rgba(237, 229, 208, .2);
+}
+
+/* ── Info strip ── */
+.booking-info-strip {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(237, 229, 208, .08);
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+  align-items: center;
+  padding: 0;
+}
+
+.bi-item {
+  padding: 32px 40px;
+  text-align: center;
+}
+
+.bi-num {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2rem;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.bi-label {
+  font-family: var(--font-body);
+  font-size: .48rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(237, 229, 208, .3);
+}
+
+.bi-divider {
+  height: 40px;
+  width: 1px;
+  background: rgba(237, 229, 208, .08);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .booking-info-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bi-divider { display: none; }
+
+  .bi-item { padding: 24px 20px; }
+
+  .booking-cta-wrap { padding: 80px 24px 60px; }
+}

@@ -6,24 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kép — Studio for Rent</title>
 
-  <!-- 
-    INTRO10.jpg logo uses a high-contrast editorial serif — Playfair Display matches it closely.
-    Cormorant SC → backup brand serif
-    Be Vietnam Pro → full Vietnamese diacritics
-    DM Serif Display → section headings
-  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+SC:wght@300;500;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Serif+Display:ital@0;1&display=swap"
     rel="stylesheet">
 
-
-  <link rel="stylesheet" href="./assets/css/main.css" />
+  <!-- Global styles -->
+  <link rel="stylesheet" href="./assets/css/global.css" />
+  <link rel="stylesheet" href="./assets/css/sidebar.css">
+  
+  <!-- Feature styles -->
   <link rel="stylesheet" href="./features/auth/auth.css" />
   <link rel="stylesheet" href="./features/booking/booking.css" />
   <link rel="stylesheet" href="./features/admin/admin.css" />
 
+  <!-- Page-level styles -->
+  <link rel="stylesheet" href="./assets/css/booking-section.css" />
+  <link rel="stylesheet" href="./assets/css/auth-gate.css" />
 </head>
 
 <body>
@@ -171,14 +171,8 @@
     </section>
 
     <!-- ══ BOOKING SECTION ══ -->
-    <!-- ================================================================
-   PHẦN ĐẶT LỊCH — index.html
-   Thay thế toàn bộ booking section cũ
-   Dán vào section id="booking" trong index.html
-================================================================ -->
     <section class="booking-section" id="booking">
 
-      <!-- Decorative background texture -->
       <div class="booking-bg-pattern" aria-hidden="true">
         <span class="bp-line bp-line-1"></span>
         <span class="bp-line bp-line-2"></span>
@@ -186,23 +180,16 @@
       </div>
 
       <div class="booking-cta-wrap">
-
-        <!-- Label -->
         <p class="booking-eyebrow">Đặt lịch</p>
-
-        <!-- Heading -->
         <h2 class="booking-cta-heading">
           <em>Không gian của bạn</em><br>
           đang chờ
         </h2>
-
-        <!-- Subtext -->
         <p class="booking-cta-sub">
           O Zone · C Zone · Full House<br>
           <span>Chụp ảnh · Quay phim · Workshop · Event thương mại</span>
         </p>
 
-        <!-- Availability pills -->
         <div class="booking-avail-row">
           <span class="avail-pill avail-open">
             <span class="avail-dot"></span> O Zone — Còn trống
@@ -215,18 +202,14 @@
           </span>
         </div>
 
-        <!-- Main CTA button -->
         <button class="booking-main-cta" onclick="handleBookingCTA()">
           <span class="cta-text">Đặt lịch ngay</span>
           <span class="cta-arrow">→</span>
         </button>
 
-        <!-- Fine print -->
         <p class="booking-fine-print">Yêu cầu đăng nhập · Xác nhận trong 24h · Đặt cọc 30%</p>
-
       </div>
 
-      <!-- Info strip -->
       <div class="booking-info-strip">
         <div class="bi-item">
           <span class="bi-num">600K</span>
@@ -248,10 +231,9 @@
           <span class="bi-label">Đóng cửa muộn nhất</span>
         </div>
       </div>
-
     </section>
 
-    <!-- Auth Gate Modal — hiện khi chưa đăng nhập -->
+    <!-- Auth Gate Modal -->
     <div class="auth-gate-overlay" id="authGateOverlay" onclick="closeAuthGate(event)">
       <div class="auth-gate-box" onclick="event.stopPropagation()">
 
@@ -265,7 +247,6 @@
         <h3 class="auth-gate-title">Đăng nhập để đặt lịch</h3>
         <p class="auth-gate-sub">Tạo tài khoản miễn phí hoặc đăng nhập để bắt đầu đặt không gian sáng tạo của bạn.</p>
 
-        <!-- Tabs -->
         <div class="auth-gate-tabs">
           <button class="agt-tab active" onclick="switchGateTab('login', this)">Đăng nhập</button>
           <button class="agt-tab" onclick="switchGateTab('register', this)">Đăng kí</button>
@@ -316,624 +297,6 @@
       </div>
     </div>
 
-    <style>
-      /* ================================================================
-   BOOKING SECTION — index.html inline styles
-   (hoặc chuyển vào main.css / booking.css)
-================================================================ */
-
-      /* ── Section ── */
-      .booking-section {
-        position: relative;
-        background: var(--ink);
-        padding: 0;
-        overflow: hidden;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      /* Decorative lines */
-      .booking-bg-pattern {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      .bp-line {
-        position: absolute;
-        background: rgba(237, 229, 208, .04);
-      }
-
-      .bp-line-1 {
-        left: 18%;
-        top: 0;
-        bottom: 0;
-        width: 1px;
-      }
-
-      .bp-line-2 {
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        width: 1px;
-      }
-
-      .bp-line-3 {
-        left: 78%;
-        top: 0;
-        bottom: 0;
-        width: 1px;
-      }
-
-      /* ── Main content ── */
-      .booking-cta-wrap {
-        position: relative;
-        z-index: 1;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 120px 40px 80px;
-      }
-
-      /* Eyebrow */
-      .booking-eyebrow {
-        font-family: var(--font-body);
-        font-size: .5rem;
-        letter-spacing: .32em;
-        text-transform: uppercase;
-        color: var(--red);
-        margin-bottom: 28px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .booking-eyebrow::before,
-      .booking-eyebrow::after {
-        content: '';
-        display: inline-block;
-        width: 32px;
-        height: 1px;
-        background: var(--red);
-        opacity: .5;
-      }
-
-      /* Heading */
-      .booking-cta-heading {
-        font-family: var(--font-display);
-        font-size: clamp(2.8rem, 7vw, 5.2rem);
-        color: var(--cream);
-        line-height: 1.12;
-        margin-bottom: 28px;
-        letter-spacing: -0.01em;
-      }
-
-      .booking-cta-heading em {
-        font-style: italic;
-        color: var(--cream-deep);
-      }
-
-      /* Subtext */
-      .booking-cta-sub {
-        font-family: var(--font-body);
-        font-size: .72rem;
-        color: rgba(237, 229, 208, .45);
-        line-height: 2;
-        margin-bottom: 40px;
-        letter-spacing: .04em;
-      }
-
-      .booking-cta-sub span {
-        display: block;
-        font-size: .6rem;
-        color: rgba(237, 229, 208, .3);
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        margin-top: 4px;
-      }
-
-      /* Availability pills */
-      .booking-avail-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-bottom: 52px;
-      }
-
-      .avail-pill {
-        font-family: var(--font-body);
-        font-size: .5rem;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        padding: 6px 14px;
-        border: 1px solid rgba(237, 229, 208, .15);
-        color: rgba(237, 229, 208, .55);
-        display: flex;
-        align-items: center;
-        gap: 7px;
-      }
-
-      .avail-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
-
-      .avail-open .avail-dot {
-        background: #4caf7d;
-        animation: blink 2.5s ease-in-out infinite;
-      }
-
-      .avail-busy .avail-dot {
-        background: #d4a017;
-      }
-
-      @keyframes blink {
-
-        0%,
-        100% {
-          opacity: 1
-        }
-
-        50% {
-          opacity: .3
-        }
-      }
-
-      /* Main CTA button */
-      .booking-main-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 18px;
-        padding: 20px 52px;
-        background: var(--red);
-        border: none;
-        cursor: pointer;
-        font-family: var(--font-body);
-        font-size: .64rem;
-        letter-spacing: .22em;
-        text-transform: uppercase;
-        color: #fff;
-        transition: background .3s, letter-spacing .4s var(--ease), gap .3s;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .booking-main-cta::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: rgba(255, 255, 255, .06);
-        transform: translateX(-101%);
-        transition: transform .4s var(--ease);
-      }
-
-      .booking-main-cta:hover::before {
-        transform: translateX(0);
-      }
-
-      .booking-main-cta:hover {
-        letter-spacing: .3em;
-        gap: 26px;
-        background: var(--red-dim);
-      }
-
-      .cta-text {
-        position: relative;
-        z-index: 1;
-      }
-
-      .cta-arrow {
-        font-size: .9rem;
-        position: relative;
-        z-index: 1;
-        transition: transform .3s var(--ease);
-      }
-
-      .booking-main-cta:hover .cta-arrow {
-        transform: translateX(6px);
-      }
-
-      /* Fine print */
-      .booking-fine-print {
-        margin-top: 24px;
-        font-family: var(--font-body);
-        font-size: .5rem;
-        letter-spacing: .1em;
-        color: rgba(237, 229, 208, .2);
-      }
-
-      /* ── Info strip ── */
-      .booking-info-strip {
-        position: relative;
-        z-index: 1;
-        border-top: 1px solid rgba(237, 229, 208, .08);
-        display: grid;
-        grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
-        align-items: center;
-        padding: 0;
-      }
-
-      .bi-item {
-        padding: 32px 40px;
-        text-align: center;
-      }
-
-      .bi-num {
-        display: block;
-        font-family: var(--font-display);
-        font-style: italic;
-        font-size: 2rem;
-        color: var(--cream);
-        line-height: 1;
-        margin-bottom: 8px;
-      }
-
-      .bi-label {
-        font-family: var(--font-body);
-        font-size: .48rem;
-        letter-spacing: .18em;
-        text-transform: uppercase;
-        color: rgba(237, 229, 208, .3);
-      }
-
-      .bi-divider {
-        height: 40px;
-        width: 1px;
-        background: rgba(237, 229, 208, .08);
-      }
-
-      /* ================================================================
-   AUTH GATE MODAL
-================================================================ */
-      .auth-gate-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(30, 23, 16, .75);
-        backdrop-filter: blur(6px);
-        z-index: 5000;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-
-      .auth-gate-overlay.open {
-        display: flex;
-      }
-
-      .auth-gate-box {
-        background: var(--cream);
-        width: 100%;
-        max-width: 420px;
-        padding: 44px 40px 40px;
-        position: relative;
-        animation: slideUp .4s var(--ease);
-      }
-
-      @keyframes slideUp {
-        from {
-          transform: translateY(24px);
-          opacity: 0;
-        }
-
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      .auth-gate-close {
-        position: absolute;
-        top: 16px;
-        right: 18px;
-        background: transparent;
-        border: 1px solid var(--border);
-        color: var(--warm-grey);
-        width: 28px;
-        height: 28px;
-        font-size: 1rem;
-        cursor: pointer;
-        line-height: 1;
-        transition: all .25s;
-      }
-
-      .auth-gate-close:hover {
-        border-color: var(--red);
-        color: var(--red);
-      }
-
-      .auth-gate-brand {
-        margin-bottom: 24px;
-      }
-
-      .auth-gate-brand-name {
-        display: block;
-        font-family: var(--font-brand);
-        font-style: italic;
-        font-size: 1.6rem;
-        color: var(--ink);
-        line-height: 1;
-      }
-
-      .auth-gate-brand-sub {
-        display: block;
-        font-family: var(--font-body);
-        font-size: .46rem;
-        letter-spacing: .26em;
-        text-transform: uppercase;
-        color: var(--warm-grey);
-        margin-top: 4px;
-      }
-
-      .auth-gate-title {
-        font-family: var(--font-display);
-        font-style: italic;
-        font-size: 1.15rem;
-        color: var(--ink);
-        margin-bottom: 8px;
-      }
-
-      .auth-gate-sub {
-        font-family: var(--font-body);
-        font-size: .63rem;
-        color: var(--warm-grey);
-        line-height: 1.7;
-        margin-bottom: 26px;
-      }
-
-      /* Tabs */
-      .auth-gate-tabs {
-        display: flex;
-        border-bottom: 1px solid var(--border);
-        margin-bottom: 26px;
-      }
-
-      .agt-tab {
-        flex: 1;
-        font-family: var(--font-body);
-        font-size: .54rem;
-        letter-spacing: .16em;
-        text-transform: uppercase;
-        color: var(--warm-grey);
-        background: transparent;
-        border: none;
-        border-bottom: 2px solid transparent;
-        padding: 8px 0 10px;
-        cursor: pointer;
-        transition: all .25s;
-      }
-
-      .agt-tab.active {
-        color: var(--red);
-        border-bottom-color: var(--red);
-      }
-
-      .agt-tab:hover:not(.active) {
-        color: var(--ink);
-      }
-
-      /* Forms */
-      .agt-form {
-        display: none;
-      }
-
-      .agt-form.active {
-        display: block;
-      }
-
-      .agt-field {
-        margin-bottom: 16px;
-      }
-
-      .agt-field label {
-        display: block;
-        font-family: var(--font-body);
-        font-size: .5rem;
-        letter-spacing: .16em;
-        text-transform: uppercase;
-        color: var(--warm-grey);
-        margin-bottom: 6px;
-      }
-
-      .agt-field input {
-        width: 100%;
-        padding: 11px 13px;
-        background: var(--cream-dark);
-        border: 1px solid var(--border);
-        font-family: var(--font-body);
-        font-size: .74rem;
-        color: var(--ink);
-        outline: none;
-        transition: border-color .25s, background .25s;
-      }
-
-      .agt-field input:focus {
-        border-color: var(--red);
-        background: #fff;
-      }
-
-      .agt-row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-
-      .agt-msg {
-        font-family: var(--font-body);
-        font-size: .6rem;
-        line-height: 1.5;
-        margin-bottom: 10px;
-        display: none;
-      }
-
-      .agt-msg.error {
-        color: var(--red);
-      }
-
-      .agt-msg.success {
-        color: #2E7D32;
-      }
-
-      .agt-submit {
-        width: 100%;
-        padding: 14px;
-        background: var(--red);
-        color: #fff;
-        font-family: var(--font-body);
-        font-size: .58rem;
-        letter-spacing: .2em;
-        text-transform: uppercase;
-        border: none;
-        cursor: pointer;
-        transition: background .3s, letter-spacing .3s var(--ease);
-        margin-top: 6px;
-      }
-
-      .agt-submit:hover {
-        background: var(--red-dim);
-        letter-spacing: .28em;
-      }
-
-      /* Responsive */
-      @media (max-width: 768px) {
-        .booking-info-strip {
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .bi-divider {
-          display: none;
-        }
-
-        .bi-item {
-          padding: 24px 20px;
-        }
-
-        .booking-cta-wrap {
-          padding: 80px 24px 60px;
-        }
-
-        .auth-gate-box {
-          padding: 36px 24px 32px;
-        }
-      }
-    </style>
-
-    <script>
-      /* ── Booking CTA Gate Logic ── */
-
-      function handleBookingCTA() {
-        // Kiểm tra đã đăng nhập chưa (dùng localStorage key của app)
-        const user = localStorage.getItem('kep_user');
-        if (user) {
-          // Đã đăng nhập → đi thẳng trang new booking
-          window.location.href = './features/booking/new-booking.html';
-        } else {
-          // Chưa → mở auth gate
-          document.getElementById('authGateOverlay').classList.add('open');
-          document.body.style.overflow = 'hidden';
-        }
-      }
-
-      function closeAuthGate(e) {
-        if (e && e.target !== document.getElementById('authGateOverlay')) return;
-        document.getElementById('authGateOverlay').classList.remove('open');
-        document.body.style.overflow = '';
-      }
-
-      function switchGateTab(tab, btn) {
-        document.querySelectorAll('.agt-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.agt-form').forEach(f => f.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('gateForm' + (tab === 'login' ? 'Login' : 'Register')).classList.add('active');
-      }
-
-      function doGateLogin() {
-        const email = document.getElementById('gateEmail').value.trim();
-        const pw = document.getElementById('gatePw').value;
-        const msg = document.getElementById('gateMsgLogin');
-
-        msg.style.display = 'none';
-
-        if (!email || !pw) {
-          msg.textContent = 'Vui lòng nhập đầy đủ email và mật khẩu.';
-          msg.style.display = 'block';
-          return;
-        }
-
-        // Kiểm tra user đã đăng kí (lưu trong localStorage)
-        const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
-        const found = users.find(u => u.email === email && u.pw === pw);
-
-        if (!found) {
-          msg.textContent = 'Email hoặc mật khẩu không đúng.';
-          msg.style.display = 'block';
-          return;
-        }
-
-        // Lưu session
-        localStorage.setItem('kep_user', JSON.stringify(found));
-        document.getElementById('authGateOverlay').classList.remove('open');
-        document.body.style.overflow = '';
-        window.location.href = './features/booking/new-booking.html';
-      }
-
-      function doGateRegister() {
-        const lastName = document.getElementById('regLastName').value.trim();
-        const firstName = document.getElementById('regFirstName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const pw = document.getElementById('regPw').value;
-        const msg = document.getElementById('gateMsgRegister');
-
-        msg.style.display = 'none';
-
-        if (!lastName || !firstName || !email || !phone || !pw) {
-          msg.textContent = 'Vui lòng điền đầy đủ thông tin.';
-          msg.style.display = 'block';
-          return;
-        }
-
-        if (pw.length < 8) {
-          msg.textContent = 'Mật khẩu tối thiểu 8 ký tự.';
-          msg.style.display = 'block';
-          return;
-        }
-
-        const users = JSON.parse(localStorage.getItem('kep_users') || '[]');
-        if (users.find(u => u.email === email)) {
-          msg.textContent = 'Email này đã được đăng kí.';
-          msg.style.display = 'block';
-          return;
-        }
-
-        const newUser = {
-          id: 'u_' + Date.now(),
-          lastName, firstName,
-          name: firstName + ' ' + lastName,
-          email, phone, pw,
-          dob: '', createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        localStorage.setItem('kep_users', JSON.stringify(users));
-        localStorage.setItem('kep_user', JSON.stringify(newUser));
-
-        document.getElementById('authGateOverlay').classList.remove('open');
-        document.body.style.overflow = '';
-        window.location.href = './features/booking/new-booking.html';
-      }
-    </script>
-
     <!-- ── FOOTER ── -->
     <div id="footer-placeholder"></div>
   </main>
@@ -959,8 +322,7 @@
     <div class="modal-box qr-modal-box">
       <div class="qr-status-icon">✓</div>
       <h3 class="modal-title kep-font">Đặt Lịch Thành Công!</h3>
-      <p class="modal-sub">Lịch của bạn đang <strong>chờ xác nhận</strong>. Vui lòng thanh toán đặt cọc 50% để giữ lịch.
-      </p>
+      <p class="modal-sub">Lịch của bạn đang <strong>chờ xác nhận</strong>. Vui lòng thanh toán đặt cọc 50% để giữ lịch.</p>
       <div class="qr-code-wrap">
         <img id="qrImg" src="" alt="QR Code" class="qr-img" />
         <div class="qr-amount-label">Số tiền đặt cọc: <strong id="qrAmount"></strong></div>
@@ -992,11 +354,10 @@
     </div>
   </div>
 
-  <!-- ══ AUTH FRAME MODAL (Load login.html / register.html) ══ -->
+  <!-- Auth Frame Modal -->
   <div class="modal-overlay" id="authFrameModal">
     <div class="modal-box auth-box" onclick="event.stopPropagation()">
       <button class="lightbox-close" onclick="closeAuthFrame()">✕</button>
-
       <iframe id="authFrame" src="" title="Kép Auth"
         style="width:100%;height:560px;border:none;display:block;background:transparent;"></iframe>
     </div>
@@ -1037,7 +398,7 @@
     </div>
   </div>
 
-  <!-- User info bar (when logged in) -->
+  <!-- User info bar -->
   <div class="user-bar" id="userBar" style="display:none">
     <span class="user-bar-name" id="userBarName"></span>
     <button class="user-bar-logout" onclick="doLogout()">Đăng xuất</button>
@@ -1046,35 +407,10 @@
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
+  <!-- Scripts -->
   <script type="module" src="./assets/js/main.js"></script>
-
-  <script>
-    function openAuthFrame(type = "login") {
-      const modal = document.getElementById("authFrameModal");
-      const frame = document.getElementById("authFrame");
-
-      if (!modal || !frame) return;
-
-      frame.src = type === "register"
-        ? "./features/auth/register.html"
-        : "./features/auth/login.html";
-
-      modal.classList.add("show");
-    }
-
-    function closeAuthFrame() {
-      const modal = document.getElementById("authFrameModal");
-      const frame = document.getElementById("authFrame");
-
-      if (!modal || !frame) return;
-
-      modal.classList.remove("show");
-      frame.src = "";
-    }
-
-    window.openAuthFrame = openAuthFrame;
-    window.closeAuthFrame = closeAuthFrame;
-  </script>
+  <script src="./assets/js/booking-gate.js"></script>
+  <script src="./assets/js/auth-frame.js"></script>
 
 </body>
 

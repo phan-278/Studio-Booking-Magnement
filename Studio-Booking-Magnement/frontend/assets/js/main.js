@@ -1,30 +1,39 @@
-import '../../components/layout.js';
-import '../../features/auth/auth.js';
-import '../../features/booking/booking.js';
-import '../../features/admin/admin.js';
+// ================================================================
+//  Kép Studio — assets/js/main.js
+// ================================================================
 
-// Load Sidebar and Footer dynamically
+import './layout.js';
+
+// Uncomment khi các file này tồn tại:
+// import './auth/auth.js';
+// import './booking/booking.js';
+// import './admin/admin.js';
+
 async function loadComponents() {
   try {
-    const sidebarRes = await fetch('./components/sidebar.html');
+    const [sidebarRes, footerRes] = await Promise.all([
+      fetch('./components/sidebar.html'),
+      fetch('./components/footer.html'),
+    ]);
+
     if (sidebarRes.ok) {
       const sidebarHtml = await sidebarRes.text();
-      const sidebarPlaceholder = document.getElementById('sidebar-placeholder');
-      if (sidebarPlaceholder) {
-        sidebarPlaceholder.outerHTML = sidebarHtml;
-      }
+      const placeholder = document.getElementById('sidebar-placeholder');
+      if (placeholder) placeholder.outerHTML = sidebarHtml;
+    } else {
+      console.warn('[main] sidebar.html not found:', sidebarRes.status);
     }
 
-    const footerRes = await fetch('./components/footer.html');
     if (footerRes.ok) {
       const footerHtml = await footerRes.text();
-      const footerPlaceholder = document.getElementById('footer-placeholder');
-      if (footerPlaceholder) {
-        footerPlaceholder.outerHTML = footerHtml;
-      }
+      const placeholder = document.getElementById('footer-placeholder');
+      if (placeholder) placeholder.outerHTML = footerHtml;
+    } else {
+      console.warn('[main] footer.html not found:', footerRes.status);
     }
-  } catch (error) {
-    console.error('Error loading components:', error);
+
+  } catch (err) {
+    console.error('[main] Failed to load components:', err);
   }
 }
 
