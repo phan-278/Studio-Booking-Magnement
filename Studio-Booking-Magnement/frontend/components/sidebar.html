@@ -1,25 +1,43 @@
 <aside class="sidebar" id="sidebar">
-  <a class="brand" href="#about">
-    <span class="brand-kep"><img src="./assets/KepDaSpace/INTRO11.png" alt="Kép" class="brand-logo-img"/></span>
+
+  <!-- Brand / Logo -->
+  <a class="brand" href="#about" aria-label="Kép Studio - về trang chủ">
+    <img
+      src="./assets/KepDaSpace/INTRO11.png"
+      alt="Kép Studio"
+      class="brand-logo-img"
+    />
   </a>
 
-  <nav class="sidebar-nav">
-    <a href="#about"   class="nav-link active"><span class="nav-num">01</span><span class="nav-label"> About Us</span></a>
-    <a href="#zone"    class="nav-link"><span class="nav-num">02</span><span class="nav-label"> Zone</span></a>
-    <a href="#booking" class="nav-link"><span class="nav-num">03</span><span class="nav-label"> Đặt Lịch</span></a>
+  <!-- Navigation -->
+  <nav class="sidebar-nav" aria-label="Main navigation">
+    <a href="#about"   class="nav-link active" data-tooltip="About Us">
+      <span class="nav-num" aria-hidden="true">01</span>
+      <span class="nav-label">About Us</span>
+    </a>
+    <a href="#zone"    class="nav-link" data-tooltip="Zone">
+      <span class="nav-num" aria-hidden="true">02</span>
+      <span class="nav-label">Zone</span>
+    </a>
+    <a href="#booking" class="nav-link" data-tooltip="Đặt Lịch">
+      <span class="nav-num" aria-hidden="true">03</span>
+      <span class="nav-label">Đặt Lịch</span>
+    </a>
   </nav>
 
+  <!-- Footer actions -->
   <div class="sidebar-foot">
-    <button class="admin-btn" onclick="openLogin()">
-      <span class="admin-icon">⊞</span>
-      <span class="admin-label"> Admin</span>
+    <button class="admin-btn" onclick="openLogin()" aria-label="Mở trang Admin">
+      <span class="admin-icon" aria-hidden="true">⊞</span>
+      <span class="admin-label">Admin</span>
     </button>
 
-    <button class="user-btn" onclick="openAuthFrame('login')">
-      <span class="admin-icon">◎</span>
-      <span class="admin-label"> Đăng nhập</span>
+    <button class="user-btn" onclick="openAuthFrame('login')" aria-label="Đăng nhập tài khoản">
+      <span class="admin-icon" aria-hidden="true">◎</span>
+      <span class="admin-label">Đăng nhập</span>
     </button>
 
     <span class="copy">© 2025 Kép Studio</span>
   </div>
+
 </aside>
