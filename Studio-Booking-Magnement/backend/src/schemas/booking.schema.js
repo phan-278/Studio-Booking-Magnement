@@ -66,8 +66,18 @@ const cancelBookingSchema = {
   })
 };
 
+const rejectPaymentSchema = {
+  params: z.object({
+    id: z.string().uuid('ID booking không hợp lệ')
+  }),
+  body: z.object({
+    reason: z.string().min(1, 'Vui lòng cung cấp lý do từ chối thanh toán')
+  })
+};
+
 module.exports = {
   createBookingSchema,
   bookingIdParamSchema,
-  cancelBookingSchema
+  cancelBookingSchema,
+  rejectPaymentSchema
 };

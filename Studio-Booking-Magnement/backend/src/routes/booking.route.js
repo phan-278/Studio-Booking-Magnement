@@ -68,6 +68,22 @@ router.patch(
 );
 
 router.patch(
+  '/:id/reject-payment',
+  authMiddleware,
+  adminMiddleware,
+  validate(bookingSchemas.rejectPaymentSchema),
+  bookingController.rejectPayment
+);
+
+router.patch(
+  '/:id/reject-payment',
+  authMiddleware,
+  adminMiddleware,
+  validate(bookingSchemas.rejectPaymentSchema),
+  bookingController.rejectPayment
+);
+
+router.patch(
   '/:id/checkin',
   authMiddleware,
   adminMiddleware,

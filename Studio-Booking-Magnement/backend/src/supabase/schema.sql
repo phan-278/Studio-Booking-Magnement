@@ -95,6 +95,8 @@ CREATE TABLE IF NOT EXISTS public.bookings (
     cancellation_reason cancellation_reason_type,
     verified_by UUID REFERENCES public.profiles(id),
     verified_at TIMESTAMPTZ,
+    qr_code_data TEXT,
+    reject_reason TEXT,
     notes TEXT,
     created_at TIMESTAMPTZ DEFAULT now(),
     updated_at TIMESTAMPTZ DEFAULT now(),
@@ -132,36 +134,24 @@ CREATE TABLE IF NOT EXISTS public.payment_logs (
     created_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Bảng tax_settings
-CREATE TABLE IF NOT EXISTS public.tax_settings (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    tax_type TEXT NOT NULL,
-    tax_rate NUMERIC NOT NULL CHECK (tax_rate >= 0),
-    effective_from DATE NOT NULL,
-    created_by UUID REFERENCES public.profiles(id),
-    created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- Bảng monthly_reports (v3 có thêm các counter forfeited)
+-- Bảng monthly_reports (v4)
 CREATE TABLE IF NOT EXISTS public.monthly_reports (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     year INT NOT NULL,
     month INT NOT NULL,
-    total_bookings_completed INT DEFAULT 0,
+    gross_revenue NUMERIC DEFAULT 0,
     studio_revenue NUMERIC DEFAULT 0,
     equipment_revenue NUMERIC DEFAULT 0,
-    gross_revenue NUMERIC DEFAULT 0,
-    tax_rate_applied NUMERIC,
-    tax_amount NUMERIC DEFAULT 0,
-    net_revenue NUMERIC DEFAULT 0,
-    forfeited_amount NUMERIC DEFAULT 0,
+    forfeited_amount NUMERIC DEFAULT 0, 
+    total_bookings_completed INT DEFAULT 0,
     forfeited_count INT DEFAULT 0,
     no_show_count INT DEFAULT 0,
     cancelled_after_deposit_count INT DEFAULT 0,
     cancelled_before_deposit_count INT DEFAULT 0,
+    on_hold_count INT DEFAULT 0,
     is_finalized BOOLEAN DEFAULT false,
+    generated_at TIMESTAMPTZ,
     generated_by UUID REFERENCES public.profiles(id),
-    generated_at TIMESTAMPTZ DEFAULT now(),
     UNIQUE (year, month)
 );
 
@@ -214,7 +204,6 @@ ALTER TABLE public.equipments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.booking_equipments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payment_logs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.tax_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.monthly_reports ENABLE ROW LEVEL SECURITY;
 
 -- Tạo policy cho phép Service Role Key được bypass RLS (Supabase tự động cho phép Service Role).
