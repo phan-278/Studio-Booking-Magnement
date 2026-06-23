@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const reportController = require('../controllers/report.controller');
-const { requireAdmin } = require('../middlewares/admin.middleware');
+const { requireAdmin } = require('../middlewares/role.middleware');
 const { validate } = require('../middlewares/validate.middleware');
 const { monthlyReportQuerySchema, monthlyReportParamsSchema } = require('../schemas/report.schema');
 

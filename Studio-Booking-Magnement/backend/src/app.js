@@ -23,7 +23,9 @@ app.use('/api/reports', require('./routes/report.route'));
 
 // Khởi chạy hệ thống Cron Jobs
 const initCronJobs = require('./cron');
-initCronJobs();
+if (process.env.NODE_ENV !== 'test') {
+  initCronJobs();
+}
 
 // Middleware xử lý lỗi tập trung cuối cùng (Global Error Handler)
 // Sẽ tự động bắt được TẤT CẢ lỗi từ các hàm async trong Express 5.x
@@ -32,11 +34,6 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({
     error: err.message || 'Lỗi hệ thống nội bộ.',
   });
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server đang vận hành mượt mà tại port ${PORT} (Express 5 Native Async Support)`);
 });
 
 module.exports = app;

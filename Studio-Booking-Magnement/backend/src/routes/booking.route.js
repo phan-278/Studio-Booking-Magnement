@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bookingController = require('../controllers/booking.controller');
-const { authMiddleware, adminMiddleware } = require('../middlewares/auth.middleware');
-const validate = require('../middlewares/validate.middleware');
+const { verifyToken: authMiddleware } = require('../middlewares/auth.middleware');
+const { requireAdmin: adminMiddleware } = require('../middlewares/role.middleware');
+const { validate } = require('../middlewares/validate.middleware');
 const bookingSchemas = require('../schemas/booking.schema');
 
 // Middleware hỗ trợ đính kèm role vào req (giả lập để controller dùng dễ hơn)
