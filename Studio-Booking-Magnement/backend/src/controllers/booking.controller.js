@@ -66,6 +66,18 @@ class BookingController {
     }
   }
 
+  async rejectPayment(req, res, next) {
+    try {
+      const { id } = req.params;
+      const admin_id = req.user.id;
+      const { reason } = req.body;
+      const booking = await bookingService.rejectPayment(id, admin_id, reason);
+      res.json({ message: 'Đã từ chối thanh toán', booking });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async checkIn(req, res, next) {
     try {
       const { id } = req.params;

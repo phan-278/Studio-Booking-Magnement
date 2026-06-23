@@ -160,6 +160,35 @@ class BookingService {
   }
 
   /**
+   * Admin từ chối thanh toán
+   */
+  async rejectPayment(id, admin_id, reason) {
+    const { data: booking, error: fetchErr } = await supabase.from('bookings').select('*').eq('id', id).single();
+    if (!booking) throw Object.assign(new Error('Booking không tồn tại'), { status: 404 });
+
+    await this._checkFinalizedInterceptor(booking, 'rejectPayment');
+
+    if (booking.status !== 'pending_payment') {
+      throw Object.assign(new Error('Booking không ở trạng thái pending_payment'), { status: 400 });
+    }
+
+    const { data, error } = await supabase
+      .from('bookings')
+      .update({
+        payment_proof_submitted: false,
+        reject_reason: reason
+      })
+      .eq('id', id)
+      .select();
+
+    if (error) throw error;
+
+    await paymentLogService.logPaymentStatus(id, booking.payment_status, booking.payment_status, 0, admin_id, `Admin từ chối thanh toán. Lý do: ${reason}`);
+
+    return data[0];
+  }
+
+  /**
    * Admin báo khách vắng mặt
    */
   async noShow(id, admin_id) {
