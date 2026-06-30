@@ -195,84 +195,105 @@
   </div>
 </div>
 
-<script>
-const _u = JSON.parse(localStorage.getItem('kep_user') || 'null');
-if (!_u) { window.location.href = '../../index.html'; }
+<script type="module">
+import { supabase } from '../../services/supabase-config.js';
 
-function doLogout(){ localStorage.removeItem('kep_user'); window.location.href='../../index.html'; }
+const { data: userResp } = await supabase.auth.getUser();
+if (!userResp.user) { window.location.href = '../../index.html'; }
+
+const { data: profile } = await supabase.from('profiles').select('*').eq('id', userResp.user.id).single();
+const meta = userResp.user.user_metadata || {};
+const fullName = profile?.full_name || meta.full_name || userResp.user.email || 'Khách';
+const email = userResp.user.email;
+const phone = profile?.phone || meta.phone || '';
+
+window.doLogout = async function() {
+  await supabase.auth.signOut();
+  window.location.href = '../../index.html';
+}
 
 // Populate sidebar
-document.getElementById('sbName').textContent   = (_u.firstName||'') + ' ' + (_u.lastName||'');
-document.getElementById('sbEmail').textContent  = _u.email || '';
-document.getElementById('sbAvatar').textContent = ((_u.firstName||_u.name||'K')[0]).toUpperCase();
+document.getElementById('sbName').textContent   = fullName;
+document.getElementById('sbEmail').textContent  = email;
+document.getElementById('sbAvatar').textContent = (fullName[0] || 'K').toUpperCase();
 
 // Big avatar
-const initials = ((_u.firstName||'K')[0] + (_u.lastName||'')[0]).toUpperCase();
-document.getElementById('bigAvatar').textContent = initials || 'K';
-document.getElementById('bigName').textContent   = (_u.firstName||'') + ' ' + (_u.lastName||'');
-document.getElementById('bigEmail').textContent  = _u.email || '';
+const initials = fullName.substring(0,2).toUpperCase();
+document.getElementById('bigAvatar').textContent = initials;
+document.getElementById('bigName').textContent   = fullName;
+document.getElementById('bigEmail').textContent  = email;
 
 // Stats
-const bks = JSON.parse(localStorage.getItem('kep_bookings')||'[]');
-document.getElementById('statTotal').textContent = bks.length;
-document.getElementById('statDone').textContent  = bks.filter(b=>b.status==='confirmed').length;
-document.getElementById('memberSince').textContent = _u.createdAt ? new Date(_u.createdAt).toLocaleDateString('vi-VN',{month:'long',year:'numeric'}) : '—';
+const { data: bks } = await supabase.from('bookings').select('status').eq('user_id', userResp.user.id);
+const bksList = bks || [];
+document.getElementById('statTotal').textContent = bksList.length;
+document.getElementById('statDone').textContent  = bksList.filter(b=>b.status==='confirmed').length;
+document.getElementById('memberSince').textContent = profile?.created_at ? new Date(profile.created_at).toLocaleDateString('vi-VN',{month:'long',year:'numeric'}) : new Date().toLocaleDateString('vi-VN',{month:'long',year:'numeric'});
 
 // Fill form
-document.getElementById('pfLastName').value  = _u.lastName  || '';
-document.getElementById('pfFirstName').value = _u.firstName || _u.name || '';
-document.getElementById('pfEmail').value     = _u.email     || '';
-document.getElementById('pfPhone').value     = _u.phone     || '';
-document.getElementById('pfDob').value       = _u.dob       || '';
-document.getElementById('pfGender').value    = _u.gender    || '';
-document.getElementById('pfJob').value       = _u.job       || '';
+const nameParts = fullName.split(' ');
+const firstName = nameParts.pop() || '';
+const lastName = nameParts.join(' ');
 
-function saveProfile(){
-  _u.lastName  = document.getElementById('pfLastName').value.trim();
-  _u.firstName = document.getElementById('pfFirstName').value.trim();
-  _u.phone     = document.getElementById('pfPhone').value.trim();
-  _u.dob       = document.getElementById('pfDob').value;
-  _u.gender    = document.getElementById('pfGender').value;
-  _u.job       = document.getElementById('pfJob').value.trim();
-  _u.name      = _u.firstName + ' ' + _u.lastName;
+document.getElementById('pfLastName').value  = lastName;
+document.getElementById('pfFirstName').value = firstName;
+document.getElementById('pfEmail').value     = email;
+document.getElementById('pfPhone').value     = phone;
+document.getElementById('pfDob').value       = meta.dob || '';
+document.getElementById('pfGender').value    = meta.gender || '';
+document.getElementById('pfJob').value       = meta.job || '';
 
-  // Update in users array
-  const users = JSON.parse(localStorage.getItem('kep_users')||'[]');
-  const idx   = users.findIndex(u => u.id === _u.id);
-  if (idx >= 0) users[idx] = { ...users[idx], ..._u };
-  localStorage.setItem('kep_users', JSON.stringify(users));
-  localStorage.setItem('kep_user', JSON.stringify(_u));
+window.saveProfile = async function() {
+  const ln = document.getElementById('pfLastName').value.trim();
+  const fn = document.getElementById('pfFirstName').value.trim();
+  const pPhone = document.getElementById('pfPhone').value.trim();
+  const dob = document.getElementById('pfDob').value;
+  const gender = document.getElementById('pfGender').value;
+  const job = document.getElementById('pfJob').value.trim();
+  const newFullName = (ln ? ln + ' ' : '') + fn;
+
+  // Update profile in DB
+  await supabase.from('profiles').update({ full_name: newFullName, phone: pPhone }).eq('id', userResp.user.id);
+  
+  // Update user metadata (for extra fields)
+  await supabase.auth.updateUser({
+    data: {
+      full_name: newFullName,
+      phone: pPhone,
+      dob,
+      gender,
+      job
+    }
+  });
 
   // Refresh display
-  document.getElementById('bigName').textContent  = _u.firstName + ' ' + _u.lastName;
-  document.getElementById('sbName').textContent   = _u.firstName + ' ' + _u.lastName;
-  document.getElementById('bigAvatar').textContent = ((_u.firstName[0]||'K') + (_u.lastName[0]||'')).toUpperCase();
+  document.getElementById('bigName').textContent  = newFullName;
+  document.getElementById('sbName').textContent   = newFullName;
+  document.getElementById('bigAvatar').textContent = newFullName.substring(0,2).toUpperCase();
+  document.getElementById('sbAvatar').textContent = newFullName.substring(0,1).toUpperCase();
 
   const msg = document.getElementById('saveMsg');
   msg.style.display = 'block';
   setTimeout(()=>msg.style.display='none', 3000);
 }
 
-function changePw(){
-  const cur = document.getElementById('pwCurrent').value;
+window.changePw = async function() {
   const nw  = document.getElementById('pwNew').value;
   const msg = document.getElementById('pwMsg');
   msg.style.display = 'block';
   msg.style.color   = 'var(--red)';
 
-  if (!cur || !nw) { msg.textContent = 'Vui lòng điền đầy đủ.'; return; }
-  if (cur !== _u.pw) { msg.textContent = 'Mật khẩu hiện tại không đúng.'; return; }
+  if (!nw) { msg.textContent = 'Vui lòng nhập mật khẩu mới.'; return; }
   if (nw.length < 8) { msg.textContent = 'Mật khẩu mới tối thiểu 8 ký tự.'; return; }
 
-  _u.pw = nw;
-  const users = JSON.parse(localStorage.getItem('kep_users')||'[]');
-  const idx   = users.findIndex(u => u.id === _u.id);
-  if (idx >= 0) users[idx].pw = nw;
-  localStorage.setItem('kep_users', JSON.stringify(users));
-  localStorage.setItem('kep_user', JSON.stringify(_u));
+  const { error } = await supabase.auth.updateUser({ password: nw });
+  if (error) {
+    msg.textContent = error.message;
+    return;
+  }
 
   msg.style.color   = '#2E7D32';
-  msg.textContent   = '✓ Đã đổi mật khẩu';
+  msg.textContent   = '✓ Đã đổi mật khẩu thành công';
   document.getElementById('pwCurrent').value = '';
   document.getElementById('pwNew').value     = '';
   setTimeout(()=>msg.style.display='none', 3000);

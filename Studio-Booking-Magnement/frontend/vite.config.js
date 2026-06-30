@@ -12,7 +12,7 @@ export default defineConfig({
         booking: resolve(__dirname, 'features/booking/new-booking.html'),
         dashboard: resolve(__dirname, 'features/user/dashboard.html'),
         myBookings: resolve(__dirname, 'features/user/my-bookings.html'),
-        admin: resolve(__dirname, 'features/admin/index.html'),
+        admin: resolve(__dirname, 'features/admin/dashboard.html'),
       }
     }
   }

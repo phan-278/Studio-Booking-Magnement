@@ -2,17 +2,46 @@
    NEW-BOOKING.JS — Tách từ new-booking.html
 ================================================================ */
 
+import { supabase } from '../../services/supabase-config.js';
+import { addBooking } from '../../services/api.js';
+
 /* ── Auth guard ── */
-const _user = JSON.parse(localStorage.getItem('kep_user') || 'null');
-if (!_user) { window.location.href = '../../index.html#booking'; }
-else {
+const { data: userResp } = await supabase.auth.getUser();
+if (!userResp.user) { 
+  window.location.href = '../../index.html#booking'; 
+} else {
+  const meta = userResp.user.user_metadata || {};
+  const { data: profile } = await supabase.from('profiles').select('*').eq('id', userResp.user.id).single();
+  const fullName = profile?.full_name || meta.full_name || '';
+
   const el = document.getElementById('topbarUser');
-  if (el) el.textContent = 'Xin chào, ' + (_user.firstName || _user.name || '');
+  if (el) el.textContent = 'Xin chào, ' + fullName;
+  
   // Prefill contact info
-  document.getElementById('ctLastName').value  = _user.lastName  || '';
-  document.getElementById('ctFirstName').value = _user.firstName || _user.name || '';
-  document.getElementById('ctEmail').value     = _user.email     || '';
-  document.getElementById('ctPhone').value     = _user.phone     || '';
+  const nameParts = fullName.split(' ');
+  const firstName = nameParts.pop() || '';
+  const lastName = nameParts.join(' ');
+
+  document.getElementById('ctLastName').value  = lastName;
+  document.getElementById('ctFirstName').value = firstName;
+  document.getElementById('ctEmail').value     = userResp.user.email || '';
+  document.getElementById('ctPhone').value     = profile?.phone || meta.phone || '';
+}
+
+const _user = userResp.user;
+
+/* ── Load Bookings ── */
+let allBookingsData = [];
+const { data: bData } = await supabase.from('bookings').select('*');
+if (bData) {
+  allBookingsData = bData.map(b => ({
+    id: b.id,
+    zone: b.studio_id === 'O' ? '"O" Zone' : b.studio_id === 'C' ? '"C" Zone' : 'Full House',
+    date: b.date,
+    startTime: b.start_time.substring(0, 5),
+    endTime: b.end_time.substring(0, 5),
+    status: b.status
+  }));
 }
 
 /* ── State ── */
@@ -118,7 +147,7 @@ const MONTHS = ['Tháng 1','Tháng 2','Tháng 3','Tháng 4','Tháng 5','Tháng 6
                 'Tháng 7','Tháng 8','Tháng 9','Tháng 10','Tháng 11','Tháng 12'];
 
 function getLocalBookings() {
-  return JSON.parse(localStorage.getItem('kep_bookings') || '[]');
+  return allBookingsData;
 }
 
 function renderCalendar() {
@@ -752,48 +781,43 @@ function buildConfirm() {
   }
 }
 
-/* ── Submit ── */
-function submitBooking() {
+async function submitBooking() {
   const dur = state.duration;
   const end = state.startTime + dur;
 
-  if (!state.bookingId) {
-    state.bookingId = 'BK' + Date.now().toString().slice(-6);
-  }
-
-  const booking = {
-    id: state.bookingId,
-    zone: ZONES[state.zone]?.name || state.zone,
+  const data = {
+    zone: state.zone,
     date: state.date,
-    startTime: state.startTime + ':00',
-    endTime: end + ':00',
-    duration: dur,
-    equipment: Object.entries(state.equipment).map(([id, qty]) => {
-      const e = EQUIP.find(x => x.id === id);
-      return { name: e.name, qty, price: e.price };
-    }),
-    name: document.getElementById('ctFirstName').value + ' ' + document.getElementById('ctLastName').value,
-    email: document.getElementById('ctEmail').value,
-    phone: document.getElementById('ctPhone').value,
-    purpose: document.getElementById('ctPurpose').value,
-    note: document.getElementById('ctNote').value,
+    startTime: state.startTime,
+    endTime: end,
     total: state.total,
-    deposit: state.depositAmt,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    userId: _user?.id || null
+    purposes: document.getElementById('ctPurpose').value,
+    note: document.getElementById('ctNote').value,
+    equipments: Object.keys(state.equipment)
   };
 
-  const bookings = JSON.parse(localStorage.getItem('kep_bookings') || '[]');
-  bookings.push(booking);
-  localStorage.setItem('kep_bookings', JSON.stringify(bookings));
+  try {
+    const booking = await addBooking(data);
+    
+    // Add to local data so it shows up immediately in calendar without refresh
+    allBookingsData.push({
+      id: booking.id,
+      zone: booking.zone === 'O' ? '"O" Zone' : booking.zone === 'C' ? '"C" Zone' : 'Full House',
+      date: booking.date,
+      startTime: booking.startTime,
+      endTime: booking.endTime,
+      status: booking.status
+    });
 
-  document.getElementById('wizardWrap').style.display = 'none';
-  document.getElementById('successWrap').classList.add('show');
-  document.getElementById('successCode').textContent = booking.id;
+    document.getElementById('wizardWrap').style.display = 'none';
+    document.getElementById('successWrap').classList.add('show');
+    document.getElementById('successCode').textContent = booking.id;
 
-  document.getElementById('floatingPriceCard').style.display = 'none';
-  document.getElementById('priceCardToggleBtn').style.display = 'none';
+    document.getElementById('floatingPriceCard').style.display = 'none';
+    document.getElementById('priceCardToggleBtn').style.display = 'none';
+  } catch (err) {
+    alert('Lỗi đặt lịch: ' + err.message);
+  }
 }
 
 function resetBooking() {
@@ -817,3 +841,17 @@ if (fCard && fHandle) {
 renderCalendar();
 renderEquip();
 updatePrice();
+
+// Expose functions to window
+window.goStep = goStep;
+window.selectZone = selectZone;
+window.prevMonth = prevMonth;
+window.nextMonth = nextMonth;
+window.openZoneLightbox = openZoneLightbox;
+window.closeLightbox = closeLightbox;
+window.selectZoneFromLightbox = selectZoneFromLightbox;
+window.toggleEquip = toggleEquip;
+window.changeQty = changeQty;
+window.togglePriceCard = togglePriceCard;
+window.submitBooking = submitBooking;
+window.resetBooking = resetBooking;

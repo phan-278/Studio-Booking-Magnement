@@ -239,28 +239,38 @@
   </div>
 </div>
 
-<script>
-const _u = JSON.parse(localStorage.getItem('kep_user') || 'null');
-if (!_u) { window.location.href = '../../index.html'; }
-document.getElementById('sbName').textContent   = (_u?.firstName||'') + ' ' + (_u?.lastName||'');
-document.getElementById('sbEmail').textContent  = _u?.email || '';
-document.getElementById('sbAvatar').textContent = ((_u?.firstName||_u?.name||'K')[0]).toUpperCase();
+<script type="module">
+import { supabase } from '../../services/supabase-config.js';
 
-function doLogout(){ localStorage.removeItem('kep_user'); window.location.href='../../index.html'; }
+const { data: userResp } = await supabase.auth.getUser();
+if (!userResp.user) { window.location.href = '../../index.html'; }
 
-/* Load saved settings */
-const prefs = JSON.parse(localStorage.getItem('kep_prefs') || '{}');
+const { data: profile } = await supabase.from('profiles').select('*').eq('id', userResp.user.id).single();
+const meta = userResp.user.user_metadata || {};
+const fullName = profile?.full_name || meta.full_name || userResp.user.email || 'Khách';
+
+document.getElementById('sbName').textContent   = fullName;
+document.getElementById('sbEmail').textContent  = userResp.user.email || '';
+document.getElementById('sbAvatar').textContent = (fullName[0] || 'K').toUpperCase();
+
+window.doLogout = async function() {
+  await supabase.auth.signOut();
+  window.location.href = '../../index.html';
+}
+
+/* Load saved settings from Supabase metadata or local fallback */
+const prefs = meta.prefs || JSON.parse(localStorage.getItem('kep_prefs') || '{}');
 
 // Language
-let activeLang = prefs.lang || 'vi';
+window.activeLang = prefs.lang || 'vi';
 document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('selected'));
-document.getElementById('lang' + activeLang.toUpperCase())?.classList.add('selected');
+document.getElementById('lang' + window.activeLang.toUpperCase())?.classList.add('selected');
 
 // Theme
-let activeTheme = prefs.theme || 'cream';
-applyTheme(activeTheme);
+window.activeTheme = prefs.theme || 'cream';
+applyTheme(window.activeTheme);
 document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
-document.getElementById('th' + activeTheme.charAt(0).toUpperCase() + activeTheme.slice(1))?.classList.add('selected');
+document.getElementById('th' + window.activeTheme.charAt(0).toUpperCase() + window.activeTheme.slice(1))?.classList.add('selected');
 
 // Notifications
 if (prefs.ntf) {
@@ -270,14 +280,14 @@ if (prefs.ntf) {
   document.getElementById('ntfZalo').checked   = prefs.ntf.zalo   !== false;
 }
 
-function selectLang(lang, el){
-  activeLang = lang;
+window.selectLang = function(lang, el){
+  window.activeLang = lang;
   document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
 }
 
-function selectTheme(theme, el){
-  activeTheme = theme;
+window.selectTheme = function(theme, el){
+  window.activeTheme = theme;
   document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   applyTheme(theme);
@@ -297,10 +307,10 @@ function applyTheme(theme){
   }
 }
 
-function saveSettings(){
-  const prefs = {
-    lang: activeLang,
-    theme: activeTheme,
+window.saveSettings = async function(){
+  const newPrefs = {
+    lang: window.activeLang,
+    theme: window.activeTheme,
     ntf: {
       email:  document.getElementById('ntfEmail').checked,
       remind: document.getElementById('ntfRemind').checked,
@@ -308,7 +318,15 @@ function saveSettings(){
       zalo:   document.getElementById('ntfZalo').checked,
     }
   };
-  localStorage.setItem('kep_prefs', JSON.stringify(prefs));
+  localStorage.setItem('kep_prefs', JSON.stringify(newPrefs));
+  
+  // Save to Supabase
+  await supabase.auth.updateUser({
+    data: {
+      prefs: newPrefs
+    }
+  });
+
   const msg = document.getElementById('settingsSaved');
   msg.style.display = 'block';
   setTimeout(()=>msg.style.display='none', 3000);

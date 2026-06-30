@@ -82,14 +82,27 @@ async function handleLogin(e) {
     showMessage(error.message || 'Email hoặc mật khẩu không đúng.'); return;
   }
 
+  let userRole = 'user';
+  if (data.user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .single();
+    if (profile) {
+      userRole = profile.role;
+    }
+  }
+
   showMessage('Đăng nhập thành công!', 'success');
 
   setTimeout(() => {
-    /* Nếu đang trong iframe → reload parent, không thì redirect dashboard */
-    if (window.parent !== window) {
-      window.parent.location.reload();
+    if (userRole === 'admin') {
+      if (window.parent !== window) window.parent.location.href = '../admin/dashboard.html';
+      else window.location.href = '../admin/dashboard.html';
     } else {
-      window.location.href = '../../index.html';
+      if (window.parent !== window) window.parent.location.href = '../../index.html';
+      else window.location.href = '../../index.html';
     }
   }, 900);
 }

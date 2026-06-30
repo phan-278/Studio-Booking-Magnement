@@ -13,7 +13,7 @@
       --font-brand:'Playfair Display',serif; --font-body:'Be Vietnam Pro',sans-serif;
     }
     * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:flex; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:none; }
 
     .dash-sidebar { width:220px; min-height:100vh; background:var(--ink); color:#fff; display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; }
     .dash-brand { padding:28px 24px 20px; border-bottom:1px solid rgba(255,255,255,.08); }
@@ -127,7 +127,7 @@
   </div>
   <nav class="dash-nav">
     <div class="dash-nav-section">Tổng quan</div>
-    <a class="dash-nav-link" href="index.html"><span class="nav-icon">◈</span> Dashboard</a>
+    <a class="dash-nav-link" href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
     <div class="dash-nav-section">Quản lý</div>
     <a class="dash-nav-link" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
     <a class="dash-nav-link" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
@@ -256,9 +256,8 @@
 
 <div class="toast" id="toast"></div>
 
+<script type="module" src="admin-auth.js"></script>
 <script>
-if (!localStorage.getItem('kep_admin_auth')) window.location.href = '../../index.html';
-
 const EQUIP_KEY    = 'kep_equipment';
 const BOOKINGS_KEY = 'kep_bookings';
 
@@ -460,7 +459,7 @@ function confirmDelete() {
 }
 
 function renderAll() { syncUsage(); renderStats(); renderUsageChart(); renderTable(); }
-function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html?logout=true'; }
+
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 
 document.addEventListener('DOMContentLoaded', renderAll);

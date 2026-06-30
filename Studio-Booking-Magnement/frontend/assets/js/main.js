@@ -3,6 +3,7 @@
 // ================================================================
 
 import './layout.js';
+import '../../services/api.js'; // Initialize Supabase global auth state
 
 // Uncomment khi các file này tồn tại:
 // import './auth/auth.js';

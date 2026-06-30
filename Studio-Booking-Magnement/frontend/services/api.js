@@ -38,21 +38,35 @@ export async function fetchInitialData() {
       localStorage.removeItem('kep_admin_auth');
     }
 
-    const userBar = document.getElementById('userBar');
-    const userBarName = document.getElementById('userBarName');
-    if (userBar && userBarName) {
-      userBar.style.display = 'flex';
-      userBarName.textContent = _currentUserProfile?.full_name || _currentUser.user_metadata?.full_name || _currentUser.email;
-    }
-    
-    // Hide login button in sidebar
-    const userBtn = document.querySelector('.user-btn');
-    if (userBtn) {
-      userBtn.style.display = 'none';
+    // Attach to window for global access
+    window._currentUser = _currentUser;
+    window._currentUserProfile = _currentUserProfile;
+
+    // Update sidebar profile instead of userBar
+    const sidebarProfile = document.getElementById('sidebarProfile');
+    if (sidebarProfile) {
+      const name = _currentUserProfile?.full_name || _currentUser.user_metadata?.full_name || _currentUser.email;
+      const isAdmin = _currentUserProfile?.role === 'admin';
+      const dashUrl = isAdmin ? './features/admin/dashboard.html' : './features/user/dashboard.html';
+      const dashIcon = isAdmin ? '⊞' : '◎';
+      
+      sidebarProfile.innerHTML = `
+        <div style="margin-bottom:8px; display:flex; flex-direction:column; gap:4px;">
+          <span style="font-size: .65rem; font-weight: 600; color: #fff;">${name}</span>
+          <a href="${dashUrl}" style="text-decoration: none; color: rgba(255,255,255,.7); font-size: .55rem; display: flex; align-items: center; gap: 6px; padding: 4px 0;">
+            <span aria-hidden="true">${dashIcon}</span>
+            <span>${isAdmin ? 'Admin Dashboard' : 'My Dashboard'}</span>
+          </a>
+        </div>
+        <button onclick="doLogout()" style="width:100%; padding: 8px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.7); font-family: var(--font-body); font-size: .55rem; cursor: pointer; transition: all .2s; border-radius: 4px; text-align: center;">Đăng xuất</button>
+        <span class="copy" style="display:block; margin-top:12px; font-size:.5rem; color:rgba(255,255,255,.4);">© 2025 Kép Studio</span>
+      `;
     }
   } else {
     // If not logged in on Supabase, clear admin auth to sync
     localStorage.removeItem('kep_admin_auth');
+    window._currentUser = null;
+    window._currentUserProfile = null;
   }
 
   const { data: bookings } = await supabase.from('bookings').select('*');
@@ -137,3 +151,9 @@ export async function updateBookingStatus(id, status) {
 
 // Call on load
 fetchInitialData();
+
+window.doLogout = async function() {
+  await supabase.auth.signOut();
+  localStorage.removeItem('kep_admin_auth');
+  window.location.reload();
+};

@@ -82,13 +82,13 @@
       font-size:.85rem; color:var(--red); width:32px; text-align:center; flex-shrink:0;
     }
     .today-bk-info { flex:1; }
-    .today-bk-name { font-family:var(--font-body); font-size:.65rem; color:var(--ink); font-weight:600; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:none; }
     .today-bk-time { font-family:var(--font-body); font-size:.56rem; color:var(--warm-grey); }
     .today-bk-right { text-align:right; }
     .today-bk-amount { font-family:var(--font-body); font-size:.62rem; color:var(--ink); font-weight:600; }
   </style>
 </head>
-<body>
+<body style="display: none;">
 <div class="dash-layout">
 
   <!-- ── ADMIN SIDEBAR ── -->
@@ -100,7 +100,7 @@
 
     <nav class="dash-nav">
       <div class="dash-nav-section">Tổng quan</div>
-      <a class="dash-nav-link active" href="index.html"><span class="nav-icon">◈</span> Dashboard</a>
+      <a class="dash-nav-link active" href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
 
       <div class="dash-nav-section">Quản lý</div>
       <a class="dash-nav-link" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
@@ -218,12 +218,8 @@
 
 <div class="toast" id="toast"></div>
 
+<script type="module" src="admin-auth.js"></script>
 <script>
-/* ── Auth guard ── */
-const ADMIN_PW_KEY = 'kep_admin_auth';
-if (!localStorage.getItem(ADMIN_PW_KEY)) {
-  window.location.href = '../../index.html?logout=true';
-}
 
 const BOOKINGS_KEY  = 'kep_bookings';
 const USERS_KEY     = 'kep_users';
@@ -435,7 +431,7 @@ function endTime(s, dur) {
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
 
-function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href = '../../index.html?logout=true'; }
+
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
 </script>
 </body>

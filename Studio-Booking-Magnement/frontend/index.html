@@ -233,69 +233,7 @@
       </div>
     </section>
 
-    <!-- Auth Gate Modal -->
-    <div class="auth-gate-overlay" id="authGateOverlay" onclick="closeAuthGate(event)">
-      <div class="auth-gate-box" onclick="event.stopPropagation()">
-
-        <button class="auth-gate-close" onclick="closeAuthGate()">&times;</button>
-
-        <div class="auth-gate-brand">
-          <span class="auth-gate-brand-name">"Kép"</span>
-          <span class="auth-gate-brand-sub">Studio</span>
-        </div>
-
-        <h3 class="auth-gate-title">Đăng nhập để đặt lịch</h3>
-        <p class="auth-gate-sub">Tạo tài khoản miễn phí hoặc đăng nhập để bắt đầu đặt không gian sáng tạo của bạn.</p>
-
-        <div class="auth-gate-tabs">
-          <button class="agt-tab active" onclick="switchGateTab('login', this)">Đăng nhập</button>
-          <button class="agt-tab" onclick="switchGateTab('register', this)">Đăng kí</button>
-        </div>
-
-        <!-- Login Form -->
-        <div class="agt-form active" id="gateFormLogin">
-          <div class="agt-field">
-            <label>Email</label>
-            <input type="email" id="gateEmail" placeholder="mail@email.com" autocomplete="email" />
-          </div>
-          <div class="agt-field">
-            <label>Mật khẩu</label>
-            <input type="password" id="gatePw" placeholder="••••••••" autocomplete="current-password" />
-          </div>
-          <p class="agt-msg error" id="gateMsgLogin"></p>
-          <button class="agt-submit" onclick="doGateLogin()">Đăng nhập & đặt lịch →</button>
-        </div>
-
-        <!-- Register Form -->
-        <div class="agt-form" id="gateFormRegister">
-          <div class="agt-row-2">
-            <div class="agt-field">
-              <label>Họ</label>
-              <input type="text" id="regLastName" placeholder="Nguyễn" />
-            </div>
-            <div class="agt-field">
-              <label>Tên</label>
-              <input type="text" id="regFirstName" placeholder="A" />
-            </div>
-          </div>
-          <div class="agt-field">
-            <label>Email</label>
-            <input type="email" id="regEmail" placeholder="ten@email.com" />
-          </div>
-          <div class="agt-field">
-            <label>Số điện thoại</label>
-            <input type="tel" id="regPhone" placeholder="0901 234 567" />
-          </div>
-          <div class="agt-field">
-            <label>Mật khẩu</label>
-            <input type="password" id="regPw" placeholder="Tối thiểu 8 ký tự" />
-          </div>
-          <p class="agt-msg error" id="gateMsgRegister"></p>
-          <button class="agt-submit" onclick="doGateRegister()">Tạo tài khoản & đặt lịch →</button>
-        </div>
-
-      </div>
-    </div>
+    <!-- Auth Gate Modal (Removed: Now using Supabase Auth Frame) -->
 
     <!-- ── FOOTER ── -->
     <div id="footer-placeholder"></div>
@@ -363,46 +301,9 @@
     </div>
   </div>
 
-  <!-- ══ ADMIN PANEL ══ -->
-  <div id="adminPanel" class="admin-panel">
-    <div class="admin-header">
-      <span class="admin-title kep-font">"Kép" Admin</span>
-      <button class="admin-close-btn" onclick="closeAdmin()">✕ Đóng</button>
-    </div>
-    <div class="admin-body">
-      <div class="admin-stats" id="adminStats"></div>
-      <div class="admin-filters">
-        <button class="filter-btn active" onclick="filterBookings('all',this)">Tất cả</button>
-        <button class="filter-btn" onclick="filterBookings('pending',this)">Chờ duyệt</button>
-        <button class="filter-btn" onclick="filterBookings('confirmed',this)">Đã xác nhận</button>
-        <button class="filter-btn" onclick="filterBookings('rejected',this)">Từ chối</button>
-      </div>
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Tên</th>
-              <th>SĐT</th>
-              <th>Zone</th>
-              <th>Ngày</th>
-              <th>Giờ</th>
-              <th>Tổng</th>
-              <th>Trạng thái</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tbody id="adminTbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 
-  <!-- User info bar -->
-  <div class="user-bar" id="userBar" style="display:none">
-    <span class="user-bar-name" id="userBarName"></span>
-    <button class="user-bar-logout" onclick="doLogout()">Đăng xuất</button>
-  </div>
+
+
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>

@@ -18,7 +18,7 @@
       --zone-f-bg:#fce4ec; --zone-f-border:#f48fb1; --zone-f-text:#7a0c2e; --zone-f-dark:#c62828;
     }
     * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:flex; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--ink); min-height:100vh; display:none; }
 
     /* SIDEBAR */
     .dash-sidebar { width:220px; min-height:100vh; background:var(--ink); color:#fff; display:flex; flex-direction:column; flex-shrink:0; position:sticky; top:0; height:100vh; }
@@ -386,7 +386,7 @@
   </div>
   <nav class="dash-nav">
     <div class="dash-nav-section">Tổng quan</div>
-    <a class="dash-nav-link" href="index.html"><span class="nav-icon">◈</span> Dashboard</a>
+    <a class="dash-nav-link" href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
     <div class="dash-nav-section">Quản lý</div>
     <a class="dash-nav-link active" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
     <a class="dash-nav-link" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
@@ -625,14 +625,10 @@
       <button class="qa-btn-save" onclick="saveQuickAdd()">Lưu Booking</button>
     </div>
   </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
+<script type="module" src="admin-auth.js"></script>
 <script>
-// ── Auth guard
-if (!localStorage.getItem('kep_admin_auth')) window.location.href = '../../index.html';
-
 const BOOKINGS_KEY = 'kep_bookings';
 const STATUS_LABEL = { pending:'Chờ duyệt', confirmed:'Đã xác nhận', rejected:'Từ chối', cancelled:'Đã hủy' };
 const STATUS_BADGE = { pending:'badge-pending', confirmed:'badge-confirmed', rejected:'badge-rejected', cancelled:'badge-cancelled' };
@@ -1257,7 +1253,7 @@ function getWeekStart(d) {
   const dt=new Date(d); dt.setHours(0,0,0,0);
   const dow=dt.getDay(); dt.setDate(dt.getDate()-dow); return dt;
 }
-function doAdminLogout() { localStorage.removeItem('kep_admin_auth'); window.location.href='../../index.html?logout=true'; }
+
 function showToast(msg, warn=false) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.toggle('warn',warn); t.classList.add('show'); setTimeout(()=>{t.classList.remove('show');t.classList.remove('warn');},3500); }
 
 // ════════════════════════════════════════
