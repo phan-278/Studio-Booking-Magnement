@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đặt Lịch Mới — Kép Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/booking.css">
+</head>
+
+<body>
+
+  <!-- Top bar -->
+  <div class="page-topbar">
+    <a class="topbar-brand" href="../../../index.html">"Kép"</a>
+    <div class="topbar-right">
+      <span class="topbar-user" id="topbarUser"></span>
+      <a class="topbar-back" href="../../user/html/dashboard.html">← Trang cá nhân</a>
+    </div>
+  </div>
+
+  <div class="booking-page" id="bookingPage">
+    <!-- ── LEFT COLUMN ── -->
+    <div class="booking-main-col">
+
+      <!-- Success screen -->
+      <div class="success-wrap" id="successWrap">
+        <div class="success-icon">✦</div>
+        <h2 class="success-title">Đặt lịch thành công!</h2>
+        <p class="success-sub">Kép Studio đã nhận yêu cầu của bạn. Chúng mình sẽ xác nhận trong vòng 2 giờ làm việc qua
+          số điện thoại/email sau khi duyệt cọc.</p>
+        <div class="success-code">Mã đặt lịch: <span id="successCode"></span></div>
+        <div class="success-actions">
+          <a class="success-btn primary" href="../../user/html/my-bookings.html">Xem lịch sử →</a>
+          <button class="success-btn outline" onclick="resetBooking()">Đặt lịch khác</button>
+        </div>
+      </div>
+
+      <!-- Wizard -->
+      <div id="wizardWrap">
+        <!-- Steps nav -->
+        <div class="wizard-steps-nav" id="stepsNav">
+          <div class="wizard-step-item active" id="sn1">
+            <div class="wizard-step-num">1</div>
+            <span class="wizard-step-label">Chọn Zone</span>
+          </div>
+          <div class="wizard-step-item" id="sn2">
+            <div class="wizard-step-num">2</div>
+            <span class="wizard-step-label">Ngày & Giờ</span>
+          </div>
+          <div class="wizard-step-item" id="sn3">
+            <div class="wizard-step-num">3</div>
+            <span class="wizard-step-label">Thiết bị</span>
+          </div>
+          <div class="wizard-step-item" id="sn4">
+            <div class="wizard-step-num">4</div>
+            <span class="wizard-step-label">Thông tin</span>
+          </div>
+          <div class="wizard-step-item" id="sn5">
+            <div class="wizard-step-num">5</div>
+            <span class="wizard-step-label">Xác nhận</span>
+          </div>
+        </div>
+
+        <!-- STEP 1: Zone -->
+        <div class="wizard-panel active" id="panel1">
+          <h2 class="panel-title">Chọn không gian</h2>
+          <p class="panel-sub">Mỗi zone được thiết kế phục vụ nhu cầu sáng tạo khác nhau — từ chụp ảnh thương mại đến
+            workshop nghệ thuật.</p>
+
+          <div class="zone-grid">
+            <!-- O Zone -->
+            <div class="zone-card" id="zoneO" onclick="selectZone('O',this)">
+              <div class="zone-card-cover" style="background-image: url('../../../assets/KepDaSpace/studio1.jpg');">
+              </div>
+              <div class="zone-card-body">
+                <div class="zone-floor">Tầng 1</div>
+                <div class="zone-name">"O" Zone</div>
+                <div class="zone-desc">Sảnh chính ~80m², cột bê tông, ánh sáng tự nhiên cửa sổ vòm. Điện 3 pha, máy
+                  lạnh, wifi 300Mbps.</div>
+                <div class="zone-price-tag">
+                  <strong>600K</strong> / 2 giờ đầu<br>
+                  250K / giờ thêm
+                </div>
+                <button class="zone-gallery-btn" onclick="openZoneLightbox('O', event)">Xem hình ảnh 🔍</button>
+              </div>
+            </div>
+
+            <!-- C Zone -->
+            <div class="zone-card" id="zoneC" onclick="selectZone('C',this)">
+              <div class="zone-card-cover" style="background-image: url('../../../assets/KepDaSpace/studio4.jpg');">
+              </div>
+              <div class="zone-card-body">
+                <div class="zone-floor">Tầng 2</div>
+                <div class="zone-name">"C" Zone</div>
+                <div class="zone-desc">Tầng thượng private, makeup 3 gương, phòng thay đồ riêng, rèm lụa mờ, ban công
+                  ngoài trời.</div>
+                <div class="zone-price-tag">
+                  <strong>500K</strong> / 2 giờ đầu<br>
+                  200K / giờ thêm
+                </div>
+                <button class="zone-gallery-btn" onclick="openZoneLightbox('C', event)">Xem hình ảnh 🔍</button>
+              </div>
+            </div>
+
+            <!-- Full House -->
+            <div class="zone-card" id="zoneFull" onclick="selectZone('Full',this)">
+              <div class="zone-card-cover" style="background-image: url('../../../assets/KepDaSpace/intro5.jpg');">
+              </div>
+              <div class="zone-card-body">
+                <div class="zone-floor">1F + 2F</div>
+                <div class="zone-name">Full House</div>
+                <div class="zone-desc">Trọn 2 tầng cho production lớn, workshop đông người, pop-up event thương mại hoặc
+                  MV ca nhạc.</div>
+                <div class="zone-price-tag">
+                  Giá theo <strong>thương lượng</strong><br>
+                  Liên hệ trực tiếp
+                </div>
+                <button class="zone-gallery-btn" onclick="openZoneLightbox('Full', event)">Xem hình ảnh 🔍</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <span></span>
+            <button class="btn-next" onclick="goStep(2)">Tiếp theo →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Date & Time (Requirement 3: Detailed Calendar & Interactive Timeline) -->
+        <div class="wizard-panel" id="panel2">
+          <h2 class="panel-title">Ngày & Giờ</h2>
+          <p class="panel-sub">Nhấn chọn ngày trên lịch, sau đó nhấp chuột hoặc kéo trực tiếp trên thanh thời gian tương
+            ứng của khu vực để chọn khung giờ thuê.</p>
+
+          <!-- Inline Monthly Calendar -->
+          <div class="calendar-wrap">
+            <div class="mini-cal">
+              <div class="cal-header">
+                <button class="cal-nav-btn" onclick="prevMonth()">← Tháng trước</button>
+                <div class="cal-month-title" id="calendarTitle">Tháng 6 năm 2026</div>
+                <button class="cal-nav-btn" onclick="nextMonth()">Tháng sau →</button>
+              </div>
+              <div class="cal-weekdays" id="calendarWeekdays"></div>
+              <div class="cal-days" id="calendarDays"></div>
+            </div>
+          </div>
+
+          <!-- Interactive Visual Hourly Timeline -->
+          <div class="timeline-container" id="timelineContainer" style="display: none;">
+            <div class="timeline-header">
+              <div class="timeline-title">Lịch trống ngày: <span id="selectedDateLabel"
+                  style="color: var(--red); font-style: normal; font-weight: bold;"></span></div>
+              <div class="timeline-legend">
+                <div class="legend-item"><span class="legend-box available"></span><span>Còn trống</span></div>
+                <div class="legend-item"><span class="legend-box selected"></span><span>Đang chọn</span></div>
+                <div class="legend-item"><span class="legend-box booked"></span><span>Đã đặt</span></div>
+              </div>
+            </div>
+
+            <div class="timeline-grid">
+              <!-- Timeline hours label row -->
+              <div class="timeline-hours-row" id="timelineHoursRow"></div>
+              <!-- Rows for O Zone, C Zone, Full House -->
+              <div id="timelineRowsGrid"></div>
+            </div>
+
+            <!-- Selection details & notes -->
+            <div class="timeline-selection-summary" id="timelineSelectionSummary">
+              Khung giờ đã chọn: <strong id="selectedTimeInfo" style="color: var(--red); font-size: 0.72rem;">—</strong>
+              <div style="font-size: 0.54rem; color: var(--warm-grey); margin-top: 4px;">* Kéo chuột hoặc ngón tay trên
+                các ô giờ còn trống để đổi khoảng thời gian nhanh chóng. Tối thiểu 2 giờ thuê liên tục.</div>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn-prev" onclick="goStep(1)">← Quay lại</button>
+            <button class="btn-next" onclick="goStep(3)">Tiếp theo →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Equipment (Requirement 4: Vertical Stack with Cover Images) -->
+        <div class="wizard-panel" id="panel3">
+          <h2 class="panel-title">Thiết bị thuê thêm</h2>
+          <p class="panel-sub">Tất cả thiết bị đã được kiểm tra trước mỗi buổi. Không bắt buộc — bỏ qua nếu bạn tự mang
+            đồ.</p>
+
+          <div class="equip-grid" id="equipGrid"></div>
+
+          <div class="wizard-nav">
+            <button class="btn-prev" onclick="goStep(2)">← Quay lại</button>
+            <button class="btn-next" onclick="goStep(4)">Tiếp theo →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Contact info -->
+        <div class="wizard-panel" id="panel4">
+          <h2 class="panel-title">Thông tin liên hệ</h2>
+          <p class="panel-sub">Thông tin xác nhận booking sẽ được gửi qua email và số điện thoại bên dưới.</p>
+
+          <div class="contact-grid">
+            <div class="form-field">
+              <label>Họ *</label>
+              <input type="text" id="ctLastName" placeholder="Nguyễn" />
+            </div>
+            <div class="form-field">
+              <label>Tên *</label>
+              <input type="text" id="ctFirstName" placeholder="Minh An" />
+            </div>
+            <div class="form-field">
+              <label>Email *</label>
+              <input type="email" id="ctEmail" placeholder="ten@email.com" />
+            </div>
+            <div class="form-field">
+              <label>Số điện thoại *</label>
+              <input type="tel" id="ctPhone" placeholder="0901 234 567" />
+            </div>
+            <div class="form-field full">
+              <label>Mục đích sử dụng</label>
+              <input type="text" id="ctPurpose" placeholder="VD: Chụp lookbook thương hiệu thời trang" />
+            </div>
+            <div class="form-field full">
+              <label>Ghi chú thêm</label>
+              <textarea id="ctNote" placeholder="Yêu cầu đặc biệt, số lượng người, cần hỗ trợ gì…"></textarea>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn-prev" onclick="goStep(3)">← Quay lại</button>
+            <button class="btn-next" onclick="goStep(5)">Xem xác nhận →</button>
+          </div>
+        </div>
+
+        <!-- STEP 5: Confirm (Requirement 5: Split Grid summary with Dynamic VietQR integration) -->
+        <div class="wizard-panel" id="panel5">
+          <h2 class="panel-title">Xác nhận đặt lịch & Thanh toán</h2>
+          <p class="panel-sub">Vui lòng kiểm tra kỹ chi tiết lịch đặt và tiến hành chuyển khoản cọc 30% qua mã QR bên
+            dưới để hoàn tất.</p>
+
+          <div class="confirm-grid-layout">
+            <!-- Left Column: Details -->
+            <div class="confirm-info-col">
+              <div class="confirm-block">
+                <div class="confirm-block-title">Khu vực & Thời gian</div>
+                <div class="confirm-row"><span>Không gian đặt</span><strong id="cfZone">—</strong></div>
+                <div class="confirm-row"><span>Ngày</span><strong id="cfDate">—</strong></div>
+                <div class="confirm-row"><span>Khung giờ</span><strong id="cfTimeRange">—</strong></div>
+                <div class="confirm-row"><span>Thời lượng</span><strong id="cfDur">—</strong></div>
+              </div>
+
+              <div class="confirm-block" id="cfEquipBlock" style="display:none;">
+                <div class="confirm-block-title">Thiết bị thuê thêm</div>
+                <div id="cfEquipRows"></div>
+              </div>
+
+              <div class="confirm-block">
+                <div class="confirm-block-title">Thông tin khách hàng</div>
+                <div class="confirm-row"><span>Họ tên</span><strong id="cfName">—</strong></div>
+                <div class="confirm-row"><span>Email</span><strong id="cfEmail">—</strong></div>
+                <div class="confirm-row"><span>Điện thoại</span><strong id="cfPhone">—</strong></div>
+                <div class="confirm-row"><span>Mục đích</span><strong id="cfPurpose">—</strong></div>
+                <div class="confirm-row" id="cfNoteRow" style="display:none;"><span>Ghi chú</span><strong
+                    id="cfNote">—</strong></div>
+              </div>
+            </div>
+
+            <!-- Right Column: Payments + QR -->
+            <div class="confirm-payment-col">
+              <div class="confirm-block" style="border-top: 3px solid var(--red); background: #fff;">
+                <div class="confirm-block-title" style="color: var(--red);">Chi phí & Đặt cọc</div>
+                <div class="confirm-row"><span>Phí thuê không gian</span><strong id="cfZoneFee">—</strong></div>
+                <div class="confirm-row" id="cfEquipFeeRow" style="display:none;"><span>Phí thuê thiết bị</span><strong
+                    id="cfEquipFee">—</strong></div>
+                <div class="confirm-row"
+                  style="font-size: 0.78rem; font-weight: bold; color: var(--ink); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 6px;">
+                  <span>Tổng chi phí dự tính</span>
+                  <strong id="cfTotal">—</strong>
+                </div>
+                <div class="confirm-row"
+                  style="font-size: 0.8rem; font-weight: bold; color: var(--red); background: rgba(163,28,28,0.06); padding: 10px 12px; margin-top: 12px; border-left: 2px solid var(--red);">
+                  <span>Yêu cầu đặt cọc (30%)</span>
+                  <strong id="cfDeposit">—</strong>
+                </div>
+
+                <!-- QR Section -->
+                <div class="qr-payment-section" style="margin-top: 24px; text-align: center;">
+                  <div
+                    style="font-family: var(--font-body); font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-grey); margin-bottom: 12px;">
+                    Quét mã VietQR chuyển khoản cọc</div>
+                  <div
+                    style="display: inline-block; padding: 8px; background: #fff; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 10px;">
+                    <img id="confirmQrImg" src="" alt="VietQR Code"
+                      style="width: 170px; height: 170px; display: block;" />
+                  </div>
+
+                  <div
+                    style="text-align: left; font-family: var(--font-body); font-size: 0.6rem; color: var(--warm-grey); line-height: 1.6; background: var(--cream); padding: 10px; border: 1px solid var(--border);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>Ngân
+                        hàng:</span><strong style="color:var(--ink);">VietinBank</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>Chủ tài
+                        khoản:</span><strong style="color:var(--ink);">KEP STUDIO</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>Số tài
+                        khoản:</span><strong style="color:var(--ink);">113000000000</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:3px;"><span>Nội dung
+                        chuyển:</span><strong id="confirmQrContent" style="color:var(--red);">KEP BKXXXX</strong></div>
+                    <div style="display:flex; justify-content:space-between;"><span>Số tiền cọc:</span><strong
+                        id="confirmQrAmount" style="color:var(--red);">0 VNĐ</strong></div>
+                  </div>
+                  <p
+                    style="font-family: var(--font-body); font-size: 0.52rem; color: var(--warm-grey); margin-top: 12px; line-height: 1.4;">
+                    * Sau khi xác nhận thanh toán, Kép Studio sẽ chính thức cập nhật lịch đặt của bạn trên hệ thống.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wizard-nav">
+            <button class="btn-prev" onclick="goStep(4)">← Quay lại</button>
+            <button class="btn-submit" onclick="submitBooking()">Xác nhận & Gửi yêu cầu đặt lịch ✦</button>
+          </div>
+        </div>
+
+      </div><!-- /wizardWrap -->
+    </div><!-- /main col -->
+
+    <!-- ── RIGHT SIDEBAR ── -->
+    <div class="booking-sidebar-col">
+      <!-- Pricing Card is now floating globally on page to save space -->
+      <div class="info-card" style="border-top:1px solid var(--border);">
+        <div class="info-card-title">Lưu ý đặt lịch</div>
+        <div class="info-item"><span class="info-icon">◈</span><span>Xác nhận trong <strong
+              style="color:var(--cream-dark);">2 giờ</strong> làm việc qua Zalo/Email.</span></div>
+        <div class="info-item"><span class="info-icon">◈</span><span>Đặt cọc 30% để chính thức hoàn tất giữ chỗ.</span>
+        </div>
+        <div class="info-item"><span class="info-icon">◈</span><span>Hủy trước 72h: hoàn 100% cọc. Sau 72h: không
+            hoàn.</span></div>
+        <div class="info-item"><span class="info-icon">◈</span><span>Mở cửa từ 8:00 — 22:00, tất cả các ngày trong
+            tuần.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Draggable Price Card (Requirement 1) -->
+  <div class="price-card floating" id="floatingPriceCard">
+    <div class="price-card-header" id="priceDragHandle">
+      <span class="price-card-header-title">✥ Chi phí dự tính</span>
+      <button class="price-card-close-btn" onclick="togglePriceCard(false)">✕</button>
+    </div>
+    <div class="price-card-content">
+      <div class="price-line"><span>Khu vực</span><strong id="prZone">—</strong></div>
+      <div class="price-line"><span>Thời lượng</span><strong id="prHours">—</strong></div>
+      <div class="price-line"><span>Phí không gian</span><strong id="prZoneFee">—</strong></div>
+      <div class="price-line" id="prEquipRow" style="display:none;"><span>Thiết bị thuê</span><strong
+          id="prEquipFee">—</strong></div>
+      <div class="price-total">
+        <span>Tổng cộng</span>
+        <span id="prTotal">—</span>
+      </div>
+      <div class="price-deposit">
+        Đặt cọc cọc giữ lịch <strong>30%</strong>: <strong id="prDeposit">—</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button to restore price card -->
+  <button class="price-card-toggle" id="priceCardToggleBtn" onclick="togglePriceCard(true)">
+    💰 Xem chi phí (<span id="prTotalToggle">—</span>)
+  </button>
+
+  <!-- Zone Lightbox Gallery Modal (Requirement 2) -->
+  <div class="modal-overlay" id="zoneLightbox"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:2000; align-items:center; justify-content:center;"
+    onclick="closeLightbox()">
+    <div class="lightbox-box"
+      style="background:var(--ink); color:var(--cream); padding:30px; max-width:800px; width:90%; position:relative;"
+      onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()"
+        style="position:absolute; top:15px; right:20px; background:none; border:none; color:var(--cream); font-size:1.5rem; cursor:pointer;">✕</button>
+      <h3 class="lightbox-title" id="lightboxTitle"
+        style="font-family:var(--font-brand); font-style:italic; font-size:1.4rem; margin-bottom:12px; color:var(--cream);">
+      </h3>
+      <div class="lightbox-info" id="lightboxInfo"
+        style="font-family:var(--font-body); font-size:0.7rem; line-height:1.7; color:rgba(237,229,208,0.7); margin-bottom:20px;">
+      </div>
+      <div class="lightbox-grid" id="lightboxGrid"
+        style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:20px; max-height:400px; overflow-y:auto;">
+      </div>
+      <button class="btn-next" onclick="selectZoneFromLightbox()" style="width:100%; text-align:center;">Chọn Zone này &
+        Đóng ✓</button>
+    </div>
+  </div>
+
+
+  <script type="module" src="../js/booking.js"></script>
+</body>
+
+</html>

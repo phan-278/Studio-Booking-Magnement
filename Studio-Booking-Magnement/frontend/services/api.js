@@ -1,7 +1,7 @@
 import { supabase } from './supabase-config.js';
 
 let _bookings = [];
-let _users    = [];
+let _users = [];
 export let _currentUser = null;
 export let _currentUserProfile = null;
 
@@ -19,14 +19,14 @@ export async function fetchInitialData() {
   const { data: userResp } = await supabase.auth.getUser()
   if (userResp.user) {
     _currentUser = userResp.user;
-    
+
     // Fetch user profile role from profiles table
     const { data: profile } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', _currentUser.id)
       .single();
-      
+
     if (profile) {
       _currentUserProfile = profile;
       if (_currentUserProfile.role === 'admin') {
@@ -47,9 +47,9 @@ export async function fetchInitialData() {
     if (sidebarProfile) {
       const name = _currentUserProfile?.full_name || _currentUser.user_metadata?.full_name || _currentUser.email;
       const isAdmin = _currentUserProfile?.role === 'admin';
-      const dashUrl = isAdmin ? './features/admin/dashboard.html' : './features/user/dashboard.html';
+      const dashUrl = isAdmin ? './features/admin/html/dashboard.html' : './features/user/html/dashboard.html';
       const dashIcon = isAdmin ? '⊞' : '◎';
-      
+
       sidebarProfile.innerHTML = `
         <div style="margin-bottom:8px; display:flex; flex-direction:column; gap:4px;">
           <span style="font-size: .65rem; font-weight: 600; color: #fff;">${name}</span>
@@ -84,7 +84,7 @@ export async function fetchInitialData() {
       createdAt: b.created_at
     }));
   }
-  
+
   if (typeof window.renderCalendar === 'function') window.renderCalendar();
 }
 
@@ -113,7 +113,7 @@ export async function addBooking(data) {
     if (typeof window.showToast === 'function') window.showToast(error.message);
     throw error;
   }
-  
+
   if (data.equipments && data.equipments.length > 0) {
     const eqpData = data.equipments.map(e => ({
       booking_id: booking.id,
@@ -152,7 +152,7 @@ export async function updateBookingStatus(id, status) {
 // Call on load
 fetchInitialData();
 
-window.doLogout = async function() {
+window.doLogout = async function () {
   await supabase.auth.signOut();
   localStorage.removeItem('kep_admin_auth');
   window.location.reload();

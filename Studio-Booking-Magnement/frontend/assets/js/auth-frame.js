@@ -10,9 +10,10 @@ function openAuthFrame(type = 'login') {
 
   if (!modal || !frame) return;
 
-  frame.src = type === 'register'
-    ? './features/auth/register.html'
-    : './features/auth/login.html';
+  const url = type === 'register' 
+    ? './features/auth/html/register.html' 
+    : './features/auth/html/login.html';
+  frame.src = url;
 
   modal.classList.add('show');
 }

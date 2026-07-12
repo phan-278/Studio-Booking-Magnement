@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quản lý Booking — Kép Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/main.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+  <link rel="stylesheet" href="../../../assets/css/dashboard.css"/>
+  <link rel="stylesheet" href="../../../assets/css/responsive.css"/>
+  <link rel="stylesheet" href="../css/bookings.css"/>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+
+  
+  
+<div class="dash-layout">
+  <aside class="dash-sidebar" id="dashSidebar">
+    <div class="dash-brand">
+      <a class="dash-brand-name" href="../../../index.html">"Kép"</a>
+      <span class="dash-brand-role">Admin Panel</span>
+    </div>
+    <nav class="dash-nav">
+      <div class="dash-nav-section">Tổng quan</div>
+      <a class="dash-nav-link " href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
+      <div class="dash-nav-section">Quản lý</div>
+      <a class="dash-nav-link active" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
+      <a class="dash-nav-link" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
+      <a class="dash-nav-link" href="equipments.html"><span class="nav-icon">◉</span> Thiết bị</a>
+      <a class="dash-nav-link" href="users.html"><span class="nav-icon">◎</span> Người dùng</a>
+      <a class="dash-nav-link" href="reports.html"><span class="nav-icon">◻</span> Báo cáo</a>
+      <div class="dash-nav-section">Hệ thống</div>
+      <a class="dash-nav-link" href="../../../index.html"><span class="nav-icon">↗</span> Xem trang chủ</a>
+    </nav>
+    <div class="dash-sidebar-footer">
+      <div class="dash-user-info">
+        <div class="dash-user-avatar" style="background:var(--red);">A</div>
+        <div>
+          <div class="dash-user-name">Admin</div>
+          <div class="dash-user-email">Kép Studio</div>
+        </div>
+      </div>
+      <button class="dash-logout-btn" onclick="doAdminLogout()">Đăng xuất</button>
+    </div>
+  </aside>
+
+
+
+<!-- MAIN -->
+<div class="dash-main">
+  <!-- Topbar -->
+  <div class="dash-topbar">
+    <h1 class="dash-page-title">Quản lý Booking</h1>
+    <div class="dash-topbar-actions">
+      <span style="font-family:var(--font-body);font-size:.56rem;color:var(--warm-grey);" id="todayDate"></span>
+      <button class="dash-action-btn primary" onclick="openQuickAdd()">＋ Thêm Booking</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row" id="bkStats"></div>
+
+  <!-- View tabs -->
+  <div class="view-tabs">
+    <button class="view-tab active" id="tabCal" onclick="switchView('calendar')">◷ Lịch</button>
+    <button class="view-tab" id="tabList" onclick="switchView('table')">☰ Danh sách</button>
+  </div>
+
+  <!-- ════ CALENDAR VIEW ════ -->
+  <div id="calendarView">
+
+    <!-- Calendar navigation header -->
+    <div class="cal-header">
+      <button class="cal-nav-btn" onclick="calPrev()">‹</button>
+      <button class="cal-nav-btn" onclick="calNext()">›</button>
+      <button class="cal-today-btn" onclick="calGoToday()">Hôm nay</button>
+      <span class="cal-date-label" id="calDateLabel"></span>
+      <div class="cal-view-btns">
+        <button class="cal-view-mode active" id="vDay" onclick="setCalMode('day')">Ngày</button>
+        <button class="cal-view-mode" id="vWeek" onclick="setCalMode('week')">Tuần</button>
+      </div>
+    </div>
+
+    <!-- Body: mini-cal left + tracks right -->
+    <div class="cal-body">
+
+      <!-- Left: mini calendar + legend -->
+      <div class="cal-left" style="position:relative;">
+        <div class="mini-cal-nav">
+          <span class="mini-cal-month" id="miniCalMonth"></span>
+          <div>
+            <button class="mini-cal-btn" onclick="miniCalPrev()">‹</button>
+            <button class="mini-cal-btn" onclick="miniCalNext()">›</button>
+          </div>
+        </div>
+        <div class="mini-cal-dow">
+          <span>CN</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span>
+        </div>
+        <div class="mini-cal-grid" id="miniCalGrid"></div>
+
+        <div class="zone-legend">
+          <div class="zone-legend-title">Zones</div>
+          <div class="zone-legend-row">
+            <span class="zone-legend-dot" style="background:var(--zone-o-dark)"></span>
+            <span class="zone-legend-name">O Zone (Lầu 1)</span>
+          </div>
+          <div class="zone-legend-row">
+            <span class="zone-legend-dot" style="background:var(--zone-c-dark)"></span>
+            <span class="zone-legend-name">C Zone (Lầu 2)</span>
+          </div>
+          <div class="zone-legend-row">
+            <span class="zone-legend-dot" style="background:var(--zone-f-dark)"></span>
+            <span class="zone-legend-name">Full House</span>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:.54rem;color:var(--ink-light);">
+              <span style="width:12px;height:3px;background:var(--pending);display:inline-block;border-radius:1px;"></span> Chờ duyệt
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:.54rem;color:var(--ink-light);">
+              <span style="width:12px;height:3px;background:var(--confirmed);display:inline-block;border-radius:1px;"></span> Đã xác nhận
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:.54rem;color:var(--ink-light);">
+              <span style="width:12px;height:3px;background:var(--warm-grey);display:inline-block;border-radius:1px;"></span> Từ chối/Hủy
+            </div>
+          </div>
+        </div>
+
+        <!-- FAB add button -->
+        <button class="cal-add-fab" onclick="openQuickAdd()" title="Thêm booking mới">＋</button>
+      </div>
+
+      <!-- Right: zone tracks -->
+      <div class="cal-right">
+        <!-- Zone column headers -->
+        <div class="tracks-header" id="tracksHeader">
+          <div class="tracks-header-time"></div>
+          <div class="tracks-header-zones" id="tracksHeaderZones"></div>
+        </div>
+        <!-- Scrollable time grid -->
+        <div class="tracks-scroll" id="tracksScroll">
+          <div class="tracks-grid">
+            <div class="time-ruler" id="timeRuler"></div>
+            <div class="zones-container" id="zonesContainer"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════ TABLE VIEW ════ -->
+  <div id="tableView" class="hidden">
+    <div class="table-section">
+      <div class="filters-bar">
+        <button class="filter-chip active" onclick="setFilter('all',this)">Tất cả</button>
+        <button class="filter-chip" onclick="setFilter('pending',this)">Chờ duyệt</button>
+        <button class="filter-chip" onclick="setFilter('confirmed',this)">Đã xác nhận</button>
+        <button class="filter-chip" onclick="setFilter('rejected',this)">Từ chối</button>
+        <button class="filter-chip" onclick="setFilter('cancelled',this)">Đã hủy</button>
+        <div class="search-wrap">
+          <input class="search-input" type="text" placeholder="Tìm tên, SĐT, mã · 14/03 · T3/2025 · Q1/2025" id="searchInput" oninput="renderTable()" style="width:310px;">
+          <div class="search-hint" id="searchHint">Gõ tên · SĐT · Mã BK · 14/03 (ngày) · T3/2025 (tháng) · Q1/2025 (quý)</div>
+        </div>
+      </div>
+      <div class="dash-table-wrap">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Mã</th><th>Khách hàng</th><th>Liên hệ</th><th>Zone</th>
+              <th>Ngày</th><th>Giờ</th><th>Thiết bị</th>
+              <th>Tổng / Cọc</th><th>Trạng thái</th><th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="bookingTbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeDetailModal()">✕</button>
+    <div class="modal-title" id="modalTitle">Chi tiết Booking</div>
+    <div id="modalContent"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<!-- Quick-Add Modal -->
+<div class="qa-modal-overlay" id="qaModal">
+  <div class="qa-modal-box">
+    <button class="qa-modal-close" onclick="closeQuickAdd()">✕</button>
+    <div class="qa-modal-title">Thêm Booking Mới</div>
+    <div class="qa-form-row">
+      <div class="qa-form-group">
+        <label>Họ tên *</label>
+        <input type="text" id="qa-name" placeholder="Nguyễn Thị Mai">
+      </div>
+      <div class="qa-form-group">
+        <label>SĐT *</label>
+        <input type="tel" id="qa-phone" placeholder="0901234567">
+      </div>
+    </div>
+    <div class="qa-form-group">
+      <label>Email</label>
+      <input type="email" id="qa-email" placeholder="khach@gmail.com">
+    </div>
+    <div class="qa-form-row">
+      <div class="qa-form-group">
+        <label>Zone *</label>
+        <select id="qa-zone">
+          <option value="O">O Zone (Lầu 1)</option>
+          <option value="C">C Zone (Lầu 2)</option>
+          <option value="Full">Full House</option>
+        </select>
+      </div>
+      <div class="qa-form-group">
+        <label>Ngày *</label>
+        <input type="date" id="qa-date">
+      </div>
+    </div>
+    <div class="qa-form-row">
+      <div class="qa-form-group">
+        <label>Giờ bắt đầu *</label>
+        <select id="qa-start"></select>
+      </div>
+      <div class="qa-form-group">
+        <label>Số giờ *</label>
+        <select id="qa-dur">
+          <option value="1">1h</option>
+          <option value="1.5">1.5h</option>
+          <option value="2" selected>2h</option>
+          <option value="2.5">2.5h</option>
+          <option value="3">3h</option>
+          <option value="3.5">3.5h</option>
+          <option value="4">4h</option>
+          <option value="5">5h</option>
+          <option value="6">6h</option>
+          <option value="8">8h</option>
+        </select>
+      </div>
+    </div>
+    <div class="qa-form-group">
+      <label>Mục đích</label>
+      <select id="qa-purpose">
+        <option>Photography</option>
+        <option>Videography</option>
+        <option>Fashion</option>
+        <option>Event</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="qa-form-group">
+      <label>Ghi chú</label>
+      <textarea id="qa-note" placeholder="Ghi chú thêm..."></textarea>
+    </div>
+    <div class="qa-form-err" id="qa-err"></div>
+    <div class="qa-modal-actions">
+      <button class="qa-btn-cancel" onclick="closeQuickAdd()">Hủy</button>
+      <button class="qa-btn-save" onclick="saveQuickAdd()">Lưu Booking</button>
+    </div>
+  </div>
+<div class="toast" id="toast"></div>
+
+<script type="module" src="../js/admin-auth.js"></script>
+<script type="module" src="../js/bookings.js"></script>
+</body>
+</html>

@@ -267,7 +267,7 @@
   margin-top: 6px;
 }
 
-/* ── SECTION HEADING ── */
+.dash-grid-2col { display: grid; grid-template-columns: 1fr 360px; gap: 24px; }\n/* ── SECTION HEADING ── */
 .dash-section-title {
   font-family: var(--font-display);
   font-style: italic;
@@ -695,7 +695,7 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }\n  .dash-grid-2col { grid-template-columns: 1fr; }
   .profile-grid { grid-template-columns: 1fr; }
   .profile-form-grid { grid-template-columns: 1fr; }
 }

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quản lý Zone — Kép Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/main.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+  <link rel="stylesheet" href="../../../assets/css/dashboard.css"/>
+  <link rel="stylesheet" href="../../../assets/css/responsive.css"/>
+  <link rel="stylesheet" href="../css/studios.css"/>
+</head>
+<body>
+
+<div class="dash-layout">
+
+  <aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-brand">
+    <a class="dash-brand-name" href="../../../index.html">"Kép"</a>
+    <span class="dash-brand-role">Admin Panel</span>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tổng quan</div>
+    <a class="dash-nav-link" href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
+    <div class="dash-nav-section">Quản lý</div>
+    <a class="dash-nav-link" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
+    <a class="dash-nav-link active" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
+    <a class="dash-nav-link" href="equipments.html"><span class="nav-icon">◉</span> Thiết bị</a>
+    <a class="dash-nav-link" href="users.html"><span class="nav-icon">◎</span> Người dùng</a>
+    <a class="dash-nav-link" href="reports.html"><span class="nav-icon">◻</span> Báo cáo</a>
+    <div class="dash-nav-section">Hệ thống</div>
+    <a class="dash-nav-link" href="../../../index.html"><span class="nav-icon">↗</span> Xem trang chủ</a>
+  </nav>
+  <div class="dash-sidebar-footer">
+    <div class="dash-user-info">
+      <div class="dash-user-avatar" style="background:var(--red);">A</div>
+      <div><div class="dash-user-name">Admin</div><div class="dash-user-email">Kép Studio</div></div>
+    </div>
+    <button class="dash-logout-btn" onclick="doAdminLogout()">Đăng xuất</button>
+  </div>
+</aside>
+
+  <div class="dash-main">
+  <div class="dash-topbar">
+    <h1 class="dash-page-title">Zone / Phòng chụp</h1>
+    <div>
+      <button class="dash-action-btn primary" onclick="openAddModal()">+ Thêm Zone</button>
+    </div>
+  </div>
+
+  <div class="dash-content">
+
+    <!-- Zone Cards -->
+    <div class="section-title">Danh sách Zone</div>
+    <div class="zone-grid" id="zoneGrid">  </div>
+</div>
+
+<!-- Availability This Week -->
+    <div class="section-title">Tình trạng sử dụng tuần này</div>
+    <div class="avail-container">
+      <div class="avail-header">
+        <span class="avail-title">Lịch Zone theo ngày</span>
+        <span style="font-size:.56rem;color:var(--warm-grey);">
+          <span style="display:inline-block;width:10px;height:10px;background:#e8f5e9;border:1px solid #a5d6a7;margin-right:4px;"></span>Rảnh
+          <span style="display:inline-block;width:10px;height:10px;background:#fff3e0;border:1px solid #f0c060;margin-right:4px;margin-left:12px;"></span>Một phần
+          <span style="display:inline-block;width:10px;height:10px;background:#fff8e1;border:1px solid #f0d060;margin-right:4px;margin-left:12px;"></span>Kín
+        </span>
+      </div>
+      <div class="avail-grid" id="availGrid"></div>
+    </div>
+
+    <!-- Booking History per Zone -->
+    <div class="section-title">Thống kê booking theo Zone (30 ngày)</div>
+    <div style="background:#fff;border:1px solid var(--border);padding:24px;" id="zoneChartContainer"></div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="zoneModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">Thêm Zone mới</div>
+    <input type="hidden" id="editId">
+    <div class="form-row">
+      <div class="form-group"><label>Tên Zone *</label><input type="text" id="fName" placeholder='vd: "O" Zone'/></div>
+      <div class="form-group"><label>Tầng</label><input type="text" id="fFloor" placeholder="vd: 1F"/></div>
+    </div>
+    <div class="form-group"><label>Mô tả</label><textarea id="fDesc" rows="2" placeholder="Mô tả ngắn về zone..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Diện tích</label><input type="text" id="fArea" placeholder="vd: ~80 m²"/></div>
+      <div class="form-group"><label>Sức chứa (người)</label><input type="number" id="fCapacity" placeholder="vd: 20"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Giá 2h đầu (K)</label><input type="number" id="fPrice" placeholder="vd: 600"/></div>
+      <div class="form-group"><label>Giá/h thêm (K)</label><input type="number" id="fPriceExtra" placeholder="vd: 250"/></div>
+    </div>
+    <div class="form-group"><label>Tiện ích</label><input type="text" id="fAmenities" placeholder="vd: Máy lạnh, Wifi, Điện 3 pha"/></div>
+    <div class="form-group">
+      <label>Trạng thái</label>
+      <select id="fStatus">
+        <option value="active">Đang hoạt động</option>
+        <option value="inactive">Tạm ngừng</option>
+        <option value="maintenance">Đang bảo trì</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-modal cancel" onclick="closeModal()">Hủy</button>
+      <button class="btn-modal save" onclick="saveZone()">Lưu Zone</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="delModal">
+  <div class="modal-box" style="max-width:400px;">
+    <button class="modal-close" onclick="closeDelModal()">✕</button>
+    <div class="modal-title">Xóa Zone?</div>
+    <p style="font-size:.64rem;color:var(--warm-grey);margin-bottom:24px;line-height:1.7;">Hành động này không thể hoàn tác. Tất cả dữ liệu của zone này sẽ bị xóa vĩnh viễn.</p>
+    <div class="modal-actions">
+      <button class="btn-modal cancel" onclick="closeDelModal()">Hủy</button>
+      <button class="btn-modal save" style="background:var(--red);" onclick="confirmDelete()">Xóa</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="../js/admin-auth.js"></script>
+<script type="module" src="../js/studios.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hồ sơ cá nhân — Kép Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/main.css"/>
+  <link rel="stylesheet" href="../../../assets/css/dashboard.css"/>
+  <link rel="stylesheet" href="../../../assets/css/responsive.css"/>
+  <link rel="stylesheet" href="../css/profile.css"/>
+</head>
+<body>
+<div class="dash-layout">
+  <aside class="dash-sidebar">
+    <div class="dash-brand">
+      <a class="dash-brand-name" href="../../../index.html">"Kép"</a>
+      <span class="dash-brand-role">Trang cá nhân</span>
+    </div>
+    <nav class="dash-nav">
+      <div class="dash-nav-section">Tổng quan</div>
+      <a class="dash-nav-link" href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
+      <div class="dash-nav-section">Booking</div>
+      <a class="dash-nav-link" href="my-bookings.html"><span class="nav-icon">◷</span> Lịch sử đặt lịch</a>
+      <div class="dash-nav-section">Tài khoản</div>
+      <a class="dash-nav-link active" href="profile.html"><span class="nav-icon">◎</span> Hồ sơ cá nhân</a>
+      <a class="dash-nav-link" href="settings.html"><span class="nav-icon">◫</span> Cài đặt</a>
+      <div class="dash-nav-section">Khác</div>
+      <a class="dash-nav-link" href="../../../index.html"><span class="nav-icon">↗</span> Về trang chủ</a>
+    </nav>
+    <div class="dash-sidebar-footer">
+      <div class="dash-user-info">
+        <div class="dash-user-avatar" id="sbAvatar">K</div>
+        <div><div class="dash-user-name" id="sbName">—</div><div class="dash-user-email" id="sbEmail">—</div></div>
+      </div>
+      <button class="dash-logout-btn" onclick="doLogout()">Đăng xuất</button>
+    </div>
+  </aside>
+
+  <div class="dash-main">
+    <div class="dash-topbar">
+      <h1 class="dash-page-title">Hồ sơ cá nhân</h1>
+    </div>
+
+    <div class="dash-content">
+      <div class="profile-grid">
+
+        <!-- Left: Avatar card -->
+        <div class="avatar-card">
+          <div class="avatar-circle" id="bigAvatar">K</div>
+          <div class="avatar-name" id="bigName">—</div>
+          <div class="avatar-email" id="bigEmail">—</div>
+          <div class="avatar-divider"></div>
+          <div class="avatar-stat-grid">
+            <div><div class="av-stat-val" id="statTotal">0</div><div class="av-stat-lbl">Đặt lịch</div></div>
+            <div><div class="av-stat-val" id="statDone">0</div><div class="av-stat-lbl">Xác nhận</div></div>
+          </div>
+          <div class="member-since">Thành viên từ <strong id="memberSince">—</strong></div>
+        </div>
+
+        <!-- Right: Form -->
+        <div>
+          <div class="form-card">
+            <div class="form-card-title">Thông tin cá nhân</div>
+            <p class="form-card-sub">Thông tin này sẽ được dùng để xác nhận booking và liên hệ khi cần thiết.</p>
+
+            <div class="profile-form-grid">
+              <div class="pf-field">
+                <label>Họ *</label>
+                <input type="text" id="pfLastName" placeholder="Nguyễn"/>
+              </div>
+              <div class="pf-field">
+                <label>Tên *</label>
+                <input type="text" id="pfFirstName" placeholder="Minh An"/>
+              </div>
+              <div class="pf-field">
+                <label>Email</label>
+                <input type="email" id="pfEmail" readonly/>
+              </div>
+              <div class="pf-field">
+                <label>Số điện thoại *</label>
+                <input type="tel" id="pfPhone" placeholder="0901 234 567"/>
+              </div>
+              <div class="pf-field full">
+                <label>Ngày sinh</label>
+                <input type="date" id="pfDob"/>
+              </div>
+              <div class="pf-field">
+                <label>Giới tính</label>
+                <select id="pfGender">
+                  <option value="">Không xác định</option>
+                  <option value="male">Nam</option>
+                  <option value="female">Nữ</option>
+                  <option value="other">Khác</option>
+                </select>
+              </div>
+              <div class="pf-field">
+                <label>Nghề nghiệp</label>
+                <input type="text" id="pfJob" placeholder="Nhiếp ảnh gia, stylist…"/>
+              </div>
+            </div>
+
+            <div class="form-save-row">
+              <button class="save-btn" onclick="saveProfile()">Lưu thay đổi</button>
+              <span class="save-msg" id="saveMsg">✓ Đã lưu thành công</span>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="pw-card">
+            <div class="pw-card-title">Đổi mật khẩu</div>
+            <div class="pw-grid">
+              <div class="pf-field">
+                <label>Mật khẩu hiện tại</label>
+                <input type="password" id="pwCurrent" placeholder="••••••••"/>
+              </div>
+              <div class="pf-field">
+                <label>Mật khẩu mới</label>
+                <input type="password" id="pwNew" placeholder="Tối thiểu 8 ký tự"/>
+              </div>
+            </div>
+            <div class="form-save-row">
+              <button class="save-btn" onclick="changePw()" style="background:var(--ink);">Đổi mật khẩu</button>
+              <span class="save-msg" id="pwMsg"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="../js/profile.js"></script>
+</body>
+</html>

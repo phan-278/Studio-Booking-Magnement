@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quản lý Người dùng — Kép Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Be+Vietnam+Pro:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/css/main.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+  <link rel="stylesheet" href="../../../assets/css/dashboard.css"/>
+  <link rel="stylesheet" href="../../../assets/css/responsive.css"/>
+  <link rel="stylesheet" href="../css/users.css"/>
+</head>
+<body>
+
+<div class="dash-layout">
+
+  <aside class="dash-sidebar" id="dashSidebar">
+  <div class="dash-brand">
+    <a class="dash-brand-name" href="../../../index.html">"Kép"</a>
+    <span class="dash-brand-role">Admin Panel</span>
+  </div>
+  <nav class="dash-nav">
+    <div class="dash-nav-section">Tổng quan</div>
+    <a class="dash-nav-link" href="dashboard.html"><span class="nav-icon">◈</span> Dashboard</a>
+    <div class="dash-nav-section">Quản lý</div>
+    <a class="dash-nav-link" href="bookings.html"><span class="nav-icon">◷</span> Booking</a>
+    <a class="dash-nav-link" href="studios.html"><span class="nav-icon">◫</span> Zone / Phòng</a>
+    <a class="dash-nav-link" href="equipments.html"><span class="nav-icon">◉</span> Thiết bị</a>
+    <a class="dash-nav-link active" href="users.html"><span class="nav-icon">◎</span> Người dùng</a>
+    <a class="dash-nav-link" href="reports.html"><span class="nav-icon">◻</span> Báo cáo</a>
+    <div class="dash-nav-section">Hệ thống</div>
+    <a class="dash-nav-link" href="../../../index.html"><span class="nav-icon">↗</span> Xem trang chủ</a>
+  </nav>
+  <div class="dash-sidebar-footer">
+    <div class="dash-user-info">
+      <div class="dash-user-avatar" style="background:var(--red);">A</div>
+      <div><div class="dash-user-name">Admin</div><div class="dash-user-email">Kép Studio</div></div>
+    </div>
+    <button class="dash-logout-btn" onclick="doAdminLogout()">Đăng xuất</button>
+  </div>
+</aside>
+
+  <div class="dash-main">
+  <div class="dash-topbar">
+    <h1 class="dash-page-title">Người dùng</h1>
+    <span style="font-size:.58rem;color:var(--warm-grey);" id="todayDate"></span>
+  </div>
+
+  <div class="dash-content">
+    <!-- Stats -->
+    <div class="stats-row" id="userStats">  </div>
+</div>
+
+<!-- Top Users -->
+    <div class="section-title">Khách hàng thân thiết (nhiều booking nhất)</div>
+    <div class="top-users-grid" id="topUsersGrid"></div>
+
+    <!-- Filters -->
+    <div class="section-title">Danh sách người dùng</div>
+    <div class="filters-bar">
+      <button class="filter-chip active" onclick="setFilter('all',this)">Tất cả</button>
+      <button class="filter-chip" onclick="setFilter('vip',this)">VIP (≥5 booking)</button>
+      <button class="filter-chip" onclick="setFilter('new',this)">Mới (≤1 booking)</button>
+      <input class="search-input" type="text" placeholder="Tìm tên, SĐT, email..." id="searchInput" oninput="renderTable()">
+    </div>
+
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Người dùng</th>
+            <th>SĐT</th>
+            <th>Email</th>
+            <th>Tổng booking</th>
+            <th>Đã xác nhận</th>
+            <th>Tổng chi tiêu</th>
+            <th>Phân loại</th>
+            <th>Ngày đăng ký</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="userTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- User Detail Modal -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">Thông tin người dùng</div>
+    <div id="modalContent"></div>
+    <div class="modal-actions">
+      <button class="btn-modal del" id="delBtn">Xóa tài khoản</button>
+      <button class="btn-modal close" onclick="closeModal()">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── DELETE CONFIRM MODAL ── -->
+<div class="modal-overlay" id="deleteConfirmModal">
+  <div class="confirm-modal-box">
+    <div class="confirm-modal-icon">🗑️</div>
+    <div class="confirm-modal-title">Xác nhận xóa tài khoản</div>
+    <div class="confirm-modal-sub">Bạn có chắc chắn muốn xóa tài khoản của</div>
+    <div class="confirm-modal-name" id="deleteTargetName">—</div>
+    <div class="confirm-modal-actions">
+      <button class="btn-modal close" onclick="closeDeleteConfirm()">Hủy bỏ</button>
+      <button class="btn-modal del" id="confirmDeleteBtn">Xóa tài khoản</button>
+    </div>
+    <div class="confirm-warning">Hành động này không thể hoàn tác. Dữ liệu người dùng sẽ bị xóa vĩnh viễn.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="../js/admin-auth.js"></script>
+<script type="module" src="../js/users.js"></script>
+</body>
+</html>

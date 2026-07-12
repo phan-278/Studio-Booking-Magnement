@@ -5,7 +5,7 @@
 
 function handleBookingCTA() {
   if (window._currentUser) {
-    window.location.href = './features/booking/new-booking.html';
+    window.location.href = './features/booking/html/new-booking.html';
   } else {
     if (typeof window.openAuthFrame === 'function') {
       window.openAuthFrame('login');
