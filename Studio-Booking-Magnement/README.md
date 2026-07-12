@@ -17,7 +17,6 @@ Welcome to the Studio Booking Management project! This project was built as part
 Studio-Booking-Management/
 ├── 📁 backend/                # Server-side logic and APIs (Node.js)
 │   ├── 📁 src/                # Controllers, models, and routes
-│   ├── 📁 tests/              # Jest unit tests for backend logic
 │   ├── 📄 package.json        # Backend dependencies
 │   └── 📄 .env                # Environment variables
 ├── 📁 frontend/               # Client-side web application
@@ -29,7 +28,6 @@ Studio-Booking-Management/
 │   ├── 📄 index.html          # Main entry HTML file
 │   ├── 📄 vite.config.js      # Vite build configuration
 │   └── 📄 package.json        # Frontend dependencies
-├── 📁 database/               # Database schemas, migrations, and seed data
 └── 📄 README.md               # Project documentation
 ```
 
@@ -89,3 +87,4 @@ In the future, I plan to expand the system by adding **Payment Gateway Integrati
    npm install
    npm run dev
    ```
+
