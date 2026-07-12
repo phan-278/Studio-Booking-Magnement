@@ -1,97 +1,90 @@
+# 📖 1. Description
+**Studio Booking Management** is a comprehensive web-based platform designed for studio owners and customers. It streamlines the process of booking studio rooms, managing equipment rentals, tracking customer information, and generating business reports, all within an intuitive and responsive user interface.
 
+# 🏷️ 2. Badges/Tags
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 
+# 🚀 3. Intro
+Welcome to the Studio Booking Management project! This project was built as part of the "Software Engineering" (Nhập môn Công nghệ phần mềm) course. It aims to provide a complete solution for managing physical studio spaces, allowing managers to efficiently handle reservations, assign equipment, track revenue, and organize staff schedules through a modern web application.
 
-  # Kế hoạch triển khai Backend (Studio Booking Management System v3 - Final Refinement)
+# 📂 4. Project Structure
+```text
+Studio-Booking-Management/
+├── 📁 backend/                # Server-side logic and APIs (Node.js)
+│   ├── 📁 src/                # Controllers, models, and routes
+│   ├── 📄 package.json        # Backend dependencies
+│   └── 📄 .env                # Environment variables
+├── 📁 frontend/               # Client-side web application
+│   ├── 📁 assets/             # Static assets (images, icons, global styles)
+│   ├── 📁 components/         # Reusable UI components (sidebar, header, etc.)
+│   ├── 📁 features/           # Feature-specific modules (bookings, equipment, reports)
+│   ├── 📁 services/           # API integration and data fetching
+│   ├── 📁 utils/              # Helper utility functions
+│   ├── 📄 index.html          # Main entry HTML file
+│   ├── 📄 vite.config.js      # Vite build configuration
+│   └── 📄 package.json        # Frontend dependencies
+└── 📄 README.md               # Project documentation
+```
 
-Dựa trên phản hồi của bạn, bản kế hoạch đã được tinh chỉnh sâu hơn vào các góc khuất kỹ thuật (Database Locking, Business Logic Rate Limiting, Admin SLA) để đảm bảo không sai lệch khi bước vào code thực tế.
+# 💻 5. Technologies
+- **Frontend:** 🌐 HTML5, CSS3, JavaScript (Vanilla/ES6+), bundled with Vite.
+- **Backend:** ⚙️ Node.js, Express.js (or similar framework).
+- **Database:** 🗄️ Relational Database (MySQL / PostgreSQL).
+- **Testing:** 🧪 Jest (Backend testing).
 
-## User Review Required
+# ✨ 6. Features
+- **Booking Management:** Create, view, approve, and cancel studio room reservations.
+- **Equipment Tracking:** Manage studio equipment inventory, availability, and rentals alongside room bookings.
+- **Dynamic Dashboard:** Visualize daily bookings, revenue statistics, and system overview.
+- **Reporting System:** Generate structured reports for business analytics.
+- **Responsive UI:** A dynamic and modular frontend utilizing component-based architecture for smooth navigation.
 
-> [!IMPORTANT]
-> Các vấn đề về `SELECT ... FOR UPDATE` cho Zone/Equipment, Rate Limit bằng DB Query, và logic Không Hoàn Tiền đã được cập nhật rõ ràng. Hãy xem lại cấu trúc mới này.
+# ⌨️ 7. Keyboard Shortcuts
+- *Depending on the implemented UI, standard browser shortcuts apply (e.g., Tab for form navigation).*
 
-## Open Questions
+# ⚙️ 8. The Process
+Building this system involved significant architectural challenges. One major challenge was implementing a clean separation of concerns using Vanilla JavaScript, dynamically loading UI components like sidebars and headers without a heavy frontend framework like React. On the backend, ensuring data integrity during concurrent booking requests required careful database schema design and validation logic.
 
-> [!WARNING]
-> Về "SLA cho Admin" (Thời gian chờ admin xác nhận sau khi khách đã gửi minh chứng thanh toán): Đã chốt **X = 120 phút** (2 tiếng). Nếu sau 2 tiếng Admin chưa xác nhận, cron job sẽ bắn notification nhắc nhở lần 2 và set `awaiting_manual_review = true`.
+# 🧠 9. What I Learned
+Through this project, I gained hands-on experience with:
+- 🏗️ Designing and implementing RESTful APIs.
+- 🧩 Structuring a modular, component-based frontend using Vanilla JS and Vite.
+- 🗃️ Designing relational database schemas for complex real-world relationships (Users, Bookings, Equipment, Invoices).
+- 🧪 Writing unit tests (Jest) to ensure backend reliability.
+- 🚀 Setting up project build tools and environment configurations.
 
----
+# 🚀 10. How to Improve
+In the future, I plan to expand the system by adding **Payment Gateway Integration** (e.g., VNPay, MoMo, Stripe) to allow customers to pay deposits online. Additionally, I want to implement **Automated Email/SMS Notifications** to remind customers of their upcoming studio sessions.
 
-## Các giai đoạn triển khai (Phased Implementation Plan)
+# 🛠️ 11. How to Run
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/phan-278/Studio-Booking-Management
+   cd Studio-Booking-Management
+   ```
+2. **Setup the Database:**
+   Ensure your local database server (e.g., MySQL via XAMPP) is running. Import the schema files located in the `database/` folder.
+3. **Configure Environment Variables:**
+   Update the `.env` files in both the `frontend/` and `backend/` directories with your local credentials.
+4. **Run the application:**
+   You will need to run the frontend and backend simultaneously. Open two separate terminal windows:
 
-### Giai đoạn 1: Chuẩn hóa Schema & Nền tảng (Foundation)
-*Mục tiêu: Thiết lập cấu trúc Database, bảo mật, xác thực và nhất quán dữ liệu.*
+   **Terminal 1: Start Backend**
+   ```bash
+   cd backend
+   npm install
+   npm start
+   ```
 
-#### 1. SQL Migration & Schema Database
-*   **[NEW]** `src/supabase/schema.sql`: File migration SQL chứa:
-    *   Bảng `bookings` có `payment_status` (`'unpaid'`, `'deposit_paid'`, `'fully_paid'`, `'forfeited'`).
-    *   Bảng `monthly_reports` chứa đầy đủ các counter: `forfeited_amount`, `forfeited_count`, `no_show_count`, `cancelled_after_deposit_count`, `cancelled_before_deposit_count`.
-    *   **Constraint DB**: Vẫn thêm `EXCLUDE USING gist (studio_id WITH =, tsrange(start_time, end_time) WITH &&)` để chặn trùng lặp trực tiếp cấp độ bảng.
-
-#### 2. Xử lý lỗi & Data Validation (Zod)
-*   **[NEW]** Middleware validate dữ liệu đầu vào.
-*   **[NEW]** Global Error Handler trả về chuẩn lỗi (đặc biệt các lỗi `SLOT_CONFLICT`, `EQUIPMENT_OUT_OF_STOCK`).
-
-#### 3. Authentication & Authorization Module
-*   **[NEW]** API `/register`, `/login`, `/me` (Supabase Auth) và Middleware xác thực, phân quyền.
-
----
-
-### Giai đoạn 2: Lõi hệ thống đặt lịch (Core Booking Module)
-*Mục tiêu: Xây dựng hoàn chỉnh luồng Booking và Thanh toán chặt chẽ, chống Race Condition.*
-
-#### 1. Xây dựng Booking Service & Controller
-*   **[NEW]** `src/services/booking.service.js`: 
-    *   **Tránh Overlap O/C/Full House**: Vì `EXCLUDE USING gist` không chặn được nhóm phòng khác ID, Service phải sử dụng `SELECT ... FOR UPDATE` bao trùm cả nhóm xung đột (ví dụ đặt C Zone thì phải lock cả dòng Full House tương ứng trong khung giờ) để tránh race condition.
-    *   **Tránh Overlap Thiết bị**: Sử dụng `SELECT ... FOR UPDATE` khi tính toán `available_quantity` của bảng `equipments` trước khi insert vào `booking_equipments`.
-    *   **Sinh `booking_code`** dùng cho nội dung chuyển khoản.
-    *   **Snapshot giá cứng**: Ghi trực tiếp giá trị số (hardcode value tính tại thời điểm đó) vào các cột `studio_price`, `equipment_price`, `total_price`, `deposit_amount`. Không sử dụng Foreign Key join động để tính tiền.
-*   **[NEW]** **Rate Limiting bằng Business Logic**: Khi tạo booking, query DB đếm số lượng booking `pending_payment` của `req.user.id`. Nếu >= 3, từ chối request. (Không dùng IP middleware).
-
-#### 2. Xử lý luồng Thanh toán (Payment Status Flow)
-*   Các API chuyển đổi trạng thái: `/payment-claim`, `/confirm-payment`, `/checkin`, `/no-show`.
-*   **[NEW]** Ghi log vào `payment_logs`.
-
----
-
-### Giai đoạn 3: Doanh thu & Thuế (Revenue & Tax Module)
-*Mục tiêu: Xây dựng hệ thống quản lý Thuế và Doanh thu cho Admin.*
-
-*   **[NEW]** API cho bảng `tax_settings`.
-*   **[NEW]** `src/services/report.service.js`: 
-    *   Tính `gross_revenue` từ booking `completed`.
-    *   **Tính đầy đủ tất cả các counter**: Query và update đầy đủ các trường `forfeited_amount`, `forfeited_count`, `no_show_count`, `cancelled_after_deposit_count`, `cancelled_before_deposit_count` vào `monthly_reports`.
-
----
-
-### Giai đoạn 4: Cron Jobs, Hủy (No Refund) & Admin SLA
-*Mục tiêu: Đảm bảo vận hành tự động, nguyên tắc KHÔNG HOÀN CỌC và đôn đốc Admin.*
-
-*   **[NEW]** `src/cron/booking.cron.js`: 
-    *   **Tự hủy**: Quét các booking quá hạn `deposit_deadline` mà `payment_proof_submitted=false` -> Chuyển sang `cancelled` (và `unpaid`).
-    *   **Admin SLA**: Nếu `payment_proof_submitted=true` nhưng sau **120 phút** admin chưa `confirm_payment` -> Tự động set `awaiting_manual_review=true` và trigger Notification cảnh báo Admin.
-*   **[MODIFY]** Logic Hủy (`cancel`): 
-    *   *Lưu ý rõ cho Dev*: Admin hủy do lỗi studio (hỏng hóc, trùng lịch) thì hệ thống VẪN tự động chuyển về `forfeited`. Dev tuyệt đối KHÔNG tự code thêm luồng refund hay trigger hoàn tiền nào tại đây. Admin sẽ tự liên hệ chuyển khoản tay cho khách.
-
----
-
-### Giai đoạn 5: Notification Module (Sử dụng Resend)
-*Mục tiêu: Gửi email thông báo kịp thời cho cả User và Admin.*
-
-*   **[NEW]** `src/services/notification.service.js`: Tích hợp Resend.
-*   **[NEW]** **Admin Notification**: Bắn ngay 1 email/tin nhắn thông báo cho Admin khi có một booking mới vừa được tạo ở trạng thái `pending_payment` (giúp đảm bảo KPI xác nhận trong 15 phút).
-*   Các email khác: Xác nhận đặt cọc thành công, nhắc lịch chụp, nhắc khách đóng cọc khi sắp hết `deposit_deadline`, và cảnh báo Admin SLA (quá 120 phút chưa duyệt).
-
----
-
-## Verification Plan
-
-### Automated Tests
-- Test việc sử dụng `SELECT ... FOR UPDATE` khi 2 khách hàng đồng thời gọi API tạo booking cho `O Zone` và `Full House`. Phải có 1 transaction bị block và sau đó báo lỗi 409.
-- Test tương tự cho số lượng thiết bị (`available_quantity`).
-- Test Rate Limit (tạo 4 booking liên tiếp mà chưa thanh toán để xem booking thứ 4 có bị từ chối không).
-
-### Manual Verification
-- Chạy SQL Schema trên Supabase.
-- Chạy thử Cron Job bằng cách trigger thủ công các booking quá hạn 60 phút xem Admin có nhận được email nhắc nhở duyệt tiền không.
+   **Terminal 2: Start Frontend**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
